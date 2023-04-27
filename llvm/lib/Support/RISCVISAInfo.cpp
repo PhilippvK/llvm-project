@@ -44,11 +44,11 @@ static const char *RISCVGImplications[] = {
 };
 
 static const RISCVSupportedExtension SupportedExtensions[] = {
-    {"i", RISCVExtensionVersion{2, 1}},
+    {"i", RISCVExtensionVersion{2, 0}},
     {"e", RISCVExtensionVersion{2, 0}},
     {"m", RISCVExtensionVersion{2, 0}},
-    {"a", RISCVExtensionVersion{2, 1}},
-    {"f", RISCVExtensionVersion{2, 2}},
+    {"a", RISCVExtensionVersion{2, 0}},
+    {"f", RISCVExtensionVersion{2, 0}},
     {"d", RISCVExtensionVersion{2, 2}},
     {"c", RISCVExtensionVersion{2, 0}},
 
@@ -86,6 +86,8 @@ static const RISCVSupportedExtension SupportedExtensions[] = {
     {"zmmul", RISCVExtensionVersion{1, 0}},
 
     {"v", RISCVExtensionVersion{1, 0}},
+    {"zvamo", RISCVExtensionVersion{1, 0}},
+    {"zvlsseg", RISCVExtensionVersion{1, 0}},
     {"zvl32b", RISCVExtensionVersion{1, 0}},
     {"zvl64b", RISCVExtensionVersion{1, 0}},
     {"zvl128b", RISCVExtensionVersion{1, 0}},
@@ -117,6 +119,7 @@ static const RISCVSupportedExtension SupportedExtensions[] = {
     {"svinval", RISCVExtensionVersion{1, 0}},
 
     // vendor-defined ('X') extensions
+    {"xtheadc", RISCVExtensionVersion{1, 0}},
     {"xtheadba", RISCVExtensionVersion{1, 0}},
     {"xtheadbb", RISCVExtensionVersion{1, 0}},
     {"xtheadbs", RISCVExtensionVersion{1, 0}},

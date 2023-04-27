@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+#include <iostream>
 
 #include "Gnu.h"
 #include "Arch/ARM.h"
@@ -1716,6 +1717,7 @@ static void findRISCVBareMetalMultilibs(const Driver &D,
                                         const llvm::Triple &TargetTriple,
                                         StringRef Path, const ArgList &Args,
                                         DetectedMultilibs &Result) {
+  std::cout << "findRISCVBareMetalMultilibs" << std::endl;
   FilterNonExistent NonExistent(Path, "/crtbegin.o", D.getVFS());
   struct RiscvMultilib {
     StringRef march;
@@ -1724,9 +1726,57 @@ static void findRISCVBareMetalMultilibs(const Driver &D,
   // currently only support the set of multilibs like riscv-gnu-toolchain does.
   // TODO: support MULTILIB_REUSE
   constexpr RiscvMultilib RISCVMultilibSet[] = {
-      {"rv32i", "ilp32"},     {"rv32im", "ilp32"},     {"rv32iac", "ilp32"},
-      {"rv32imac", "ilp32"},  {"rv32imafc", "ilp32f"}, {"rv64imac", "lp64"},
-      {"rv64imafdc", "lp64d"}};
+      // rv32e[c]
+      {"rv32e", "ilp32e"}, {"rv32ec", "ilp32e"},
+      // rv32em[c]
+      {"rv32em", "ilp32e"}, {"rv32emc", "ilp32e"},
+      // rv32i[c]
+      {"rv32i", "ilp32"}, {"rv32ic", "ilp32"},
+      // rv32im[c]
+      {"rv32im", "ilp32"}, {"rv32imc", "ilp32"},
+      // rv32ia[c]
+      {"rv32iac", "ilp32"}, {"rv32ia", "ilp32"},
+      // rv32ima[c]
+      {"rv32ima", "ilp32"}, {"rv32imac", "ilp32"},
+      // rv32imaf[c]
+      {"rv32imafc", "ilp32f"}, {"rv32imaf", "ilp32f"},
+      // rv32imafd[c]
+      {"rv32imafdc", "ilp32d"}, {"rv32imafd", "ilp32d"},
+      // rv32imafd[c]v
+      {"rv32imafdcv_zvamo_zvlsseg", "ilp32d"}, {"rv32imafdv_zvamo_zvlsseg", "ilp32d"},
+      // rv32imafd[c]p
+      {"rv32imafdcp_zpn_zprvsfextra_zpsfoperand", "ilp32d"}, {"rv32imafdp_zpn_zprvsfextra_zpsfoperand", "ilp32d"},
+      // rv32imafd[c]b
+      {"rv32imafdc_zba_zbb_zbc_zbs", "ilp32d"}, {"rv32imafd_zba_zbb_zbc_zbs", "ilp32d"},
+      // rv32imafd[c]pv
+      {"rv32imafdcpv_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "ilp32d"}, {"rv32imafdpv_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "ilp32d"},
+      // rv32imafd[c]bp
+      {"rv32imafdcp_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand", "ilp32d"}, {"rv32imafdp_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand", "ilp32d"},
+      // rv32imafd[c]bv
+      {"rv32imafdcv_zba_zbb_zbc_zbs_zvamo_zvlsseg", "ilp32d"}, {"rv32imafdv_zba_zbb_zbc_zbs_zvamo_zvlsseg", "ilp32d"},
+      // rv32imafd[c]bpv
+      {"rv32imafdpv_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "ilp32d"}, {"rv32imafdcpv_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "ilp32d"},
+      // rv64ima[c]
+      {"rv64ima", "lp64"}, {"rv64imac", "lp64"},
+      // rv64imaf[c]
+      {"rv64imafc", "lp64f"}, {"rv64imaf", "lp64f"},
+      // rv64imafd[c]
+      {"rv64imafdc", "lp64d"}, {"rv64imafd", "lp64d"},
+      // rv64imafd[c]v
+      {"rv64imafdcv_zvamo_zvlsseg", "lp64d"}, {"rv64imafdv_zvamo_zvlsseg", "lp64d"},
+      // rv64imafd[c]p
+      {"rv64imafdcp_zpn_zprvsfextra_zpsfoperand", "lp64d"}, {"rv64imafdp_zpn_zprvsfextra_zpsfoperand", "lp64d"},
+      // rv64imafd[c]b
+      {"rv64imafdc_zba_zbb_zbc_zbs", "lp64d"}, {"rv64imafd_zba_zbb_zbc_zbs", "lp64d"},
+      // rv64imafd[c]pv
+      {"rv64imafdcpv_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "lp64d"}, {"rv64imafdpv_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "lp64d"},
+      // rv64imafd[c]bp
+      {"rv64imafdcp_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand", "lp64d"}, {"rv64imafdp_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand", "lp64d"},
+      // rv64imafd[c]bv
+      {"rv64imafdcv_zba_zbb_zbc_zbs_zvamo_zvlsseg", "lp64d"}, {"rv64imafdv_zba_zbb_zbc_zbs_zvamo_zvlsseg", "lp64d"},
+      // rv64imafd[c]bpv
+      {"rv64imafdpv_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "lp64d"}, {"rv64imafdcpv_zba_zbb_zbc_zbs_zpn_zprvsfextra_zpsfoperand_zvamo_zvlsseg", "lp64d"},
+  };
 
   std::vector<MultilibBuilder> Ms;
   for (auto Element : RISCVMultilibSet) {
@@ -1753,6 +1803,11 @@ static void findRISCVBareMetalMultilibs(const Driver &D,
   llvm::StringSet<> Added_ABIs;
   StringRef ABIName = tools::riscv::getRISCVABI(Args, TargetTriple);
   StringRef MArch = tools::riscv::getRISCVArch(Args, TargetTriple);
+  std::cout << "MArch=" << MArch.str() << std::endl;
+  std::cout << "MArch.back()=" << MArch.back() << std::endl;
+  // if (MArch.endswith("v")) {
+  //     MArch = MArch.substr(0, MArch.size()-1);
+  // }
   for (auto Element : RISCVMultilibSet) {
     addMultilibFlag(MArch == Element.march,
                     Twine("march=", Element.march).str().c_str(), Flags);
@@ -1762,14 +1817,33 @@ static void findRISCVBareMetalMultilibs(const Driver &D,
                       Twine("mabi=", Element.mabi).str().c_str(), Flags);
     }
   }
+  // Multilib reuse
+  // TODO: 32 vs 64 bit
+  if (TargetTriple.isRISCV64()) {
+    bool UseImafdc = (MArch == "rv64imafdc") || (MArch == "rv64gc"); // gc => imafdc
+    addMultilibFlag(UseImafdc, "march=rv64imafdc", Flags);
+  }
+  if (TargetTriple.isRISCV32()) {
+    bool UseI = (MArch == "rv32i") || (MArch == "rv32ic");    // ic => i
+    bool UseIm = (MArch == "rv32im") || (MArch == "rv32imc"); // imc => im
+    bool UseImafc = (MArch == "rv32imafc") || (MArch == "rv32imafdc") ||
+                    (MArch == "rv32gc"); // imafdc,gc => imafc
+    addMultilibFlag(UseI, "march=rv32i", Flags);
+    addMultilibFlag(UseIm, "march=rv32im", Flags);
+    addMultilibFlag(UseImafc, "march=rv32imafc", Flags);
+  }
 
   if (RISCVMultilibs.select(Flags, Result.SelectedMultilib))
     Result.Multilibs = RISCVMultilibs;
+  llvm::raw_ostream &output = llvm::outs();
+  std::cout << "Result.RISCVMultilibs.multilib_list=" << std::endl;
+  Result.Multilibs.print(output);
 }
 
 static void findRISCVMultilibs(const Driver &D,
                                const llvm::Triple &TargetTriple, StringRef Path,
                                const ArgList &Args, DetectedMultilibs &Result) {
+  std::cout << "findRISCVMultilibs" << std::endl;
   if (TargetTriple.getOS() == llvm::Triple::UnknownOS)
     return findRISCVBareMetalMultilibs(D, TargetTriple, Path, Args, Result);
 
