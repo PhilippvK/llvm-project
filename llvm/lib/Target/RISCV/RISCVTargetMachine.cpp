@@ -39,7 +39,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeRISCVTarget() {
   initializeGlobalISel(*PR);
   initializeRISCVMergeBaseOffsetOptPass(*PR);
   initializeRISCVExpandSSRPass(*PR);
-  initializeSNITCHFrepLoopsPass(*PR);
+  // initializeSNITCHFrepLoopsPass(*PR);
   initializeRISCVExpandSDMAPass(*PR);
   initializeRISCVExpandPseudoPass(*PR);
   initializeRISCVCleanupVSETVLIPass(*PR);
@@ -201,13 +201,13 @@ bool RISCVPassConfig::addGlobalInstructionSelect() {
 
 void RISCVPassConfig::addPreSched2() {}
 
-void RISCVPassConfig::addPreEmitPass() { 
-  addPass(&BranchRelaxationPassID); 
+void RISCVPassConfig::addPreEmitPass() {
+  addPass(&BranchRelaxationPassID);
 }
 
 void RISCVPassConfig::addPreEmitPass2() {
   addPass(createRISCVExpandPseudoPass());
-  addPass(createPULPFixupHwLoops());
+  // addPass(createPULPFixupHwLoops());
   // Schedule the expansion of AMOs at the last possible moment, avoiding the
   // possibility for other passes to break the requirements for forward
   // progress in the LR/SC block.
@@ -217,10 +217,10 @@ void RISCVPassConfig::addPreEmitPass2() {
 void RISCVPassConfig::addPreRegAlloc() {
   addPass(createRISCVExpandSDMAPass());
   addPass(createRISCVExpandSSRPass());
-  addPass(createSNITCHFrepLoopsPass());
+  // addPass(createSNITCHFrepLoopsPass());
   if (TM->getOptLevel() != CodeGenOpt::None) {
     addPass(createRISCVMergeBaseOffsetOptPass());
     addPass(createRISCVCleanupVSETVLIPass());
-    addPass(createPULPHardwareLoops());
+    // addPass(createPULPHardwareLoops());
   }
 }

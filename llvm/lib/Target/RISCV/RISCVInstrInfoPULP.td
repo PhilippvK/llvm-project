@@ -1317,6 +1317,24 @@ def : Pat<(machhs GPR:$rd, GPR:$rs1, GPR:$rs2),
           (P_MACHHS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
           (P_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+////
+// def : Pat<(i32 (sext_inreg (vector_extract PulpV2:$rs1, uimm6:$index), i16)),
+//           (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
+////
+// def : Pat<(macs GPR:$rd, (i32 (vector_extract (v2i16 PulpV2:$rs1), 0)), (i32 (vector_extract (v2i16 PulpV2:$rs2), 0))),
+// def : Pat<(add GPR:$rd, (mul (i32 (vector_extract (v2i16 PulpV2:$rs1), 0)), (i32 (vector_extract (v2i16 PulpV2:$rs2), 0)))),
+def : Pat<(add GPR:$rd, (mul (i32 (sext_inreg (vector_extract (v2i16 PulpV2:$rs1), 0), i16)), (i32 (sext_inreg (vector_extract (v2i16 PulpV2:$rs2), 0), i16)))),
+         (P_MACS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+def : Pat<(add GPR:$rd, (mul (i32 (sext_inreg (vector_extract (v2i16 PulpV2:$rs1), 1), i16)), (i32 (sext_inreg (vector_extract (v2i16 PulpV2:$rs2), 1), i16)))),
+         (P_MACHHS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+def : Pat<(add GPR:$rd, (mul (sext_inreg (vector_extract (v2i16 PulpV2:$rs1), 0), i16), (sext_inreg (vector_extract (v2i16 PulpV2:$rs2), 0), i16))),
+         (P_MACS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+def : Pat<(add GPR:$rd, (mul (sext_inreg (vector_extract (v2i16 PulpV2:$rs1), 1), i16), (sext_inreg (vector_extract (v2i16 PulpV2:$rs2), 1), i16))),
+         (P_MACHHS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+// def : Pat<(add GPR:$rd, (mul (vector_extract (v2i16 PulpV2:$rs1), 1), (vector_extract (v2i16 PulpV2:$rs2), 1))),
+//          (P_MACHHS GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+////
+
 def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
           (P_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
 def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
@@ -1420,16 +1438,16 @@ def : Pat<(abs PulpV2:$rs1), (PV_ABS_H PulpV2:$rs1)>;
 def : Pat<(abs PulpV4:$rs1), (PV_ABS_B PulpV4:$rs1)>;
 
 
-def : Pat<(i32 (vector_extract (v2i16 PulpV2:$rs1), uimm6:$index)),
-          (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
+// def : Pat<(i32 (vector_extract (v2i16 PulpV2:$rs1), uimm6:$index)),
+//           (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
 def : Pat<(i32 (vector_extract (v4i8 PulpV4:$rs1), uimm6:$index)),
           (PV_EXTRACT_B PulpV4:$rs1, uimm6:$index)>;
 def : Pat<(i32 (sext_inreg (vector_extract PulpV2:$rs1, uimm6:$index), i16)),
           (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
 def : Pat<(i32 (sext_inreg (vector_extract PulpV4:$rs1, uimm6:$index), i8)),
           (PV_EXTRACT_B PulpV4:$rs1, uimm6:$index)>;
-def : Pat<(i32 (and (vector_extract (v2i16 PulpV2:$rs1), uimm6:$index), 65535)),
-          (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
+// def : Pat<(i32 (and (vector_extract (v2i16 PulpV2:$rs1), uimm6:$index), 65535)),
+//           (PV_EXTRACT_H PulpV2:$rs1, uimm6:$index)>;
 def : Pat<(i32 (and (vector_extract (v4i8 PulpV4:$rs1), uimm6:$index), 255)),
           (PV_EXTRACT_B PulpV4:$rs1, uimm6:$index)>;
 def : Pat<(vector_insert PulpV2:$rd, GPR:$rs1, uimm6:$index),
@@ -1621,16 +1639,16 @@ def : Pat<(add GPR:$rd, (dotsp_sc_b PulpV4:$rs1, (sext_inreg GPR:$rs2, i8))),
 def : Pat<(add GPR:$rd, (dotsp_sc_b PulpV4:$rs1, simm6:$sci)),
           (PV_SDOTSP_SCI_B GPR:$rd, PulpV4:$rs1, simm6:$sci)>;
 
-def : Pat<(v2i16 (build_vector (i32 (vector_extract PulpV2:$rs1, GPR:$index0)),
-                               (i32 (vector_extract PulpV2:$rs1, GPR:$index1)))),
-          (PV_SHUFFLE_H PulpV2:$rs1, (PV_PACK_H GPR:$index1, GPR:$index0))>;
-
-def : Pat<(v4i8 (build_vector (i32 (vector_extract PulpV4:$rs1, GPR:$index0)),
-                              (i32 (vector_extract PulpV4:$rs1, GPR:$index1)),
-                              (i32 (vector_extract PulpV4:$rs1, GPR:$index2)),
-                              (i32 (vector_extract PulpV4:$rs1, GPR:$index3)))),
-          (PV_SHUFFLE_B PulpV4:$rs1, (PV_PACKLO_B (PV_PACKHI_B_nowb GPR:$index3,
-                                     GPR:$index2), GPR:$index1, GPR:$index0))>;
+// def : Pat<(v2i16 (build_vector (i32 (vector_extract PulpV2:$rs1, GPR:$index0)),
+//                                (i32 (vector_extract PulpV2:$rs1, GPR:$index1)))),
+//           (PV_SHUFFLE_H PulpV2:$rs1, (PV_PACK_H GPR:$index1, GPR:$index0))>;
+//
+// def : Pat<(v4i8 (build_vector (i32 (vector_extract PulpV4:$rs1, GPR:$index0)),
+//                               (i32 (vector_extract PulpV4:$rs1, GPR:$index1)),
+//                               (i32 (vector_extract PulpV4:$rs1, GPR:$index2)),
+//                               (i32 (vector_extract PulpV4:$rs1, GPR:$index3)))),
+//           (PV_SHUFFLE_B PulpV4:$rs1, (PV_PACKLO_B (PV_PACKHI_B_nowb GPR:$index3,
+//                                      GPR:$index2), GPR:$index1, GPR:$index0))>;
 
 
 def : Pat<(v2i16 (build_vector GPR:$rs1, GPR:$rs2)),
@@ -1874,16 +1892,16 @@ def : Pat<(int_riscv_pulp_pack2 GPR:$rs1, GPR:$rs2),
           (PV_PACK_H GPR:$rs2, GPR:$rs1)>;
 def : Pat<(int_riscv_pulp_pack4 GPR:$rs1, GPR:$rs2, GPR:$rs3, GPR:$rs4),
           (PV_PACKLO_B (PV_PACKHI_B_nowb GPR:$rs4, GPR:$rs3), GPR:$rs2, GPR:$rs1)>;
-def : PatV2V2<int_riscv_pulp_shuffleh, PV_SHUFFLE_H>;
-def : PatV4V4<int_riscv_pulp_shuffleb, PV_SHUFFLE_B>;
+// def : PatV2V2<int_riscv_pulp_shuffleh, PV_SHUFFLE_H>;
+// def : PatV4V4<int_riscv_pulp_shuffleb, PV_SHUFFLE_B>;
 def : Pat<(int_riscv_pulp_pack4_lo GPR:$rs2, GPR:$rs1, PulpV4:$rd),
           (PV_PACKLO_B PulpV4:$rd, GPR:$rs2, GPR:$rs1)>;
 def : Pat<(int_riscv_pulp_pack4_hi GPR:$rs2, GPR:$rs1, PulpV4:$rd),
           (PV_PACKHI_B PulpV4:$rd, GPR:$rs2, GPR:$rs1)>;
-def : Pat<(int_riscv_pulp_shuffle2h PulpV2:$rd, PulpV2:$rs1, PulpV2:$rs2),
-          (PV_SHUFFLE2_H PulpV2:$rd, PulpV2:$rs1, PulpV2:$rs2)>;
-def : Pat<(int_riscv_pulp_shuffle4b PulpV4:$rd, PulpV4:$rs1, PulpV4:$rs2),
-          (PV_SHUFFLE2_B PulpV4:$rd, PulpV4:$rs1, PulpV4:$rs2)>;
+// def : Pat<(int_riscv_pulp_shuffle2h PulpV2:$rd, PulpV2:$rs1, PulpV2:$rs2),
+//           (PV_SHUFFLE2_H PulpV2:$rd, PulpV2:$rs1, PulpV2:$rs2)>;
+// def : Pat<(int_riscv_pulp_shuffle4b PulpV4:$rd, PulpV4:$rs1, PulpV4:$rs2),
+//           (PV_SHUFFLE2_B PulpV4:$rd, PulpV4:$rs1, PulpV4:$rs2)>;
 
 def : Pat<(int_riscv_pulp_bclr GPR:$rs1, shiftedFlippedMask:$mask),
           (P_BCLR GPR:$rs1, (flippedMaskWidthMinus1 imm:$mask), (trailing1s imm:$mask))>;

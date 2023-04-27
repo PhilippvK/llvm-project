@@ -14,6 +14,7 @@
 // in the LLVM IR and exposed by the various codegen lowering phases.
 //
 //===----------------------------------------------------------------------===//
+#include <iostream>
 
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/APInt.h"
@@ -2091,6 +2092,8 @@ static bool canFoldInAddressingMode(SDNode *N, SDNode *Use, SelectionDAG &DAG,
       AM.Scale = 1;
   } else
     return false;
+
+  std::cout << "qqqqq" << std::endl;
 
   return TLI.isLegalAddressingMode(DAG.getDataLayout(), AM,
                                    VT.getTypeForEVT(*DAG.getContext()), AS);
