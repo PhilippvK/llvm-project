@@ -551,9 +551,15 @@ struct RegisterNode : public PatternNode {
 
     // Sub-Register Operands
     if (Size == 16 || Size == 8) {
-      std::string Str = std::string("(i32 (vector_extract GPR32V") +
+      std::string Str;
+      if (Type.isScalar() && Type.getSizeInBits() == 32) {
+        assert(Offset == 0);
+        Str = "GPR:$" + std::string(Name);
+      } else {
+        Str = std::string("(i32 (vector_extract GPR32V") +
               ((Size == 16) ? "2" : "4") + ":$" + std::string(Name) + ", " +
               std::to_string((Size == 16) ? (Offset / 2) : (Offset)) + "))";
+      }
       return Str;
     }
     abort();
