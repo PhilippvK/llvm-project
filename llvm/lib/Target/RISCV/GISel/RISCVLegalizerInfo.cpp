@@ -76,6 +76,10 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
   using namespace TargetOpcode;
 
 // RISCVLegalizerInfo.cpp - riscv_legalizer_info - INSERTION_START
+{
+
+
+}
 // RISCVLegalizerInfo.cpp - riscv_legalizer_info - INSERTION_END
 
   auto AllVecTys = {nxv1s8,   nxv2s8,  nxv4s8,  nxv8s8,  nxv16s8, nxv32s8,
