@@ -40,6 +40,7 @@ class RVInst_GEN_cv_machhRNu<dag outs, dag ins> : Instruction, Sched<[]> {
 
     // Assembly
     let AsmString = "gen.cv.machhRNu\t$rd, $rs1, $rs2, $Is3";
+    let Constraints = "$rd = $rd_wb";
 
 }
 def GEN_cv_machhRNu : RVInst_GEN_cv_machhRNu<(outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;

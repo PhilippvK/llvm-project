@@ -37,6 +37,7 @@ class RVInst_GEN_cv_macs_i32<dag outs, dag ins> : Instruction, Sched<[]> {
 
     // Assembly
     let AsmString = "gen.cv.macs.i32\t$rd, $rs1, $rs2";
+    let Constraints = "$rd = $rd_wb";
 
 }
 def GEN_cv_macs_i32 : RVInst_GEN_cv_macs_i32<(outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2)>;

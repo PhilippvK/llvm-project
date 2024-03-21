@@ -6,4 +6,3 @@ def : Pat<
 	(GEN_cv_msus_i16_ GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
 }
-

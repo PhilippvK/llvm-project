@@ -6,4 +6,3 @@ def : Pat<
 	(GEN_cv_macRNu_ GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
 
 }
-
