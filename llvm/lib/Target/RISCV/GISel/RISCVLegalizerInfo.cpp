@@ -125,7 +125,10 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
         .maxScalar(0, sXLen)
         .lower();
   } else {
-    getActionDefinitionsBuilder({G_ZEXT, G_SEXT, G_ANYEXT}).maxScalar(0, sXLen);
+    // getActionDefinitionsBuilder({G_ZEXT, G_SEXT, G_ANYEXT}).maxScalar(0, sXLen);
+    getActionDefinitionsBuilder(G_ZEXT).maxScalar(0, sXLen);
+    getActionDefinitionsBuilder(G_SEXT).maxScalar(0, sXLen);
+    getActionDefinitionsBuilder(G_ANYEXT).maxScalar(0, sXLen).alwaysLegal();
 
     getActionDefinitionsBuilder(G_SEXT_INREG).maxScalar(0, sXLen).lower();
   }
