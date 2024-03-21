@@ -189,6 +189,10 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
       .legalFor({s32, sXLen, p0})
       .widenScalarToNextPow2(0)
       .clampScalar(0, s32, sXLen);
+  getActionDefinitionsBuilder(G_CONSTANT_FOLD_BARRIER)
+    .legalFor({s8, s16, s32, s64, p0})
+    .widenScalarToNextPow2(0, /*Min=*/8)
+    .clampScalar(0, s8, sXLen);
 
   getActionDefinitionsBuilder(G_ICMP)
       .legalFor({{sXLen, sXLen}, {sXLen, p0}})
