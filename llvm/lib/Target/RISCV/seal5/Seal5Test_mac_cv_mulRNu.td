@@ -1,5 +1,6 @@
 
 // Includes
 // Seal5Test_mac_cv_mulRNu.td - seal5test_mac_cv_mulrnu_set_td_includes - INSERTION_START
+include "seal5/Seal5Test_mac_cv_mulRNu/cv_mulRNuInstrInfo.td"
 // Seal5Test_mac_cv_mulRNu.td - seal5test_mac_cv_mulrnu_set_td_includes - INSERTION_END
 
