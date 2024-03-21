@@ -2,5 +2,6 @@
 // Includes
 // Seal5Test_mac_cv_mulhhNu.td - seal5test_mac_cv_mulhhnu_set_td_includes - INSERTION_START
 include "seal5/Seal5Test_mac_cv_mulhhNu/cv_mulhhNuInstrInfo.td"
+include "seal5/Seal5Test_mac_cv_mulhhNu/cv_mulhhNu.td"
 // Seal5Test_mac_cv_mulhhNu.td - seal5test_mac_cv_mulhhnu_set_td_includes - INSERTION_END
 
