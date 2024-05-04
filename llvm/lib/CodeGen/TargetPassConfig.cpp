@@ -48,9 +48,18 @@
 #include "llvm/Target/TargetMachine.h"
 #include "llvm/Transforms/Scalar.h"
 #include "llvm/Transforms/Utils.h"
+#include "llvm/CodeGen/GlobalISel/CDFGPass.h"
 #include <cassert>
 #include <optional>
 #include <string>
+
+#define CDFG_STAGE_NONE -1  // none
+#define CDFG_STAGE_0 0  // post irtranslator
+#define CDFG_STAGE_1 1  // post legalizer
+#define CDFG_STAGE_2 2  // post regbankselect
+#define CDFG_STAGE_3 3  // post instructionselect
+
+#define CDFG_STAGE CDFG_STAGE_3
 
 using namespace llvm;
 
@@ -1017,11 +1026,17 @@ bool TargetPassConfig::addCoreISelPasses() {
     SaveAndRestore SavedAddingMachinePasses(AddingMachinePasses, true);
     if (addIRTranslator())
       return true;
+    #if CDFG_STAGE == CDFG_STAGE_0
+    addPass(new CDFGPass(getOptLevel()));
+    #endif
 
     addPreLegalizeMachineIR();
 
     if (addLegalizeMachineIR())
       return true;
+    #if CDFG_STAGE == CDFG_STAGE_1
+    addPass(new CDFGPass(getOptLevel()));
+    #endif
 
     // Before running the register bank selector, ask the target if it
     // wants to run some passes.
@@ -1029,11 +1044,17 @@ bool TargetPassConfig::addCoreISelPasses() {
 
     if (addRegBankSelect())
       return true;
+    #if CDFG_STAGE == CDFG_STAGE_2
+    addPass(new CDFGPass(getOptLevel()));
+    #endif
 
     addPreGlobalInstructionSelect();
 
     if (addGlobalInstructionSelect())
       return true;
+    #if CDFG_STAGE == CDFG_STAGE_3
+    addPass(new CDFGPass(getOptLevel()));
+    #endif
 
     // Pass to reset the MachineFunction if the ISel failed.
     addPass(createResetMachineFunctionPass(

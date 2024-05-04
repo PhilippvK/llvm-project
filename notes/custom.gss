@@ -1,0 +1,86 @@
+// A palette of colors used to color distinct node labels
+Define(COLOR_PALETTE, AsArray(
+  #DD2222, #FB6E00, #FFC500, #720096,
+  #5E4FA2, #3288BD, #66C2A5, #ABDDA4,
+  #E6F598, #FEE08B, #D53E4F, #9E0142
+))
+Define(COLOR_PALETTE_ITER, AsIterator(COLOR_PALETTE))
+
+// If there are no palette colors to use, use random colors instead
+Define(RandomColor, Function(RGB(RandomInt(255), RandomInt(255), RandomInt(255))))
+Define(GetNextColor, Function(
+  Coalesce(Next(COLOR_PALETTE_ITER), RandomColor())
+))
+
+// Cache map to keep a selected color for each node label
+Define(ColorByLabel, AsMap())
+Define(GetColorByLabel, Function(labels, Coalesce(
+  Get(ColorByLabel, labels),
+  Set(ColorByLabel, labels, GetNextColor())
+)))
+Define(JoinLabels, Function(labels, Join(Sort(labels), ":")))
+
+// Baseline node style that will be applied to every single node
+@NodeStyle {
+  Define(COLOR, GetColorByLabel(JoinLabels(Labels(node))))
+
+  size: 6
+  color: COLOR
+  color-hover: Lighter(COLOR)
+  color-selected: Darker(COLOR)
+  border-width: 0.6
+  border-color: #1D1D1D
+  font-size: 3
+}
+
+
+
+
+
+
+// Baseline edge style that will be applied to every single edge
+@EdgeStyle {
+  color: #999999
+  color-hover: #1D1D1D
+  color-selected: #1D1D1D
+  width: 0.3
+  width-hover: 0.9
+  width-selected: 0.9
+  font-size: 3
+}
+
+// Show edge text only if there is a small number of edges in the view
+@EdgeStyle Less(EdgeCount(graph), 30) {
+  label: Type(edge)
+}
+
+// In case of a map view, set the default tile layer
+@ViewStyle.Map {
+  tile-layer: "light"
+}
+
+// Canvas background color
+@ViewStyle {
+  background-color: #FFFFFF00
+}
+
+
+@NodeStyle {
+  size: 3
+  label: Property(node, "name")
+  border-width: 1
+  border-color: #ffffff
+  shadow-color: #333333
+  shadow-size: 20
+  Define(COLOR, GetColorByLabel(Property(node, "func_name")))
+  color: COLOR
+  Define(COLOR2, GetColorByLabel(Property(node, "basic_block")))
+  border-color: COLOR2
+}
+
+@EdgeStyle {
+  width: 0.4
+  label: Type(edge)
+  arrow-size: 1
+  color: #6AA84F
+}
