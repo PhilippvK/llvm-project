@@ -6180,8 +6180,9 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
     } else if (Val != "none") {
       // =none is allowed everywhere. It's useful for overriding the option
       // and is the same as not specifying the option.
-      D.Diag(diag::err_drv_unsupported_opt_for_target)
-          << A->getAsString(Args) << TripleStr;
+      A->render(Args, CmdArgs);
+      // D.Diag(diag::err_drv_unsupported_opt_for_target)
+      //     << A->getAsString(Args) << TripleStr;
     }
   }
 
