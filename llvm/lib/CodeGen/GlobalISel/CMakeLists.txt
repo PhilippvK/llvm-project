@@ -25,10 +25,12 @@ add_llvm_component_library(LLVMGlobalISel
   MachineIRBuilder.cpp
   RegBankSelect.cpp
   Utils.cpp
+  CDFGPass.cpp
 
   ADDITIONAL_HEADER_DIRS
   ${LLVM_MAIN_INCLUDE_DIR}/llvm/CodeGen/GlobalISel
-
+  /work/git/sizalizer/mgclient/include/
+  /work/git/sizalizer/mgclient/build/src/
   DEPENDS
   intrinsics_gen
 
@@ -43,3 +45,9 @@ add_llvm_component_library(LLVMGlobalISel
   Target
   TransformUtils
   )
+
+TARGET_INCLUDE_DIRECTORIES(LLVMGlobalISel PUBLIC
+  /work/git/sizalizer/mgclient/include/
+  /work/git/sizalizer/mgclient/build/src/
+)
+TARGET_LINK_LIBRARIES(LLVMGlobalISel PUBLIC /usr/local/lib/libmgclient.so)
