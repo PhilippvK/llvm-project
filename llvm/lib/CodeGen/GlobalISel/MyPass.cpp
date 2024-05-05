@@ -165,9 +165,9 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name)
   {
       // MERGE: create if not exist else match
-      std::string store_first = "MERGE (first_bb {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "'})";
+      std::string store_first = "MERGE (first_bb {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', basic_block: '" + get_bb_name(first_bb) + "', module_name: '" + module_name + "'})";
       std::string set_frist_code = " SET first_bb.code =  '" + sanitize_str(llvm_to_string(first_bb)) + "'";
-      std::string store_second = " MERGE (second_bb {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "'})";
+      std::string store_second = " MERGE (second_bb {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', basic_block: '" + get_bb_name(second_bb) + "', module_name: '" + module_name + "'})";
       std::string set_second_code = " SET second_bb.code =  '" + sanitize_str(llvm_to_string(second_bb)) + "'";
       std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb);";
       std::string qry = store_first + set_frist_code + store_second + set_second_code + rel;
@@ -175,14 +175,14 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   }
 
 
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string module_name)
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string bb_name, std::string f_name, std::string module_name)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
       dst_str = sanitize_str(dst_str);
 
-      std::string store_src = "MERGE (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', module_name: '" + module_name + "'})";
-      std::string store_dst = "MERGE (dst_inst {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', module_name: '" + module_name + "'})";
+      std::string store_src = "MERGE (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "'})";
+      std::string store_dst = "MERGE (dst_inst {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "'})";
       std::string rel = "MERGE (src_inst)-[:DFG]->(dst_inst);";
       std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
       exec_qeury(session, qry.c_str());
@@ -1256,7 +1256,7 @@ bool MyPass::runOnMachineFunction(MachineFunction &MF) {
           continue;
         }
         // MachineInstr *src_inst = dyn_cast<MachineInstr>(MO);
-        connect_insts(session, src_str, src_op_name, inst_str, name, f_name, module_name);
+        connect_insts(session, src_str, src_op_name, inst_str, name, bb_name, f_name, module_name);
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
         //   std::cout << "IS REG" << "\n";
