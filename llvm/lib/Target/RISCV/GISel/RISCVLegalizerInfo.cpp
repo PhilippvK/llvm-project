@@ -185,7 +185,14 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
     CTPOPActions.maxScalar(0, sXLen).scalarSameSizeAs(1, 0).lower();
   }
 
-  getActionDefinitionsBuilder({G_CONSTANT, G_IMPLICIT_DEF})
+  auto &ConstantActions = getActionDefinitionsBuilder(G_CONSTANT);
+  ConstantActions.legalFor({s32, p0});
+  if (ST.is64Bit())
+    ConstantActions.customFor({s64});
+  ConstantActions.widenScalarToNextPow2(0).clampScalar(0, s32, sXLen);
+
+  // TODO: transform illegal vector types into legal vector type
+  getActionDefinitionsBuilder({G_IMPLICIT_DEF, G_CONSTANT_FOLD_BARRIER})
       .legalFor({s32, sXLen, p0})
       .widenScalarToNextPow2(0)
       .clampScalar(0, s32, sXLen);
