@@ -32,9 +32,9 @@ public:
 
   MachineFunctionProperties getRequiredProperties() const override {
     return MachineFunctionProperties()
-        .set(MachineFunctionProperties::Property::IsSSA)
-        .set(MachineFunctionProperties::Property::Legalized)
-        .set(MachineFunctionProperties::Property::RegBankSelected);
+        .set(MachineFunctionProperties::Property::IsSSA);
+        // .set(MachineFunctionProperties::Property::Legalized)
+        // .set(MachineFunctionProperties::Property::RegBankSelected);
   }
 
   CDFGPass(CodeGenOptLevel OL);
