@@ -111,3 +111,11 @@ RETURN *;
   - [ ] MO_JumpTableIndex
   - [ ] MO_TargetIndex
   - [ ] MO_ConstantPoolIndex
+
+## Known Bugs
+
+In `CDFG_STAGE_0` or lower, the following assertion is thrown:
+
+```
+clang: /tmp/llvm-project/llvm/include/llvm/CodeGen/MachineOperand.h:557: int64_t llvm::MachineOperand::getImm() const: Assertion `isImm() && "Wrong MachineOperand accessor"' failed.
+```
