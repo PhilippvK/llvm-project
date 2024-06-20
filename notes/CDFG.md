@@ -22,9 +22,8 @@ Start memgraph docker container:
 docker run -p 7687:7687 -p 7444:7444 -p 3000:3000 --name memgraph memgraph/memgraph-platform
 ```
 
-Connect to the web interface: `http://localhost:3000/`
 
-## Example
+## Compiling Example Program
 
 ### RISC-V
 
@@ -37,6 +36,39 @@ An installation of the RISC-V GNU Tools (preferably non-multilib version) is req
 ### X86
 
 TODO: test with x86
+
+### Analyzing Example Program
+
+Connect to the web interface: `http://localhost:3000/`
+
+1. Query all CFGs:
+
+```
+MATCH p0=(a)-[:CFG]->(b)
+RETURN *;
+```
+
+*Output:* Screenshot
+
+2. Query all DFGs:
+
+```
+MATCH p0=(a)-[:DFG]->(b)
+RETURN *;
+```
+
+*Output:* Screenshot
+
+3. Query DFG for a specific function and basic block:
+
+```
+MATCH p0=(a)-[:DFG]->(b)
+WHERE a.func_name = "mat_mult" AND a.basic_block = "%bb.7"
+RETURN *;
+```
+
+*Output:* Screenshot
+
 
 ## Notes
 - This pass should be target independent, but was so far only tested on RISC-V (`rv32im` and `rv32gc`).
