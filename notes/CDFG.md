@@ -83,3 +83,20 @@ RETURN *;
 - The `mgclient` library is not fullt integrated into the LLVM build system, hence you will need change the hardcoded paths in `/llvm/lib/CodeGen/GlobalISel/CMakeLists.txt` to point to match your system.
 - Additionally `export LD_LIBRARY_PATH=/path/to/mgclient/build/src:$LD_LIBRARY_PATH` needs to be exported in the shell session during compilation and usage of LLVM.
 - TODO: remove unnecessary `dbgs()` and `std::cout`!
+- TODO: track liveins/liveouts between basic blocks (physical registers)
+- TODO: properly handle `COPY` and `PHI` nodes
+- TODO: implement missing operand types:
+  - [ ] MO_ShuffleMask
+  - [ ] MO_Predicate
+  - [ ] MO_IntrinsicID
+  - [ ] MO_Metadata
+  - [ ] MO_CFIIndex
+  - [ ] MO_DbgInstrRef
+  - [ ] MO_MCSymbol
+  - [ ] MO_RegisterLiveOut
+  - [ ] MO_RegisterMask
+  - [ ] MO_BlockAddress
+  - [ ] MO_ExternalSymbol
+  - [ ] MO_JumpTableIndex
+  - [ ] MO_TargetIndex
+  - [ ] MO_ConstantPoolIndex
