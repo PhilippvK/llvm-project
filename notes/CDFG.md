@@ -41,6 +41,8 @@ TODO: test with x86
 
 Connect to the web interface: `http://localhost:3000/`
 
+**Optional:** Load custom Graph Style (see [`custom.gss`](./custom.gss)) for highlighting different functions and basic blocks in different colors.
+
 1. Query all CFGs:
 
 ```
