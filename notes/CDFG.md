@@ -35,9 +35,13 @@ An installation of the RISC-V GNU Tools (preferably non-multilib version) is req
 
 ### X86
 
-TODO: test with x86
+Analogously the program can be build for X86 machines. (However, autovectorization needs to be disabled due to GlobalISel related crashes)
 
-### Analyzing Example Program
+```
+clang -o out.elf matmult.c -O3 -mllvm -global-isel=1 -c --target=x86_64 -fno-vectorize
+```
+
+### Analyzing Example Program (RISC-V only)
 
 Connect to the web interface: `http://localhost:3000/`
 
@@ -78,14 +82,21 @@ RETURN *;
 ## Notes
 - This pass should be target independent, but was so far only tested on RISC-V (`rv32im` and `rv32gc`).
 - To run the pass based on GMIR instead of target-specific MIR, you have to manually edit `llvm/lib/Target/RISCV/RISCVTargetMachine.cpp` to move `addPass(new CDFGPass(getOptLevel()));` to an earlier stage.
+- The stage where th pass is executed can be configured via `llvm/lib/CodeGen/TargetPassConfig.cpp`. However `#define CDFG_STAGE CDFG_STAGE_3` is tested so far...
 - The (G)-MIR version unfortunately can not be build "out-of-tree" as it needs to be tightly integrated into the GlobalIsel Compilation Flow
 - Due to the experimental state of GlobalISel (especially incomplete legalizations for RISC-V), some programs can not be compiled. This also affects this pass unless running it before the legalization stage.
 - The `mgclient` library is not fullt integrated into the LLVM build system, hence you will need change the hardcoded paths in `/llvm/lib/CodeGen/GlobalISel/CMakeLists.txt` to point to match your system.
 - Additionally `export LD_LIBRARY_PATH=/path/to/mgclient/build/src:$LD_LIBRARY_PATH` needs to be exported in the shell session during compilation and usage of LLVM.
-- TODO: remove unnecessary `dbgs()` and `std::cout`!
-- TODO: track liveins/liveouts between basic blocks (physical registers)
-- TODO: properly handle `COPY` and `PHI` nodes
-- TODO: implement missing operand types:
+- The pass does NOT cleanup the database automatically unless `#define PURGE_DB true` is enabled in `CDFGPass.cpp`.
+
+## TODOs
+- remove unnecessary `dbgs()` and `std::cout`!
+- track liveins/liveouts between basic blocks (physical registers)
+- properly handle `COPY` and `PHI` nodes
+- make pass configurable via cli options
+- allow choosing stage where pass should be executed
+- add optional for automatic cleanup of database
+- implement missing operand types:
   - [ ] MO_ShuffleMask
   - [ ] MO_Predicate
   - [ ] MO_IntrinsicID
