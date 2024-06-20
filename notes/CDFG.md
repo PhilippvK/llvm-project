@@ -12,7 +12,7 @@ The implementation is heavily inspired by https://github.com/AndHager/Sizalizer/
 Compile LLVM from source:
 
 ```sh
-cmake -B build -S llvm/ -GNinja -DCMAKE_BUILD_TYPE=Release -DLLVM_BUILD_TOOLS=ON LLVM_ENABLE_ASSERTIONS=ON -DLLVM_OPTIMIZED_TABLEGEN=ON -DLLVM_ENABLE_PROJECTS=clang;lld -DLLVM_TARGETS_TO_BUILD=X86;RISCV
+cmake -B build -S llvm/ -GNinja -DCMAKE_BUILD_TYPE=Release -DLLVM_BUILD_TOOLS=ON LLVM_ENABLE_ASSERTIONS=ON -DLLVM_OPTIMIZED_TABLEGEN=ON -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_TARGETS_TO_BUILD="X86;RISCV"
 ninja -C build/ all
 ```
 
