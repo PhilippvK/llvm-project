@@ -53,6 +53,7 @@
 #include <optional>
 #include <string>
 
+#define CDFG_STAGE_NONE -1  // none
 #define CDFG_STAGE_0 0  // post irtranslator
 #define CDFG_STAGE_1 1  // post legalizer
 #define CDFG_STAGE_2 2  // post regbankselect
