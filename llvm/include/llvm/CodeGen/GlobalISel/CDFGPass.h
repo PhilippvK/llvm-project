@@ -1,4 +1,4 @@
-//== llvm/CodeGen/GlobalISel/PatternGen.h -----------------*- C++ -*-==//
+//== llvm/CodeGen/GlobalISel/CDFGPass.h -----------------*- C++ -*-==//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -10,8 +10,8 @@
 /// target-specific instructions.
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_CODEGEN_GLOBALISEL_PATTERNGEN_H
-#define LLVM_CODEGEN_GLOBALISEL_PATTERNGEN_H
+#ifndef LLVM_CODEGEN_GLOBALISEL_CDFGPASS_H
+#define LLVM_CODEGEN_GLOBALISEL_CDFGPASS_H
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/CodeGen/MachineFunction.h"
@@ -23,10 +23,10 @@ namespace llvm {
 class BlockFrequencyInfo;
 class ProfileSummaryInfo;
 
-class MyPass : public MachineFunctionPass {
+class CDFGPass : public MachineFunctionPass {
 public:
   static char ID;
-  StringRef getPassName() const override { return "MyPass"; }
+  StringRef getPassName() const override { return "CDFGPass"; }
 
   void getAnalysisUsage(AnalysisUsage &AU) const override;
 
@@ -37,8 +37,8 @@ public:
         .set(MachineFunctionProperties::Property::RegBankSelected);
   }
 
-  MyPass(CodeGenOptLevel OL);
-  MyPass();
+  CDFGPass(CodeGenOptLevel OL);
+  CDFGPass();
 
   bool runOnMachineFunction(MachineFunction &MF) override;
 
