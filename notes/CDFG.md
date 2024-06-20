@@ -48,7 +48,8 @@ MATCH p0=(a)-[:CFG]->(b)
 RETURN *;
 ```
 
-*Output:* Screenshot
+*Output:* ![cfg1](https://github.com/PhilippvK/llvm-project/assets/7712605/60c2d497-525b-466e-83ac-119b76fb6595)
+
 
 2. Query all DFGs:
 
@@ -57,7 +58,8 @@ MATCH p0=(a)-[:DFG]->(b)
 RETURN *;
 ```
 
-*Output:* Screenshot
+*Output:* ![dfg0](https://github.com/PhilippvK/llvm-project/assets/7712605/ed8b932b-881c-4f54-8092-7656311f8e5a)
+
 
 3. Query DFG for a specific function and basic block:
 
@@ -67,7 +69,8 @@ WHERE a.func_name = "mat_mult" AND a.basic_block = "%bb.7"
 RETURN *;
 ```
 
-*Output:* Screenshot
+*Output:* ![dfg1](https://github.com/PhilippvK/llvm-project/assets/7712605/b8554bff-fb98-4541-839c-cbc2fc537548)
+
 
 
 ## Notes
