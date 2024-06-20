@@ -58,7 +58,7 @@
 #define CDFG_STAGE_2 2  // post regbankselect
 #define CDFG_STAGE_3 3  // post instructionselect
 
-#define CDFG_STAGE CDFG_STAGE_1
+#define CDFG_STAGE CDFG_STAGE_3
 
 using namespace llvm;
 
