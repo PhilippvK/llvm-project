@@ -187,13 +187,14 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   }
 
 
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string bb_name, std::string f_name, std::string module_name)
+  // void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string bb_name, std::string f_name, std::string module_name)
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string parent_bb_name, std::string bb_name, std::string f_name, std::string module_name)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
       dst_str = sanitize_str(dst_str);
 
-      std::string store_src = "MERGE (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "'})";
+      std::string store_src = "MERGE (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + parent_bb_name + "', module_name: '" + module_name + "'})";
       std::string store_dst = "MERGE (dst_inst {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "'})";
       std::string rel = "MERGE (src_inst)-[:DFG]->(dst_inst);";
       std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
@@ -261,6 +262,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   // std::unordered_map<std::string, MachineInstr> op_instr;
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
+    std::string parent_bb_name = bb_name;
     // llvm::outs() << "bb_name=" << bb_name.c_str() << std::endl;
     std::cout << "bb_name=" << bb_name.c_str() << std::endl;
     for (MachineBasicBlock *suc_bb : successors(&bb)) {
@@ -295,6 +297,10 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             std::cout << "Reg=" << Reg << "\n";
             if (Reg.isVirtual()) {
                 MachineInstr *MI_ = MRI.getVRegDef(Reg);
+                if (1) {
+                    MachineBasicBlock *ParentMBB = MI_->getParent();
+                    parent_bb_name = get_bb_name(ParentMBB);
+                }
                 src_str = llvm_to_string(MI_);
                 src_op_name = std::string(TII->getName(MI_->getOpcode()));
                 std::cout << "src_op_name=" << name << "\n";
@@ -420,7 +426,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         // llvm::outs() << "MO=" << MO << "\n";
         // break;
         // MachineInstr *src_inst = dyn_cast<MachineInstr>(MO);
-        connect_insts(session, src_str, src_op_name, inst_str, name, bb_name, f_name, module_name);
+        // connect_insts(session, src_str, src_op_name, inst_str, name, bb_name, f_name, module_name);
+        connect_insts(session, src_str, src_op_name, inst_str, name, parent_bb_name, bb_name, f_name, module_name);
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
         //   std::cout << "IS REG" << "\n";
