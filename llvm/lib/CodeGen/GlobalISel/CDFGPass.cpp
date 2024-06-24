@@ -124,6 +124,7 @@ bool isUsedOutsideOfBlock(MachineInstr* MI, MachineBasicBlock* MBB, MachineRegis
       auto Reg = MO.getReg();
       if (Reg.isVirtual()) {
         MachineInstr *MI_ = MRI->getVRegDef(Reg);
+        if (!MI_) continue;
         MachineBasicBlock *ParentMBB = MI_->getParent();
         if (ParentMBB != MBB) {
           return true;
@@ -408,6 +409,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             auto Reg = MO.getReg();
             if (Reg.isVirtual()) {
               MachineInstr *MI_ = MRI.getVRegDef(Reg);
+              if (!MI_) continue;
               MachineBasicBlock *ParentMBB = MI_->getParent();
               if (ParentMBB == &bb) {
                 forcedOutputs.insert(MI_);
@@ -446,6 +448,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             // std::cout << "Reg=" << Reg << "\n";
             if (Reg.isVirtual()) {
                 MachineInstr *MI_ = MRI.getVRegDef(Reg);
+                if (!MI_) continue;
                 MachineBasicBlock *ParentMBB = MI_->getParent();
                 if (ParentMBB != &bb) {
                   op_type_ = INPUT;
