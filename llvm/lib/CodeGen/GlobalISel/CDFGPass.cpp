@@ -461,7 +461,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                 // std::cout << ">> " << src_str << "\n";
             } else {
                 src_str = llvm_to_string(&MO);
-                src_op_name = "PhysReg";
+                std::string reg_name = reg_to_string(Reg, TRI);
+                // src_op_name = "PhysReg";
+                src_op_name = reg_name;
                 op_type_ = INPUT;
             }
             break;
