@@ -506,7 +506,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_ConstantPoolIndex: {
             std::cout << "=> CPI" << "\n";
-            llvm_unreachable("Not Implemented!");
+            // llvm_unreachable("Not Implemented!");
+            isLabelOp = true;
             break;
           }
           case MachineOperand::MO_TargetIndex: {
@@ -521,7 +522,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_ExternalSymbol: {
             std::cout << "=> ES" << "\n";
-            llvm_unreachable("Not Implemented!");
+            isLabelOp = true;
+            // llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_BlockAddress: {
@@ -531,7 +533,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_RegisterMask: {  // TODO: edn, matmult-int, md5sum
             std::cout << "=> RM" << "\n";
-            llvm_unreachable("Not Implemented!");
+            isLabelOp = true;
+            // llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_RegisterLiveOut: {
