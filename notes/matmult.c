@@ -1,5 +1,5 @@
 #include <stdint.h>
-void mat_mult(const int8_t *mat_l, const int8_t *mat_r, int *result, const unsigned int N, const unsigned int K, const unsigned int M)
+void mat_mult(const int8_t *mat_l, const int8_t *mat_r, int32_t *result, const unsigned int N, const unsigned int K, const unsigned int M)
 {
     unsigned int n, k, m;
     unsigned int row, col;
