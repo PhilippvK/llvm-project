@@ -475,11 +475,25 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             //   std::cout << ">> " << src_str << "\n";
             // }
           }
-          case MachineOperand::MO_Immediate:
-          case MachineOperand::MO_CImmediate:
-          case MachineOperand::MO_FPImmediate: {
+          case MachineOperand::MO_Immediate: {
             std::cout << "=> IMM" << "\n";
             auto Imm = MO.getImm();
+            // std::cout << "Imm=" << Imm << "\n";
+            // isConstOp = true;
+            op_type_ = CONSTANT;
+            break;
+          }
+          case MachineOperand::MO_CImmediate: {
+            std::cout << "=> CIMM" << "\n";
+            auto Imm = MO.getCImm();
+            // std::cout << "Imm=" << Imm << "\n";
+            // isConstOp = true;
+            op_type_ = CONSTANT;
+            break;
+          }
+          case MachineOperand::MO_FPImmediate: {
+            std::cout << "=> FPIMM" << "\n";
+            auto Imm = MO.getFPImm();
             // std::cout << "Imm=" << Imm << "\n";
             // isConstOp = true;
             op_type_ = CONSTANT;
