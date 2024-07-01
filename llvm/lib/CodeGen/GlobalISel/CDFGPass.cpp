@@ -531,7 +531,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_JumpTableIndex: {
             std::cout << "=> JTI" << "\n";
-            llvm_unreachable("Not Implemented!");
+            // llvm_unreachable("Not Implemented!");
+            isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ExternalSymbol: {
