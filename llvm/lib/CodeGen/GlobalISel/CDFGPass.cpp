@@ -585,7 +585,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_Predicate: {
             std::cout << "=> PC" << "\n";
-            llvm_unreachable("Not Implemented!");
+            // llvm_unreachable("Not Implemented!");
+            isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ShuffleMask: {
