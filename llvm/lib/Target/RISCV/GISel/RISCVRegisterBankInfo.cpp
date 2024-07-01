@@ -487,6 +487,38 @@ RISCVRegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
     }
     break;
   }
+  // case TargetOpcode::DBG_VALUE: {
+  //   // Use FPR64 for s64 dbg_value on rv32.
+  //   llvm::outs() << "DBG VAL!" << "\n";
+  //   LLT Ty0 = MRI.getType(MI.getOperand(0).getReg());
+  //   // LLT Ty1 = MRI.getType(MI.getOperand(1).getReg());
+  //   llvm::outs() << "Ty0.getSizeInBits()=" << Ty0.getSizeInBits() << "\n";
+  //   // llvm::outs() << "Ty1.getSizeInBits()=" << Ty1.getSizeInBits() << "\n";
+  //   if (GPRSize == 32 && Ty0.getSizeInBits() == 64) {
+  //     llvm::outs() << "DBG VAL IF" << "\n";
+  //     assert(MF.getSubtarget<RISCVSubtarget>().hasStdExtD());
+  //     // OpdsMapping[0] = GPRValueMapping;
+  //     // OpdsMapping[1] = GPRValueMapping;
+  //     // OpdsMapping[2] = getFPValueMapping(Ty.getSizeInBits());
+  //   }
+  //   for (unsigned Idx = 0; Idx < NumOperands; ++Idx) {
+  //      auto &MO = MI.getOperand(Idx);
+  //      if (!MO.isReg() || !MO.getReg())
+  //        continue;
+  //      LLT Ty = MRI.getType(MO.getReg());
+  //      if (!Ty.isValid())
+  //        continue;
+
+  //      if (Ty.isVector())
+  //        OpdsMapping[Idx] =
+  //            getVRBValueMapping(Ty.getSizeInBits().getKnownMinValue());
+  //      else if (isPreISelGenericFloatingPointOpcode(Opc))
+  //        OpdsMapping[Idx] = getFPValueMapping(Ty.getSizeInBits());
+  //      else
+  //        OpdsMapping[Idx] = GPRValueMapping;
+  //   }
+  //   break;
+  // }
   default:
     // By default map all scalars to GPR.
     for (unsigned Idx = 0; Idx < NumOperands; ++Idx) {

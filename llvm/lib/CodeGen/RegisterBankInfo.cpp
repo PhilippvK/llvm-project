@@ -162,6 +162,7 @@ static bool isCopyLike(const MachineInstr &MI) {
 
 const RegisterBankInfo::InstructionMapping &
 RegisterBankInfo::getInstrMappingImpl(const MachineInstr &MI) const {
+  llvm::outs() << "RegisterBankInfo::getInstrMappingImpl" << "\n";
   // For copies we want to walk over the operands and try to find one
   // that has a register bank since the instruction itself will not get
   // us any constraint.
@@ -176,6 +177,20 @@ RegisterBankInfo::getInstrMappingImpl(const MachineInstr &MI) const {
   const MachineRegisterInfo &MRI = MF.getRegInfo();
   // We may need to query the instruction encoding to guess the mapping.
   const TargetInstrInfo &TII = *STI.getInstrInfo();
+
+  // auto Opc = MI.getOpcode();
+  // if (Opc == llvm::TargetOpcode::DBG_VALUE) {
+  //   llvm::outs() << "is DBG_VALUE" << "\n";
+  //   const MachineOperand &MaybeReg = MI.getOperand(0);
+  //   if (MaybeReg.isReg() && MaybeReg.getReg()) {
+  //     llvm::outs() << "is REG" << "\n";
+  //     unsigned Size = MRI.getType(MaybeReg.getReg()).getSizeInBits();
+  //     if (Size > 32) {
+  //       llvm::outs() << "is Size" << "\n";
+  //       return getInvalidInstructionMapping();
+  //     }
+  //   }
+  // }
 
   // Before doing anything complicated check if the mapping is not
   // directly available.
@@ -384,6 +399,7 @@ RegisterBankInfo::getInstructionMappingImpl(
     bool IsInvalid, unsigned ID, unsigned Cost,
     const RegisterBankInfo::ValueMapping *OperandsMapping,
     unsigned NumOperands) const {
+  llvm::outs() << "RegisterBankInfo::getInstructionMappingImpl" << "\n";
   assert(((IsInvalid && ID == InvalidMappingID && Cost == 0 &&
            OperandsMapping == nullptr && NumOperands == 0) ||
           !IsInvalid) &&
@@ -406,6 +422,7 @@ RegisterBankInfo::getInstructionMappingImpl(
 
 const RegisterBankInfo::InstructionMapping &
 RegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
+  llvm::outs() << "RegisterBankInfo::getInstrMapping" << "\n";
   const RegisterBankInfo::InstructionMapping &Mapping = getInstrMappingImpl(MI);
   if (Mapping.isValid())
     return Mapping;
@@ -414,6 +431,7 @@ RegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
 
 RegisterBankInfo::InstructionMappings
 RegisterBankInfo::getInstrPossibleMappings(const MachineInstr &MI) const {
+  llvm::outs() << "RegisterBankInfo::getInstrPossibleMappings" << "\n";
   InstructionMappings PossibleMappings;
   const auto &Mapping = getInstrMapping(MI);
   if (Mapping.isValid()) {
@@ -566,6 +584,9 @@ bool RegisterBankInfo::ValueMapping::verify(const RegisterBankInfo &RBI,
     OrigValueBitWidth =
         std::max(OrigValueBitWidth, PartMap.getHighBitIdx() + 1);
   }
+  llvm::outs() << "MeaningfulBitWidth.isScalable()=" << MeaningfulBitWidth.isScalable() << "\n";
+  llvm::outs() << "OrigValueBitWidth=" << OrigValueBitWidth << "\n";
+  llvm::outs() << "MeaningfulBitWidth=" << MeaningfulBitWidth << "\n";
   assert((MeaningfulBitWidth.isScalable() ||
           OrigValueBitWidth >= MeaningfulBitWidth) &&
          "Meaningful bits not covered by the mapping");
