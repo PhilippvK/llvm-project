@@ -398,7 +398,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     std::string bb_name = get_bb_name(&bb);
     std::string parent_bb_name = bb_name;
 #if DEBUG
-    llvm::outs() << "bb_name=" << bb_name.c_str() << std::endl;
+    // llvm::outs() << "bb_name=" << bb_name << std::endl;
 #endif
     for (MachineBasicBlock *suc_bb : successors(&bb)) {
       connect_bbs(session, &bb, suc_bb, f_name, module_name);
