@@ -245,31 +245,6 @@ mg_session *connect_to_db(const char *host, uint16_t port)
 
       }
   }
-  // static std::string all_queries = "";
-  // static std::stringstream all_queries;
-  static std::vector<std::string> all_queries;
-
-  void reset_submitted_queries() {
-      // all_queries = "";
-      all_queries.clear();;
-  }
-
-  void submit_query(std::string query) {
-      // all_queries += query;
-      // all_queries << query;
-      all_queries.push_back(query);
-  }
-
-  void exec_submitted_queries(mg_session *session) {
-    std::string segment;
-    for(auto query : all_queries) {
-      exec_qeury(session, query.c_str());
-    }
-    // while(std::getline(all_queries, segment, ';')) {
-    //  exec_qeury(session, segment.c_str());
-    // }
-    reset_submitted_queries();
-  }
   std::string sanitize_str(std::string str) {
       const std::string illegal_chars = "\n\"\\\'\t()[]{}~";
       for (char c : illegal_chars) {
@@ -296,23 +271,20 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   // }
   void create_bb(mg_session *session, MachineBasicBlock *bb, std::string f_name, std::string module_name)
   {
-      std::string store_bb = "MERGE (bb {name: '" + get_bb_name(bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})\n";
+      std::string store_bb = "MERGE (bb {name: '" + get_bb_name(bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string set_bb_code = " SET bb.code =  '" + sanitize_str(llvm_to_string(bb)) + "'";
-      // std::string set_bb_code = "";
-      std::string qry = store_bb + set_bb_code + ";\n";
+      std::string qry = store_bb + set_bb_code;
       exec_qeury(session, qry.c_str());
-      // submit_query(qry);
   }
 
   void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name)
   {
       // MERGE: create if not exist else match
-      std::string match_first = "MATCH (first_bb {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})\n";
-      std::string match_second = "MATCH (second_bb {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})\n";
-      std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb)";
-      std::string qry = match_first + match_second + rel + ";\n";
+      std::string match_first = "MATCH (first_bb {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      std::string match_second = "MATCH (second_bb {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb);";
+      std::string qry = match_first + match_second + rel;
       exec_qeury(session, qry.c_str());
-      // submit_query(qry);
   }
 
 
@@ -335,9 +307,8 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       code = sanitize_str(code);
 
       std::string store_inst = "MERGE (inst {name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})";
-      std::string qry = store_inst + ";\n";
+      std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
-      // submit_query(qry);
   }
   void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, std::string rel_type)
   {
@@ -345,12 +316,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       src_str = sanitize_str(src_str);
       dst_str = sanitize_str(dst_str);
 
-      std::string match_src = "MATCH (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})\n";
-      std::string match_dst = "MATCH (dst_inst {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})\n";
-      std::string rel = "MERGE (src_inst)-[:" + rel_type + "]->(dst_inst)";
-      std::string qry = match_src + match_dst + rel + ";\n";
+      std::string match_src = "MATCH (src_inst {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
+      std::string match_dst = "MATCH (dst_inst {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
+      std::string rel = "MERGE (src_inst)-[:" + rel_type + "]->(dst_inst);";
+      std::string qry = match_src + '\n' + match_dst + '\n' + rel + '\n';
       exec_qeury(session, qry.c_str());
-      // submit_query(qry);
   }
 
 
@@ -679,6 +649,5 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       }
     }
   }
-  // exec_submitted_queries(session);
   return true;
 }
