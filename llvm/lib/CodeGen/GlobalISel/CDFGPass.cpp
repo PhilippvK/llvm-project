@@ -399,19 +399,17 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     return true;  // TODO: return false?
   }
   std::string f_name = MF.getName().str();
-  if (MF.getProperties().hasProperty(
-     MachineFunctionProperties::Property::FailedISel)) {
-     llvm::outs() << "skipping CDFGPass in func '" << f_name << "' due to gisel failure" << "\n";
-     return true;
-  }
-  const TargetInstrInfo *TII = MF.getSubtarget().getInstrInfo();  // TODO: move to constructor?
-  llvm::outs() << "CDFGPass" << "\n";
   const Module *M = nullptr;
   const llvm::Function *F = nullptr;
   F = &MF.getFunction();
   M = F->getParent();
   // std::string module_name = "moduleABC";
   std::string module_name = M->getName().str();
+  if (MF.getProperties().hasProperty(
+     MachineFunctionProperties::Property::FailedISel)) {
+     llvm::errs() << "skipping CDFGPass in func '" << f_name << "' due to gisel failure" << "\n";
+     return true;
+  }
   const TargetInstrInfo *TII = MF.getSubtarget().getInstrInfo();  // TODO: move to constructor?
 #if DEBUG
   llvm::outs() << "Running CDFGPass on function '" << f_name << "' of module '" << module_name << "'" << "\n";
