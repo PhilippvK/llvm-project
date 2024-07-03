@@ -356,6 +356,12 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   if (!EnablePass && !FORCE_ENABLE) {
     return true;
   }
+  std::string f_name = MF.getName().str();
+  if (MF.getProperties().hasProperty(
+     MachineFunctionProperties::Property::FailedISel)) {
+     llvm::outs() << "skipping CDFGPass in func '" << f_name << "' due to gisel failure" << "\n";
+     return true;
+  }
   const TargetInstrInfo *TII = MF.getSubtarget().getInstrInfo();  // TODO: move to constructor?
   llvm::outs() << "CDFGPass" << "\n";
   const Module *M = nullptr;
