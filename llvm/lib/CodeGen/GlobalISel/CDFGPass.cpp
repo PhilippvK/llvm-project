@@ -338,15 +338,16 @@ CDFGPass::CDFGPass()
     : MachineFunctionPass(ID), OptLevel(CodeGenOptLevel::Default) {}
 
 void CDFGPass::getAnalysisUsage(AnalysisUsage &AU) const {
-  AU.addRequired<TargetPassConfig>();
-  AU.addRequired<GISelKnownBitsAnalysis>();
-  AU.addPreserved<GISelKnownBitsAnalysis>();
+  // AU.addRequired<TargetPassConfig>();
+  // AU.addRequired<GISelKnownBitsAnalysis>();
+  // AU.addPreserved<GISelKnownBitsAnalysis>();
+  AU.setPreservesAll();
 
-  if (OptLevel != CodeGenOptLevel::None) {
-    AU.addRequired<ProfileSummaryInfoWrapperPass>();
-    LazyBlockFrequencyInfoPass::getLazyBFIAnalysisUsage(AU);
-  }
-  getSelectionDAGFallbackAnalysisUsage(AU);
+  // if (OptLevel != CodeGenOptLevel::None) {
+  //   AU.addRequired<ProfileSummaryInfoWrapperPass>();
+  //   LazyBlockFrequencyInfoPass::getLazyBFIAnalysisUsage(AU);
+  // }
+  // getSelectionDAGFallbackAnalysisUsage(AU);
   MachineFunctionPass::getAnalysisUsage(AU);
 }
 
