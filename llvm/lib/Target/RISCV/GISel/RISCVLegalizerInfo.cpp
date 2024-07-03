@@ -432,13 +432,6 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
   getActionDefinitionsBuilder({G_FCEIL, G_FFLOOR})
       .libcallFor({s32, s64});
 
-  getActionDefinitionsBuilder(G_INTRINSIC_ROUND)
-      .libcallFor({s32, s64});
-
-  // getActionDefinitionsBuilder({G_INTRINSIC_ROUND, G_INTRINSIC_TRUNC})
-  //     .scalarize(0)
-  //     .lower();
-
   getActionDefinitionsBuilder(G_VASTART).customFor({p0});
 
   // va_list must be a pointer, but most sized types are pretty easy to handle
