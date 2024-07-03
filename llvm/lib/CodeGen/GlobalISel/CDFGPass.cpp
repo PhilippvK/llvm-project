@@ -53,15 +53,17 @@
 #include <utility>
 #include <unordered_set>
 
+#include <vector>
+
 
 #define PURGE_DB false
-#define FORCE_ENABLE false
+#define DEBUG true  // TODO: use -debug flag of llvm
+#define NOOP false
 
 #define DEBUG_TYPE "cdfg-pass"
 
 using namespace llvm;
 
-#define CDFG_ENABLE_DEFAULT true
 
 static cl::opt<std::string>
     MemgraphHost("cdfg-memgraph-host", cl::init("localhost"),
@@ -200,18 +202,25 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       mg_finalize();
   }
 
+
+
   void exec_qeury(mg_session *session, const char *query)
   {
+#if DEBUG
       outs() << "query: " << query << "\n";
+#endif
+#if NOOP
+      return;  // skip pushing to db
+#endif
       if (mg_session_run(session, query, NULL, NULL, NULL, NULL) < 0)
       {
-          outs() << "failed to execute query: " << query << " mg error: " << mg_session_error(session) << "\n";
+          errs() << "failed to execute query: " << query << " mg error: " << mg_session_error(session) << "\n";
           mg_session_destroy(session);
           exit(1);
       }
       if (mg_session_pull(session, NULL))
       {
-          outs() << "failed to pull results of the query: " << mg_session_error(session) << "\n";
+          errs() << "failed to pull results of the query: " << mg_session_error(session) << "\n";
           mg_session_destroy(session);
           exit(1);
       }
@@ -226,11 +235,13 @@ mg_session *connect_to_db(const char *host, uint16_t port)
 
       if (status < 0)
       {
-          outs() << "error occurred during query execution: " << mg_session_error(session) << "\n";
+          errs() << "error occurred during query execution: " << mg_session_error(session) << "\n";
       }
       else
       {
+#if DEBUG
           printf("query executed successfuly and returned %d rows\n", rows);
+#endif
 
       }
   }
@@ -353,8 +364,9 @@ void CDFGPass::getAnalysisUsage(AnalysisUsage &AU) const {
 
 
 bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
+
   if (!EnablePass && !FORCE_ENABLE) {
-    return true;
+    return true;  // TODO: return false?
   }
   std::string f_name = MF.getName().str();
   if (MF.getProperties().hasProperty(
@@ -370,6 +382,10 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   M = F->getParent();
   // std::string module_name = "moduleABC";
   std::string module_name = M->getName().str();
+  const TargetInstrInfo *TII = MF.getSubtarget().getInstrInfo();  // TODO: move to constructor?
+#if DEBUG
+  llvm::outs() << "Running CDFGPass on function '" << f_name << "' of module '" << module_name << "'" << "\n";
+#endif
   MachineRegisterInfo &MRI = MF.getRegInfo();
   const TargetRegisterInfo *TRI = MF.getSubtarget().getRegisterInfo();
   mg_session *session = connect_to_db(MemgraphHost.c_str(), MemgraphPort);
@@ -377,22 +393,16 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       auto del = "MATCH (n) DETACH DELETE n;";
       exec_qeury(session, del);
   }
-  std::string f_name = MF.getName().str();
-  // llvm::outs() << "f_name=" << f_name << std::endl;
-  // std::unordered_map<MachineOperand, std::string> op_instr;
-  // std::unordered_map<std::string, MachineInstr> op_instr;
   for (MachineBasicBlock &bb : MF) {
     create_bb(session, &bb, f_name, module_name);
   }
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
     std::string parent_bb_name = bb_name;
-    // llvm::outs() << "bb_name=" << bb_name.c_str() << std::endl;
-    std::cout << "bb_name=" << bb_name.c_str() << std::endl;
+#if DEBUG
+    llvm::outs() << "bb_name=" << bb_name.c_str() << std::endl;
+#endif
     for (MachineBasicBlock *suc_bb : successors(&bb)) {
-      // llvm::outs() << "suc_bb=?" << std::endl;
-      // std::cout << "suc_bb=?" << "\n";
-      // create_bb(session, suc_bb, f_name, module_name);
       connect_bbs(session, &bb, suc_bb, f_name, module_name);
     }
     for (auto LI : bb.liveins()) {
@@ -405,9 +415,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     for (MachineInstr &MI : bb) {
       std::string inst_str = llvm_to_string(&MI);
       std::string name = std::string(TII->getName(MI.getOpcode()));
-      std::cout << "name=" << name << "\n";
+      // std::cout << "name=" << name << "\n";
       if (name == "DBG_VALUE") continue;
-      std::cout << "> " << inst_str << "\n";
+      // std::cout << "> " << inst_str << "\n";
       if (MI.isTerminator()) {
         op_type = OUTPUT;
       } else if (name == "PHI") {
@@ -434,24 +444,20 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         op_type = OPERATOR;
       }
       std::string op_type_str = op_type_to_str(op_type);
+#if DEBUG
       std::cout << "op_type_str=" << op_type_str << "\n";
+#endif
       create_inst(session, inst_str, name, op_type_str, f_name, bb_name, module_name);
       if (MI.getNumOperands() == 0) continue;
       // llvm::outs() << "   " << inst_str;
-      // Instruction::op_iterator opEnd = MI.op_end();
-      // for (const MachineOperand &MO : MI.operands()) {
       bool isLabelOp = false;
-      // bool isConstOp = false;
-      // bool isInputOp = false;
-      // break;
-      // for (const MachineOperand &MO : llvm::drop_begin(MI.operands())) {
       for (const MachineOperand &MO : MI.uses()) {
         op_type_t op_type_ = NONE;
         std::string src_str = llvm_to_string(&MO);
         std::string src_op_name = "Const";
         switch (MO.getType()) {
           case MachineOperand::MO_Register: {
-            std::cout << "=> REG" << "\n";
+            // std::cout << "=> REG" << "\n";
             auto Reg = MO.getReg();
             // std::cout << "Reg=" << Reg << "\n";
             if (Reg.isVirtual()) {
@@ -483,7 +489,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             // }
           }
           case MachineOperand::MO_Immediate: {
-            std::cout << "=> IMM" << "\n";
+            // std::cout << "=> IMM" << "\n";
             auto Imm = MO.getImm();
             // std::cout << "Imm=" << Imm << "\n";
             // isConstOp = true;
@@ -491,7 +497,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_CImmediate: {
-            std::cout << "=> CIMM" << "\n";
+            // std::cout << "=> CIMM" << "\n";
             auto Imm = MO.getCImm();
             // std::cout << "Imm=" << Imm << "\n";
             // isConstOp = true;
@@ -499,7 +505,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_FPImmediate: {
-            std::cout << "=> FPIMM" << "\n";
+            // std::cout << "=> FPIMM" << "\n";
             auto Imm = MO.getFPImm();
             // std::cout << "Imm=" << Imm << "\n";
             // isConstOp = true;
@@ -507,26 +513,26 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_GlobalAddress: {
-            std::cout << "=> GA" << "\n";
+            // std::cout << "=> GA" << "\n";
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_MachineBasicBlock: {
-            std::cout << "=> MBB" << "\n";
+            // std::cout << "=> MBB" << "\n";
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_FrameIndex: {  // TODO: huffbench
-            std::cout << "=> FI" << "\n";
+            // std::cout << "=> FI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_ConstantPoolIndex: {
-            std::cout << "=> CPI" << "\n";
+            // std::cout << "=> CPI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
@@ -537,13 +543,13 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_JumpTableIndex: {
-            std::cout << "=> JTI" << "\n";
+            // std::cout << "=> JTI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ExternalSymbol: {
-            std::cout << "=> ES" << "\n";
+            // std::cout << "=> ES" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
@@ -554,7 +560,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_RegisterMask: {  // TODO: edn, matmult-int, md5sum
-            std::cout << "=> RM" << "\n";
+            // std::cout << "=> RM" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
@@ -580,7 +586,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_Metadata: {
-            std::cout << "=> MD" << "\n";
+            // std::cout << "=> MD" << "\n";
             // llvm_unreachable("Not Implemented!");
             continue;
             break;
@@ -591,7 +597,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_Predicate: {
-            std::cout << "=> PC" << "\n";
+            // std::cout << "=> PC" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
@@ -617,7 +623,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         // MachineInstr *src_inst = dyn_cast<MachineInstr>(MO);
         // connect_insts(session, src_str, src_op_name, inst_str, name, bb_name, f_name, module_name);
         std::string op_type_str_ = op_type_to_str(op_type_);
+#if DEBUG
         std::cout << "op_type_str_=" << op_type_str_ << "\n";
+#endif
         bool crossBBMode = false;
         // bool crossBBMode = true;
         if (crossBBMode) {
