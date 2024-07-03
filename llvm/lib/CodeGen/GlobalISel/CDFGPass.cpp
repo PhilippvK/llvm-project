@@ -171,13 +171,15 @@ mg_session *connect_to_db(const char *host, uint16_t port)
         {
             mg_init();
 #if DEBUG
-            printf("mgclient version: %s\n", mg_client_version());
+            // printf("mgclient version: %s\n", mg_client_version());
+            llvm::outs() << "mgclient version: " << mg_client_version() << "\n";
 #endif
 
             mg_session_params *params = mg_session_params_make();
             if (!params)
             {
-                fprintf(stderr, "failed to allocate session parameters\n");
+                // fprintf(stderr, "failed to allocate session parameters\n");
+                llvm::errs() << "failed to allocate session parameters\n";
                 exit(1);
             }
             mg_session_params_set_host(params, host);
@@ -189,7 +191,8 @@ mg_session *connect_to_db(const char *host, uint16_t port)
             mg_session_params_destroy(params);
             if (status < 0)
             {
-                printf("failed to connect to Memgraph: %s\n", mg_session_error(session));
+                // printf("failed to connect to Memgraph: %s\n", mg_session_error(session));
+                llvm::errs() << "failed to connect to Memgraph: " << mg_session_error(session) << "\n";
                 mg_session_destroy(session);
                 exit(1);
             }
@@ -214,13 +217,13 @@ mg_session *connect_to_db(const char *host, uint16_t port)
 #endif
       if (mg_session_run(session, query, NULL, NULL, NULL, NULL) < 0)
       {
-          errs() << "failed to execute query: " << query << " mg error: " << mg_session_error(session) << "\n";
+          llvm::errs() << "failed to execute query: " << query << " mg error: " << mg_session_error(session) << "\n";
           mg_session_destroy(session);
           exit(1);
       }
       if (mg_session_pull(session, NULL))
       {
-          errs() << "failed to pull results of the query: " << mg_session_error(session) << "\n";
+          llvm::errs() << "failed to pull results of the query: " << mg_session_error(session) << "\n";
           mg_session_destroy(session);
           exit(1);
       }
@@ -235,7 +238,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
 
       if (status < 0)
       {
-          errs() << "error occurred during query execution: " << mg_session_error(session) << "\n";
+          llvm::errs() << "error occurred during query execution: " << mg_session_error(session) << "\n";
       }
       else
       {
@@ -405,7 +408,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     }
     for (auto LI : bb.liveins()) {
         std::string lir = reg_to_string(LI.PhysReg, TRI);
-        // std::cout << "lir=" << lir << std::endl;
+        // llvm::outs() << "lir=" << lir << std::endl;
         // TODO: LaneMask?
     }
     std::unordered_set<MachineInstr*> forcedOutputs;
@@ -413,9 +416,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     for (MachineInstr &MI : bb) {
       std::string inst_str = llvm_to_string(&MI);
       std::string name = std::string(TII->getName(MI.getOpcode()));
-      // std::cout << "name=" << name << "\n";
+      // llvm::outs() << "name=" << name << "\n";
       if (name == "DBG_VALUE") continue;
-      // std::cout << "> " << inst_str << "\n";
+      // llvm::outs() << "> " << inst_str << "\n";
       if (MI.isTerminator()) {
         op_type = OUTPUT;
       } else if (name == "PHI") {
@@ -443,7 +446,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       }
       std::string op_type_str = op_type_to_str(op_type);
 #if DEBUG
-      std::cout << "op_type_str=" << op_type_str << "\n";
+      llvm::outs() << "op_type_str=" << op_type_str << "\n";
 #endif
       create_inst(session, inst_str, name, op_type_str, f_name, bb_name, module_name);
       if (MI.getNumOperands() == 0) continue;
@@ -455,9 +458,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         std::string src_op_name = "Const";
         switch (MO.getType()) {
           case MachineOperand::MO_Register: {
-            // std::cout << "=> REG" << "\n";
+            // llvm::outs() << "=> REG" << "\n";
             auto Reg = MO.getReg();
-            // std::cout << "Reg=" << Reg << "\n";
+            // llvm::outs() << "Reg=" << Reg << "\n";
             if (Reg.isVirtual()) {
                 MachineInstr *MI_ = MRI.getVRegDef(Reg);
                 if (!MI_) continue;
@@ -468,8 +471,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                 parent_bb_name = get_bb_name(ParentMBB);
                 src_str = llvm_to_string(MI_);
                 src_op_name = std::string(TII->getName(MI_->getOpcode()));
-                // std::cout << "src_op_name=" << name << "\n";
-                // std::cout << ">> " << src_str << "\n";
+                // llvm::outs() << "src_op_name=" << name << "\n";
+                // llvm::outs() << ">> " << src_str << "\n";
             } else {
                 src_str = llvm_to_string(&MO);
                 std::string reg_name = reg_to_string(Reg, TRI);
@@ -481,132 +484,132 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             // for (MachineInstr &RI : MRI.def_instructions(reg)) {
             //   src_str = llvm_to_string(&RI);
             //   src_op_name = std::string(TII->getName(RI.getOpcode()));
-            //   std::cout << "src_op_name=" << name << "\n";
+            //   llvm::outs() << "src_op_name=" << name << "\n";
             //   // llvm::outs() << "   " << inst_str;
-            //   std::cout << ">> " << src_str << "\n";
+            //   llvm::outs() << ">> " << src_str << "\n";
             // }
           }
           case MachineOperand::MO_Immediate: {
-            // std::cout << "=> IMM" << "\n";
+            // llvm::outs() << "=> IMM" << "\n";
             auto Imm = MO.getImm();
-            // std::cout << "Imm=" << Imm << "\n";
+            // llvm::outs() << "Imm=" << Imm << "\n";
             // isConstOp = true;
             op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_CImmediate: {
-            // std::cout << "=> CIMM" << "\n";
+            // llvm::outs() << "=> CIMM" << "\n";
             auto Imm = MO.getCImm();
-            // std::cout << "Imm=" << Imm << "\n";
+            // llvm::outs() << "Imm=" << Imm << "\n";
             // isConstOp = true;
             op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_FPImmediate: {
-            // std::cout << "=> FPIMM" << "\n";
+            // llvm::outs() << "=> FPIMM" << "\n";
             auto Imm = MO.getFPImm();
-            // std::cout << "Imm=" << Imm << "\n";
+            // llvm::outs() << "Imm=" << Imm << "\n";
             // isConstOp = true;
             op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_GlobalAddress: {
-            // std::cout << "=> GA" << "\n";
+            // llvm::outs() << "=> GA" << "\n";
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_MachineBasicBlock: {
-            // std::cout << "=> MBB" << "\n";
+            // llvm::outs() << "=> MBB" << "\n";
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_FrameIndex: {  // TODO: huffbench
-            // std::cout << "=> FI" << "\n";
+            // llvm::outs() << "=> FI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             // op_type_ = CONSTANT;
             break;
           }
           case MachineOperand::MO_ConstantPoolIndex: {
-            // std::cout << "=> CPI" << "\n";
+            // llvm::outs() << "=> CPI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_TargetIndex: {
-            std::cout << "=> TI" << "\n";
+            llvm::outs() << "=> TI" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_JumpTableIndex: {
-            // std::cout << "=> JTI" << "\n";
+            // llvm::outs() << "=> JTI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ExternalSymbol: {
-            // std::cout << "=> ES" << "\n";
+            // llvm::outs() << "=> ES" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_BlockAddress: {
-            std::cout << "=> BA" << "\n";
+            llvm::outs() << "=> BA" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_RegisterMask: {  // TODO: edn, matmult-int, md5sum
-            // std::cout << "=> RM" << "\n";
+            // llvm::outs() << "=> RM" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_RegisterLiveOut: {
-            std::cout << "=> RLO" << "\n";
+            llvm::outs() << "=> RLO" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_MCSymbol: {
-            std::cout << "=> MCS" << "\n";
+            llvm::outs() << "=> MCS" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_DbgInstrRef: {
-            std::cout << "=> DIR" << "\n";
+            llvm::outs() << "=> DIR" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_CFIIndex: {
-            std::cout << "=> CFII" << "\n";
+            llvm::outs() << "=> CFII" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_Metadata: {
-            // std::cout << "=> MD" << "\n";
+            // llvm::outs() << "=> MD" << "\n";
             // llvm_unreachable("Not Implemented!");
             continue;
             break;
           }
           case MachineOperand::MO_IntrinsicID: {
-            std::cout << "=> IID" << "\n";
+            llvm::outs() << "=> IID" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_Predicate: {
-            // std::cout << "=> PC" << "\n";
+            // llvm::outs() << "=> PC" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ShuffleMask: {
-            std::cout << "=> SM" << "\n";
+            llvm::outs() << "=> SM" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           default: {
-            std::cout << "DEFAULT" << "\n";
+            llvm::outs() << "DEFAULT" << "\n";
             llvm_unreachable("Not Implemented!");
           }
         }
@@ -614,15 +617,15 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           continue;
         }
         // if (src_str == "") src_str = llvm_to_string(&MO);
-        // std::cout << "MO=?" << "\n";
-        // std::cout << "MO=" << MO << "\n";
+        // llvm::outs() << "MO=?" << "\n";
+        // llvm::outs() << "MO=" << MO << "\n";
         // llvm::outs() << "MO=" << MO << "\n";
         // break;
         // MachineInstr *src_inst = dyn_cast<MachineInstr>(MO);
         // connect_insts(session, src_str, src_op_name, inst_str, name, bb_name, f_name, module_name);
         std::string op_type_str_ = op_type_to_str(op_type_);
 #if DEBUG
-        std::cout << "op_type_str_=" << op_type_str_ << "\n";
+        llvm::outs() << "op_type_str_=" << op_type_str_ << "\n";
 #endif
         bool crossBBMode = false;
         // bool crossBBMode = true;
@@ -640,8 +643,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         }
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
-        //   std::cout << "IS REG" << "\n";
-        //   // std::cout << "reg=" << reg << "\n";
+        //   llvm::outs() << "IS REG" << "\n";
+        //   // llvm::outs() << "reg=" << reg << "\n";
 
         // } else {
 
