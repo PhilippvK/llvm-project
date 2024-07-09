@@ -56,6 +56,7 @@ static cl::opt<std::string> OutDir(
     // cl::init("."),
     cl::Hidden);
 
+namespace {
 std::map<std::string, int> FuncCounts;
 
 int traverse(MachineRegisterInfo &MRI, MachineInstr &Cur, std::ofstream &OutStream);
@@ -407,6 +408,7 @@ int traverse(MachineRegisterInfo &MRI, MachineInstr &Cur, std::ofstream &OutStre
   DEBUG_WITH_TYPE("gmir2cdsl", dbgs() << "Missing return from switch" << "\n");
   return -1;
 }
+} // end namespace
 
 void runCDSLGenPipeline(MachineRegisterInfo &MRI, MachineInstr &Cur, MachineFunction &Func) {
   if (!EnableGMIR2CDSL) {
