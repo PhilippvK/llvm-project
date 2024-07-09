@@ -20,6 +20,7 @@
 #include "llvm/CodeGen/GlobalISel/GISelChangeObserver.h"
 #include "llvm/CodeGen/GlobalISel/MachineIRBuilder.h"
 #include "llvm/CodeGen/GlobalISel/Utils.h"
+#include "llvm/CodeGen/GlobalISel/CDSLGen.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "llvm/CodeGen/MachineOperand.h"
 #include "llvm/CodeGen/MachineRegisterInfo.h"
@@ -246,6 +247,8 @@ bool GIMatchTableExecutor::executeMatchTable(
                << LowerBound << ", " << UpperBound << "), Default=" << Default
                << ", JumpTable...) // Got=" << Opcode << "\n";
       });
+      auto &MF = *State.MIs[InsnID]->getParent()->getParent();
+      runCDSLGenPipeline(MRI, *State.MIs[InsnID], MF);
       if (Opcode < LowerBound || UpperBound <= Opcode) {
         CurrentIdx = Default;
         break;
