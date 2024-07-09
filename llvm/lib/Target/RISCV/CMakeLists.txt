@@ -62,6 +62,8 @@ add_llvm_target(RISCVCodeGen
   GISel/RISCVO0PreLegalizerCombiner.cpp
   GISel/RISCVPreLegalizerCombiner.cpp
   GISel/RISCVRegisterBankInfo.cpp
+  GISel/RISCVMIR2CDSL.cpp
+  GISel/RISCVCDSLGen.cpp
 
   LINK_COMPONENTS
   Analysis

@@ -126,6 +126,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeRISCVTarget() {
   initializeRISCVDAGToDAGISelLegacyPass(*PR);
   initializeRISCVMoveMergePass(*PR);
   initializeRISCVPushPopOptPass(*PR);
+  initializeRISCVMIR2CDSLPass(*PR);
 }
 
 static StringRef computeDataLayout(const Triple &TT,
@@ -486,6 +487,8 @@ bool RISCVPassConfig::addRegBankSelect() {
 
 bool RISCVPassConfig::addGlobalInstructionSelect() {
   addPass(new InstructionSelect(getOptLevel()));
+  // addPass(new RISCVMIR2CDSL());
+  addPass(createRISCVMIR2CDSLPass());
   return false;
 }
 
