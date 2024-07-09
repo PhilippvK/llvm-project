@@ -26,7 +26,8 @@ add_llvm_component_library(LLVMGlobalISel
   RegBankSelect.cpp
   Utils.cpp
   # CMakeLists.txt - gisel_cmake_srcs - INSERTION_START
-  CDSLGen.cpp
+  CDSLGen.cpp  # TODO: merge with MIR2CDSL.cpp
+  MIR2CDSL.cpp
   # CMakeLists.txt - gisel_cmake_srcs - INSERTION_END
 
   ADDITIONAL_HEADER_DIRS

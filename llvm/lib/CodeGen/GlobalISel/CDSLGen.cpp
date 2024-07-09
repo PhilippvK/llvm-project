@@ -40,6 +40,7 @@
 #include <fstream>
 #include <map>
 
+
 namespace fs = std::filesystem;
 
 namespace llvm {
@@ -432,6 +433,7 @@ void runCDSLGenPipeline(MachineRegisterInfo &MRI, MachineInstr &Cur, MachineFunc
   fs::path OutPath = std::filesystem::u8path(OutDirStr);
   OutPath = OutPath / FuncName;
   std::string OutPathStr = OutPath.string() + "." + std::to_string(Id);
+  LLVM_DEBUG(dbgs() << "OutPathStr: " << OutPathStr << "\n");
 
   std::ofstream OutStream;
   // bool SplitFiles = false;

@@ -21,4 +21,5 @@ void llvm::initializeGlobalISel(PassRegistry &Registry) {
   initializeLocalizerPass(Registry);
   initializeRegBankSelectPass(Registry);
   initializeInstructionSelectPass(Registry);
+  initializeMIR2CDSLPass(Registry);
 }
