@@ -436,9 +436,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
               MachineInstr *MI_ = MRI.getVRegDef(Reg);
               if (!MI_) continue;
               MachineBasicBlock *ParentMBB = MI_->getParent();
-              if (ParentMBB == &bb) {
+              // if (ParentMBB == &bb) {
                 forcedOutputs.insert(MI_);
-              }
+              // }
             }
           }
         }
