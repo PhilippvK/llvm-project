@@ -10,8 +10,8 @@
 /// target-specific instructions.
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_CODEGEN_GLOBALISEL_CDFGPASS_H
-#define LLVM_CODEGEN_GLOBALISEL_CDFGPASS_H
+#ifndef LLVM_CODEGEN_GLOBALISEL_MIR2CDSL_H
+#define LLVM_CODEGEN_GLOBALISEL_MIR2CDSL_H
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/CodeGen/MachineFunction.h"
