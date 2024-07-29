@@ -59,8 +59,11 @@
 #define PURGE_DB false
 #define FORCE_ENABLE false
 // #define FORCE_ENABLE true
-#define DEBUG true  // TODO: use -debug flag of llvm
+// #define DEBUG true  // TODO: use -debug flag of llvm
+#define DEBUG false  // TODO: use -debug flag of llvm
 #define NOOP false
+
+#define CDFG_STAGE CDFG_STAGE_3
 
 #define DEBUG_TYPE "cdfg-pass"
 
@@ -74,6 +77,9 @@ static cl::opt<std::string>
 static cl::opt<int>
     MemgraphPort("cdfg-memgraph-port", cl::init(7687),
                    cl::desc("Port of Memgraph server"));
+static cl::opt<int>
+    StageMask("cdfg-stage-mask", cl::init(CDFG_STAGE_3),
+                   cl::desc("Chooses ISel stages where pass is executed (1,2,4,8,16,32 or combinations)"));
 static cl::opt<bool>
     MemgraphPurge("cdfg-memgraph-purge", cl::desc("Purge Memgraph database"));
 static cl::opt<std::string>
@@ -278,19 +284,19 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_first + set_frist_code + store_second + set_second_code + rel;
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_bb(mg_session *session, MachineBasicBlock *bb, std::string f_name, std::string module_name)
+  void create_bb(mg_session *session, MachineBasicBlock *bb, std::string f_name, std::string module_name, int stage)
   {
-      std::string store_bb = "MERGE (bb:BB {name: '" + get_bb_name(bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "'})";
+      std::string store_bb = "MERGE (bb:BB {name: '" + get_bb_name(bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
       std::string set_bb_code = " SET bb.code =  '" + sanitize_str(llvm_to_string(bb)) + "'";
       std::string qry = store_bb + set_bb_code;
       exec_qeury(session, qry.c_str());
   }
 
-  void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name)
+  void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name, int stage)
   {
       // MERGE: create if not exist else match
-      std::string match_first = "MATCH (first_bb:BB {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "'})";
-      std::string match_second = "MATCH (second_bb:BB {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "'})";
+      std::string match_first = "MATCH (first_bb:BB {name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
+      std::string match_second = "MATCH (second_bb:BB {name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
       std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb);";
       std::string qry = match_first + match_second + rel;
       exec_qeury(session, qry.c_str());
@@ -311,11 +317,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name)
+  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage)
   {
       code = sanitize_str(code);
 
-      std::string store_inst = "MERGE (inst:INSTR {name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', session: '" + MemgraphSession + "'})";
+      std::string store_inst = "MERGE (inst:INSTR {name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
@@ -348,14 +354,14 @@ INITIALIZE_PASS_END(
     "Generate CDFG and store in memgraph platform", false,
     false)
 
-CDFGPass::CDFGPass(CodeGenOptLevel OL)
-    : MachineFunctionPass(ID), OptLevel(OL) {}
+CDFGPass::CDFGPass(CodeGenOptLevel OL, int Stage)
+    : MachineFunctionPass(ID), OptLevel(OL), CurrentStage(Stage) {}
 
 // In order not to crash when calling getAnalysis during testing with -run-pass
 // we use the default opt level here instead of None, so that the addRequired()
 // calls are made in getAnalysisUsage().
-CDFGPass::CDFGPass()
-    : MachineFunctionPass(ID), OptLevel(CodeGenOptLevel::Default) {}
+CDFGPass::CDFGPass(int Stage)
+    : MachineFunctionPass(ID), OptLevel(CodeGenOptLevel::Default), CurrentStage(Stage) {}
 
 void CDFGPass::getAnalysisUsage(AnalysisUsage &AU) const {
   // AU.addRequired<TargetPassConfig>();
@@ -377,6 +383,12 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   if (!EnablePass && !FORCE_ENABLE) {
     return true;  // TODO: return false?
   }
+  if ((CurrentStage & StageMask) == 0) {
+#if DEBUG
+    llvm::outs() << "Skipping CDFGPass for stage " << CurrentStage << "." << "\n";
+#endif
+    return true;  // TODO: return false?
+  }
   std::string f_name = MF.getName().str();
   const Module *M = nullptr;
   const llvm::Function *F = nullptr;
@@ -385,7 +397,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   // std::string module_name = "moduleABC";
   std::string module_name = M->getName().str();
   if (MF.getProperties().hasProperty(
-     MachineFunctionProperties::Property::FailedISel)) {
+     MachineFunctionProperties::Property::FailedISel)) {  // check non-gisel?
      llvm::errs() << "skipping CDFGPass in func '" << f_name << "' due to gisel failure" << "\n";
      return true;
   }
@@ -401,7 +413,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       exec_qeury(session, del);
   }
   for (MachineBasicBlock &bb : MF) {
-    create_bb(session, &bb, f_name, module_name);
+    create_bb(session, &bb, f_name, module_name, CurrentStage);
   }
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
@@ -410,7 +422,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     // llvm::outs() << "bb_name=" << bb_name << std::endl;
 #endif
     for (MachineBasicBlock *suc_bb : successors(&bb)) {
-      connect_bbs(session, &bb, suc_bb, f_name, module_name);
+      connect_bbs(session, &bb, suc_bb, f_name, module_name, CurrentStage);
     }
     for (auto LI : bb.liveins()) {
         std::string lir = reg_to_string(LI.PhysReg, TRI);
