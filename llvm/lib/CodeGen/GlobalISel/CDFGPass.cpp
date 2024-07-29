@@ -342,14 +342,28 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
+  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
+  {
+      code = sanitize_str(code);
+
+      std::string match_inst = "MATCH (inst:INSTR {name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})\n";
+      std::string set_name = "SET inst.out_reg_name = '" + out_reg_name + "'\n";
+      std::string set_type = "SET inst.out_reg_type = '" + out_reg_type + "'\n";
+      std::string set_class = "SET inst.out_reg_class = '" + out_reg_class + "'\n";
+      std::string set_size = "SET inst.out_reg_size = '" + out_reg_size + "'\n";
+      std::string qry = match_inst + set_name + set_type + set_class + set_size;
+      exec_qeury(session, qry.c_str());
+  }
+
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, int stage, std::string rel_type, size_t op_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
       dst_str = sanitize_str(dst_str);
 
-      std::string match_src = "MATCH (src_inst:INSTR {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction', session: '" + MemgraphSession + "'})";
-      std::string match_dst = "MATCH (dst_inst:INSTR {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction', session: '" + MemgraphSession + "'})";
-      std::string rel = "MERGE (src_inst)-[:" + rel_type + "]->(dst_inst);";
+      std::string match_src = "MATCH (src_inst:INSTR {name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
+      std::string match_dst = "MATCH (dst_inst:INSTR {name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})";
+      std::string rel = "MERGE (src_inst)-[:" + rel_type + "{op_idx: " + std::to_string(op_idx) +  ", op_reg_name: '" + op_reg_name + "', op_reg_type: '" + op_reg_type + "', op_reg_class: '" + op_reg_class + "', op_reg_size: '" + op_reg_size + "'}]->(dst_inst);";
       std::string qry = match_src + '\n' + match_dst + '\n' + rel + '\n';
       exec_qeury(session, qry.c_str());
   }
@@ -492,19 +506,78 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       bool isBranch = MI.isBranch();
       bool hasUnmodeledSideEffects = MI.hasUnmodeledSideEffects();
       add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects);
+      std::string out_reg_name = "unknown";
+      std::string out_reg_type = "unknown";
+      std::string out_reg_class = "unknown";
+      std::string out_reg_size = "unknown";
+      for (const MachineOperand &MO : MI.defs()) {
+        if (MO.isReg()) {
+          auto Reg2 = MO.getReg();
+          std::string temp;
+          raw_string_ostream tmpstream(temp);
+          tmpstream << printReg(Reg2, TRI, 0, &MRI);
+          out_reg_name = tmpstream.str();
+          LLT ty2 = MRI.getType(Reg2);
+          std::string temp2;
+          raw_string_ostream tmpstream2(temp2);
+          tmpstream2 << ty2;
+          out_reg_type = tmpstream2.str();
+          if (Reg2.isVirtual()) {
+            std::string temp3;
+            raw_string_ostream tmpstream3(temp3);
+            tmpstream3 << printRegClassOrBank(Reg2, MRI, TRI);
+            out_reg_class = tmpstream3.str();
+          }
+          auto reg_size = TRI->getRegSizeInBits(Reg2, MRI);
+          std::string temp4;
+          raw_string_ostream tmpstream4(temp4);
+          reg_size.print(tmpstream4);
+          out_reg_size = tmpstream4.str();
+          // if (Reg2.isVirtual()) {
+          // llvm::outs() << "printRegClassOrBank2=" << printRegClassOrBank(Reg2, MRI, TRI) << "\n";
+          // }
+        }
+        break; // TODO: support multiple out types
+      }
+      add_inst_reg(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, out_reg_name, out_reg_type, out_reg_class, out_reg_size);
       if (MI.getNumOperands() == 0) continue;
       // llvm::outs() << "   " << inst_str;
       bool isLabelOp = false;
+      size_t op_idx = 0;
       for (const MachineOperand &MO : MI.uses()) {
         op_type_t op_type_ = NONE;
         std::string src_str = llvm_to_string(&MO);
         std::string src_op_name = "Const";
+        std::string src_reg_name = "unknown";
+        std::string src_reg_type = "unknown";
+        std::string src_reg_class = "unknown";
+        std::string src_reg_size = "unknown";
         switch (MO.getType()) {
           case MachineOperand::MO_Register: {
             // llvm::outs() << "=> REG" << "\n";
             auto Reg = MO.getReg();
-            // llvm::outs() << "Reg=" << Reg << "\n";
+            std::string temp_;
+            raw_string_ostream tmpstream_(temp_);
+            tmpstream_ << printReg(Reg, TRI, 0, &MRI);
+            src_reg_name = tmpstream_.str();
+            LLT ty = MRI.getType(Reg);
+            std::string temp2_;
+            raw_string_ostream tmpstream2_(temp2_);
+            tmpstream2_ << ty;
+            src_reg_type = tmpstream2_.str();
             if (Reg.isVirtual()) {
+
+                std::string temp;
+                raw_string_ostream tmpstream(temp);
+                tmpstream << printRegClassOrBank(Reg, MRI, TRI);
+                src_reg_class = tmpstream.str();
+
+                auto reg_size = TRI->getRegSizeInBits(Reg, MRI);
+                std::string temp2;
+                raw_string_ostream tmpstream2(temp2);
+                reg_size.print(tmpstream2);
+                src_reg_size = tmpstream2.str();
+
                 MachineInstr *MI_ = MRI.getVRegDef(Reg);
                 if (!MI_) continue;
                 MachineBasicBlock *ParentMBB = MI_->getParent();
@@ -517,6 +590,12 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                 // llvm::outs() << "src_op_name=" << name << "\n";
                 // llvm::outs() << ">> " << src_str << "\n";
             } else {
+                auto reg_size = TRI->getRegSizeInBits(Reg, MRI);
+                std::string temp2;
+                raw_string_ostream tmpstream2(temp2);
+                reg_size.print(tmpstream2);
+                src_reg_size = tmpstream2.str();
+
                 src_str = llvm_to_string(&MO);
                 std::string reg_name = reg_to_string(Reg, TRI);
                 // src_op_name = "PhysReg";
@@ -669,20 +748,23 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         std::string op_type_str_ = op_type_to_str(op_type_);
 #if DEBUG
         llvm::outs() << "op_type_str_=" << op_type_str_ << "\n";
+        llvm::outs() << "src_reg_class=" << src_reg_class << "\n";
+        llvm::outs() << "src_reg_size=" << src_reg_size << "\n";
 #endif
         bool crossBBMode = false;
         // bool crossBBMode = true;
         if (crossBBMode) {
           if (parent_bb_name != bb_name) {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, module_name, "CROSS");
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, module_name, CurrentStage, "CROSS", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           } else {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, "DFG");
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
         } else {
           if (op_type_ == INPUT || op_type_ == CONSTANT) {
-            create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name);
+            create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage);
+            add_inst_reg(session, src_str, src_op_name, op_type_str, f_name, bb_name, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
-          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, "DFG");
+          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
         }
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
@@ -692,6 +774,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         // } else {
 
         // }
+        op_idx++;
       }
     }
   }
