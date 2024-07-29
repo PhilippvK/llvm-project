@@ -53,13 +53,6 @@
 #include <optional>
 #include <string>
 
-#define CDFG_STAGE_NONE -1  // none
-#define CDFG_STAGE_0 0  // post irtranslator
-#define CDFG_STAGE_1 1  // post legalizer
-#define CDFG_STAGE_2 2  // post regbankselect
-#define CDFG_STAGE_3 3  // post instructionselect
-
-#define CDFG_STAGE CDFG_STAGE_3
 
 using namespace llvm;
 
@@ -1026,17 +1019,13 @@ bool TargetPassConfig::addCoreISelPasses() {
     SaveAndRestore SavedAddingMachinePasses(AddingMachinePasses, true);
     if (addIRTranslator())
       return true;
-    #if CDFG_STAGE == CDFG_STAGE_0
-    addPass(new CDFGPass(getOptLevel()));
-    #endif
+    addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_0));
 
     addPreLegalizeMachineIR();
 
     if (addLegalizeMachineIR())
       return true;
-    #if CDFG_STAGE == CDFG_STAGE_1
-    addPass(new CDFGPass(getOptLevel()));
-    #endif
+    addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_1));
 
     // Before running the register bank selector, ask the target if it
     // wants to run some passes.
@@ -1044,17 +1033,13 @@ bool TargetPassConfig::addCoreISelPasses() {
 
     if (addRegBankSelect())
       return true;
-    #if CDFG_STAGE == CDFG_STAGE_2
-    addPass(new CDFGPass(getOptLevel()));
-    #endif
+    addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_2));
 
     addPreGlobalInstructionSelect();
 
     if (addGlobalInstructionSelect())
       return true;
-    #if CDFG_STAGE == CDFG_STAGE_3
-    addPass(new CDFGPass(getOptLevel()));
-    #endif
+    addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_3));
 
     // Pass to reset the MachineFunction if the ISel failed.
     addPass(createResetMachineFunctionPass(
@@ -1068,9 +1053,13 @@ bool TargetPassConfig::addCoreISelPasses() {
   } else if (addInstSelector())
     return true;
 
+  addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_4));
+
   // Expand pseudo-instructions emitted by ISel. Don't run the verifier before
   // FinalizeISel.
   addPass(&FinalizeISelID);
+
+  addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_5));
 
   // Print the instruction selected machine code...
   printAndVerify("After Instruction Selection");

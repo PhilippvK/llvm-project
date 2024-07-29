@@ -18,6 +18,15 @@
 #include "llvm/CodeGen/MachineFunctionPass.h"
 #include "llvm/Support/CodeGen.h"
 
+//TODO: turn into enum!
+#define CDFG_STAGE_NONE 0  // none
+#define CDFG_STAGE_0 1  // post irtranslator
+#define CDFG_STAGE_1 2  // post legalizer
+#define CDFG_STAGE_2 4  // post regbankselect
+#define CDFG_STAGE_3 8  // post instructionselect
+#define CDFG_STAGE_4 16  // post fallback/iseldag
+#define CDFG_STAGE_5 32  // post finalizeisel/expandpseudos
+
 namespace llvm {
 
 class BlockFrequencyInfo;
@@ -37,8 +46,8 @@ public:
         // .set(MachineFunctionProperties::Property::RegBankSelected);
   }
 
-  CDFGPass(CodeGenOptLevel OL);
-  CDFGPass();
+  CDFGPass(CodeGenOptLevel OL, int Stage);
+  CDFGPass(int Stage);
 
   bool runOnMachineFunction(MachineFunction &MF) override;
 
@@ -47,6 +56,7 @@ protected:
   ProfileSummaryInfo *PSI = nullptr;
 
   CodeGenOptLevel OptLevel = CodeGenOptLevel::None;
+  int CurrentStage = -1;
 };
 } // End namespace llvm.
 
