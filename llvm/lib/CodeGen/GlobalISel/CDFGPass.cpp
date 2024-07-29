@@ -442,6 +442,18 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       auto del = "MATCH (n) DETACH DELETE n;";
       exec_qeury(session, del);
   }
+  exec_qeury(session, "CALL schema.assert({}, {}, {}, true) YIELD action, key, keys, label, unique RETURN action, key, keys, label, unique;");
+  exec_qeury(session, "CREATE INDEX ON :INSTR");
+  exec_qeury(session, "CREATE INDEX ON :INSTR(name)");
+  exec_qeury(session, "CREATE INDEX ON :INSTR(inst)");
+  exec_qeury(session, "CREATE INDEX ON :INSTR(func_name)");
+  exec_qeury(session, "CREATE INDEX ON :INSTR(session)");
+  exec_qeury(session, "CREATE INDEX ON :INSTR(stage)");
+  exec_qeury(session, "CREATE INDEX ON :BB");
+  exec_qeury(session, "CREATE INDEX ON :BB(name)");
+  exec_qeury(session, "CREATE INDEX ON :BB(func_name)");
+  exec_qeury(session, "CREATE INDEX ON :BB(session)");
+  exec_qeury(session, "CREATE INDEX ON :BB(stage)");
   for (MachineBasicBlock &bb : MF) {
     create_bb(session, &bb, f_name, module_name, CurrentStage);
   }
