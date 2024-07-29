@@ -325,7 +325,23 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, std::string rel_type)
+  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects)
+  {
+      code = sanitize_str(code);
+
+      std::string match_inst = "MATCH (inst:INSTR {name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + "})\n";
+      std::string set_may_load = "SET inst.mayLoad = " + std::string(mayLoad ? "true": "false") + "\n";
+      std::string set_may_store = "SET inst.mayStore = " + std::string(mayStore ? "true": "false") + "\n";
+      std::string set_is_pseudo = "SET inst.isPseudo = " + std::string(isPseudo ? "true": "false") + "\n";
+      std::string set_is_return = "SET inst.isReturn = " + std::string(isReturn ? "true": "false") + "\n";
+      std::string set_is_call = "SET inst.isCall = " + std::string(isCall ? "true": "false") + "\n";
+      std::string set_is_terminator = "SET inst.isTerminator = " + std::string(isTerminator ? "true": "false") + "\n";
+      std::string set_is_branch = "SET inst.isBranch = " + std::string(isBranch ? "true": "false") + "\n";
+      std::string set_has_unmodeled_side_effects = "SET inst.hasUnmodeledSideEffects = " + std::string(hasUnmodeledSideEffects ? "true": "false") + "\n";
+      std::string qry = match_inst + set_may_load + set_may_store + set_is_pseudo + set_is_return + set_is_call + set_is_terminator + set_is_branch + set_has_unmodeled_side_effects;
+      exec_qeury(session, qry.c_str());
+  }
+
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
@@ -466,7 +482,16 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
 #if DEBUG
       llvm::outs() << "op_type_str=" << op_type_str << "\n";
 #endif
-      create_inst(session, inst_str, name, op_type_str, f_name, bb_name, module_name);
+      create_inst(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage);
+      bool mayLoad = MI.mayLoad();
+      bool mayStore = MI.mayStore();
+      bool isPseudo = MI.isPseudo();
+      bool isReturn = MI.isReturn();
+      bool isCall = MI.isCall();
+      bool isTerminator = MI.isTerminator();
+      bool isBranch = MI.isBranch();
+      bool hasUnmodeledSideEffects = MI.hasUnmodeledSideEffects();
+      add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects);
       if (MI.getNumOperands() == 0) continue;
       // llvm::outs() << "   " << inst_str;
       bool isLabelOp = false;
