@@ -723,7 +723,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_MCSymbol: {
             llvm::outs() << "=> MCS" << "\n";
-            llvm_unreachable("Not Implemented!");
+            // llvm_unreachable("Not Implemented!");
+            isLabelOp = true;  // TODO: add label op_type?
             break;
           }
           case MachineOperand::MO_DbgInstrRef: {
@@ -776,6 +777,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         std::string op_type_str_ = op_type_to_str(op_type_);
 #if DEBUG
         llvm::outs() << "op_type_str_=" << op_type_str_ << "\n";
+        llvm::outs() << "src_reg_name=" << src_reg_name << "\n";
+        llvm::outs() << "src_reg_type=" << src_reg_type << "\n";
         llvm::outs() << "src_reg_class=" << src_reg_class << "\n";
         llvm::outs() << "src_reg_size=" << src_reg_size << "\n";
         llvm::outs() << "src_reg_single_use=" << src_reg_single_use << "\n";
@@ -791,7 +794,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         } else {
           if (op_type_ == INPUT || op_type_ == CONSTANT) {
             create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage);
-            add_inst_reg(session, src_str, src_op_name, op_type_str, f_name, bb_name, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+            add_inst_reg(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
           connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
         }
