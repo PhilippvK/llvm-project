@@ -355,7 +355,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, int stage, std::string rel_type, size_t op_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size)
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, int stage, std::string rel_type, size_t op_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size, bool op_reg_single_use)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
@@ -363,7 +363,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
 
       std::string match_src = "MATCH (src_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
       std::string match_dst = "MATCH (dst_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
-      std::string rel = "MERGE (src_inst)-[:" + rel_type + "{op_idx: " + std::to_string(op_idx) +  ", op_reg_name: '" + op_reg_name + "', op_reg_type: '" + op_reg_type + "', op_reg_class: '" + op_reg_class + "', op_reg_size: '" + op_reg_size + "'}]->(dst_inst);";
+      std::string rel = "MERGE (src_inst)-[:" + rel_type + "{op_idx: " + std::to_string(op_idx) +  ", op_reg_name: '" + op_reg_name + "', op_reg_type: '" + op_reg_type + "', op_reg_class: '" + op_reg_class + "', op_reg_size: '" + op_reg_size + "', op_reg_single_use: " + (op_reg_single_use ? "true" : "false") + "}]->(dst_inst);";
       std::string qry = match_src + '\n' + match_dst + '\n' + rel + '\n';
       exec_qeury(session, qry.c_str());
   }
@@ -564,10 +564,25 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         std::string src_reg_type = "unknown";
         std::string src_reg_class = "unknown";
         std::string src_reg_size = "unknown";
+        bool src_reg_single_use = false;
+
         switch (MO.getType()) {
           case MachineOperand::MO_Register: {
             // llvm::outs() << "=> REG" << "\n";
             auto Reg = MO.getReg();
+            src_reg_single_use = true;
+            for (MachineRegisterInfo::use_instr_nodbg_iterator I = MRI.use_instr_nodbg_begin(Reg),
+                   E = MRI.use_instr_nodbg_end(); I != E; ++I) {
+              MachineInstr *UseMI = &*I;
+              if (UseMI) {
+                // llvm::outs() << "UseMI=" << *UseMI << "\n";
+                // src_reg_uses++;
+                if (UseMI != &MI) {
+                  src_reg_single_use = false;
+                  break;
+                }
+              }
+            }
             std::string temp_;
             raw_string_ostream tmpstream_(temp_);
             tmpstream_ << printReg(Reg, TRI, 0, &MRI);
@@ -762,21 +777,22 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         llvm::outs() << "op_type_str_=" << op_type_str_ << "\n";
         llvm::outs() << "src_reg_class=" << src_reg_class << "\n";
         llvm::outs() << "src_reg_size=" << src_reg_size << "\n";
+        llvm::outs() << "src_reg_single_use=" << src_reg_single_use << "\n";
 #endif
         bool crossBBMode = false;
         // bool crossBBMode = true;
         if (crossBBMode) {
           if (parent_bb_name != bb_name) {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, module_name, CurrentStage, "CROSS", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, module_name, CurrentStage, "CROSS", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
           } else {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
           }
         } else {
           if (op_type_ == INPUT || op_type_ == CONSTANT) {
             create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage);
             add_inst_reg(session, src_str, src_op_name, op_type_str, f_name, bb_name, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
-          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
         }
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
