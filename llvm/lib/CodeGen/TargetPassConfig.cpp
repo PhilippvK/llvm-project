@@ -1149,6 +1149,7 @@ void TargetPassConfig::addMachinePasses() {
     addOptimizedRegAlloc();
   else
     addFastRegAlloc();
+  addPass(new CDFGPass(getOptLevel(), CDFG_STAGE_6));
 
   // Run post-ra passes.
   addPostRegAlloc();
