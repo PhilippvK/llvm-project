@@ -517,7 +517,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       bool isTerminator = MI.isTerminator();
       bool isBranch = MI.isBranch();
       bool hasUnmodeledSideEffects = MI.hasUnmodeledSideEffects();
-      add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects);
+      bool isCommutable = MI.isCommutable();
+      add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects, isCommutable);
       std::string out_reg_name = "unknown";
       std::string out_reg_type = "unknown";
       std::string out_reg_class = "unknown";
