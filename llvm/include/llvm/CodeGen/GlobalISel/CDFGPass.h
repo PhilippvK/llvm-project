@@ -26,6 +26,7 @@
 #define CDFG_STAGE_3 8  // post instructionselect
 #define CDFG_STAGE_4 16  // post fallback/iseldag
 #define CDFG_STAGE_5 32  // post finalizeisel/expandpseudos
+#define CDFG_STAGE_6 64  // post regalloc
 
 namespace llvm {
 
