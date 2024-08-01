@@ -324,7 +324,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
-  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects)
+  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects, bool isCommutable)
   {
       code = sanitize_str(code);
 
@@ -337,7 +337,8 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       std::string set_is_terminator = "SET inst.isTerminator = " + std::string(isTerminator ? "true": "false") + "\n";
       std::string set_is_branch = "SET inst.isBranch = " + std::string(isBranch ? "true": "false") + "\n";
       std::string set_has_unmodeled_side_effects = "SET inst.hasUnmodeledSideEffects = " + std::string(hasUnmodeledSideEffects ? "true": "false") + "\n";
-      std::string qry = match_inst + set_may_load + set_may_store + set_is_pseudo + set_is_return + set_is_call + set_is_terminator + set_is_branch + set_has_unmodeled_side_effects;
+      std::string set_is_commutable = "SET inst.isCommutable = " + std::string(isCommutable ? "true": "false") + "\n";
+      std::string qry = match_inst + set_may_load + set_may_store + set_is_pseudo + set_is_return + set_is_call + set_is_terminator + set_is_branch + set_has_unmodeled_side_effects + set_is_commutable;
       exec_qeury(session, qry.c_str());
   }
 
