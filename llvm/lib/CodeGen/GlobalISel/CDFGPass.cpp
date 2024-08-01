@@ -59,7 +59,6 @@
 #define PURGE_DB false
 #define FORCE_ENABLE false
 // #define FORCE_ENABLE true
-// #define DEBUG true  // TODO: use -debug flag of llvm
 #define DEBUG false  // TODO: use -debug flag of llvm
 #define NOOP false
 
