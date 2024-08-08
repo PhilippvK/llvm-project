@@ -481,7 +481,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       // llvm::outs() << "> " << inst_str << "\n";
       if (MI.isTerminator()) {
         op_type = OUTPUT;
-      } else if (name == "PHI") {
+      } else if (name == "PHI" || name == "G_PHI") {
         op_type = INPUT;
         for (const MachineOperand &MO : MI.operands()) {
           if (MO.getType() == MachineOperand::MO_Register) {
