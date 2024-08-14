@@ -1155,40 +1155,40 @@ Instruction *InstCombinerImpl::visitZExt(ZExtInst &Zext) {
 
   // Try to extend the entire expression tree to the wide destination type.
   unsigned BitsToClear;
-  if (shouldChangeType(SrcTy, DestTy) &&
-      canEvaluateZExtd(Src, DestTy, BitsToClear, *this, &Zext)) {
-    assert(BitsToClear <= SrcTy->getScalarSizeInBits() &&
-           "Can't clear more bits than in SrcTy");
+  // if (shouldChangeType(SrcTy, DestTy) &&
+  //     canEvaluateZExtd(Src, DestTy, BitsToClear, *this, &Zext)) {
+  //   assert(BitsToClear <= SrcTy->getScalarSizeInBits() &&
+  //          "Can't clear more bits than in SrcTy");
 
-    // Okay, we can transform this!  Insert the new expression now.
-    LLVM_DEBUG(
-        dbgs() << "ICE: EvaluateInDifferentType converting expression type"
-                  " to avoid zero extend: "
-               << Zext << '\n');
-    Value *Res = EvaluateInDifferentType(Src, DestTy, false);
-    assert(Res->getType() == DestTy);
+  //   // Okay, we can transform this!  Insert the new expression now.
+  //   LLVM_DEBUG(
+  //       dbgs() << "ICE: EvaluateInDifferentType converting expression type"
+  //                 " to avoid zero extend: "
+  //              << Zext << '\n');
+  //   Value *Res = EvaluateInDifferentType(Src, DestTy, false);
+  //   assert(Res->getType() == DestTy);
 
-    // Preserve debug values referring to Src if the zext is its last use.
-    if (auto *SrcOp = dyn_cast<Instruction>(Src))
-      if (SrcOp->hasOneUse())
-        replaceAllDbgUsesWith(*SrcOp, *Res, Zext, DT);
+  //   // Preserve debug values referring to Src if the zext is its last use.
+  //   if (auto *SrcOp = dyn_cast<Instruction>(Src))
+  //     if (SrcOp->hasOneUse())
+  //       replaceAllDbgUsesWith(*SrcOp, *Res, Zext, DT);
 
-    uint32_t SrcBitsKept = SrcTy->getScalarSizeInBits() - BitsToClear;
-    uint32_t DestBitSize = DestTy->getScalarSizeInBits();
+  //   uint32_t SrcBitsKept = SrcTy->getScalarSizeInBits() - BitsToClear;
+  //   uint32_t DestBitSize = DestTy->getScalarSizeInBits();
 
-    // If the high bits are already filled with zeros, just replace this
-    // cast with the result.
-    if (MaskedValueIsZero(Res,
-                          APInt::getHighBitsSet(DestBitSize,
-                                                DestBitSize - SrcBitsKept),
-                             0, &Zext))
-      return replaceInstUsesWith(Zext, Res);
+  //   // If the high bits are already filled with zeros, just replace this
+  //   // cast with the result.
+  //   if (MaskedValueIsZero(Res,
+  //                         APInt::getHighBitsSet(DestBitSize,
+  //                                               DestBitSize - SrcBitsKept),
+  //                            0, &Zext))
+  //     return replaceInstUsesWith(Zext, Res);
 
-    // We need to emit an AND to clear the high bits.
-    Constant *C = ConstantInt::get(Res->getType(),
-                               APInt::getLowBitsSet(DestBitSize, SrcBitsKept));
-    return BinaryOperator::CreateAnd(Res, C);
-  }
+  //   // We need to emit an AND to clear the high bits.
+  //   Constant *C = ConstantInt::get(Res->getType(),
+  //                              APInt::getLowBitsSet(DestBitSize, SrcBitsKept));
+  //   return BinaryOperator::CreateAnd(Res, C);
+  // }
 
   // If this is a TRUNC followed by a ZEXT then we are dealing with integral
   // types and if the sizes are just right we can convert this into a logical
@@ -1446,26 +1446,26 @@ Instruction *InstCombinerImpl::visitSExt(SExtInst &Sext) {
     return CI;
   }
 
-  // Try to extend the entire expression tree to the wide destination type.
-  if (shouldChangeType(SrcTy, DestTy) && canEvaluateSExtd(Src, DestTy)) {
-    // Okay, we can transform this!  Insert the new expression now.
-    LLVM_DEBUG(
-        dbgs() << "ICE: EvaluateInDifferentType converting expression type"
-                  " to avoid sign extend: "
-               << Sext << '\n');
-    Value *Res = EvaluateInDifferentType(Src, DestTy, true);
-    assert(Res->getType() == DestTy);
+  // // Try to extend the entire expression tree to the wide destination type.
+  // if (shouldChangeType(SrcTy, DestTy) && canEvaluateSExtd(Src, DestTy)) {
+  //   // Okay, we can transform this!  Insert the new expression now.
+  //   LLVM_DEBUG(
+  //       dbgs() << "ICE: EvaluateInDifferentType converting expression type"
+  //                 " to avoid sign extend: "
+  //              << Sext << '\n');
+  //   Value *Res = EvaluateInDifferentType(Src, DestTy, true);
+  //   assert(Res->getType() == DestTy);
 
-    // If the high bits are already filled with sign bit, just replace this
-    // cast with the result.
-    if (ComputeNumSignBits(Res, 0, &Sext) > DestBitSize - SrcBitSize)
-      return replaceInstUsesWith(Sext, Res);
+  //   // If the high bits are already filled with sign bit, just replace this
+  //   // cast with the result.
+  //   if (ComputeNumSignBits(Res, 0, &Sext) > DestBitSize - SrcBitSize)
+  //     return replaceInstUsesWith(Sext, Res);
 
-    // We need to emit a shl + ashr to do the sign extend.
-    Value *ShAmt = ConstantInt::get(DestTy, DestBitSize-SrcBitSize);
-    return BinaryOperator::CreateAShr(Builder.CreateShl(Res, ShAmt, "sext"),
-                                      ShAmt);
-  }
+  //   // We need to emit a shl + ashr to do the sign extend.
+  //   Value *ShAmt = ConstantInt::get(DestTy, DestBitSize-SrcBitSize);
+  //   return BinaryOperator::CreateAShr(Builder.CreateShl(Res, ShAmt, "sext"),
+  //                                     ShAmt);
+  // }
 
   Value *X;
   if (match(Src, m_Trunc(m_Value(X)))) {
