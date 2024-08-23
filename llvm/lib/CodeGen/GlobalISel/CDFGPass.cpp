@@ -285,7 +285,8 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   // }
   void create_bb(mg_session *session, MachineBasicBlock *bb, std::string f_name, std::string module_name, int stage)
   {
-      std::string store_bb = "MERGE (bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      unsigned bb_id = bb->getBBID()->BaseID;
+      std::string store_bb = "MERGE (bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(bb) + "', bb_id: " + std::to_string(bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string set_bb_code = " SET bb.code =  '" + sanitize_str(llvm_to_string(bb)) + "'";
       std::string qry = store_bb + set_bb_code;
       exec_qeury(session, qry.c_str());
@@ -294,8 +295,10 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name, int stage)
   {
       // MERGE: create if not exist else match
-      std::string match_first = "MATCH (first_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(first_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
-      std::string match_second = "MATCH (second_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(second_bb) + "', func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      unsigned first_bb_id = first_bb->getBBID()->BaseID;
+      unsigned second_bb_id = second_bb->getBBID()->BaseID;
+      std::string match_first = "MATCH (first_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(first_bb) + "', bb_id: " + std::to_string(first_bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      std::string match_second = "MATCH (second_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(second_bb) + "', bb_id: " + std::to_string(second_bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb);";
       std::string qry = match_first + match_second + rel;
       exec_qeury(session, qry.c_str());
@@ -316,19 +319,19 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage)
+  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage)
   {
       code = sanitize_str(code);
 
-      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})";
+      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})";
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
-  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects, bool isCommutable)
+  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects, bool isCommutable)
   {
       code = sanitize_str(code);
 
-      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})\n";
+      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})\n";
       std::string set_may_load = "SET inst.mayLoad = " + std::string(mayLoad ? "true": "false") + "\n";
       std::string set_may_store = "SET inst.mayStore = " + std::string(mayStore ? "true": "false") + "\n";
       std::string set_is_pseudo = "SET inst.isPseudo = " + std::string(isPseudo ? "true": "false") + "\n";
@@ -342,11 +345,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
+  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
   {
       code = sanitize_str(code);
 
-      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})\n";
+      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})\n";
       std::string set_name = "SET inst.out_reg_name = '" + out_reg_name + "'\n";
       std::string set_type = "SET inst.out_reg_type = '" + out_reg_type + "'\n";
       std::string set_class = "SET inst.out_reg_class = '" + out_reg_class + "'\n";
@@ -355,14 +358,14 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, std::string module_name, int stage, std::string rel_type, int op_idx, int out_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size, bool op_reg_single_use)
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, unsigned src_bb_id, unsigned dst_bb_id, std::string module_name, int stage, std::string rel_type, int op_idx, int out_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size, bool op_reg_single_use)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
       dst_str = sanitize_str(dst_str);
 
-      std::string match_src = "MATCH (src_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
-      std::string match_dst = "MATCH (dst_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', module_name: '" + module_name + "', kind: 'instruction'})";
+      std::string match_src = "MATCH (src_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + src_op_name + "', inst: '" + src_str + "', func_name: '" + f_name + "', basic_block: '" + src_bb_name + "', bb_id: " + std::to_string(src_bb_id) + ", module_name: '" + module_name + "', kind: 'instruction'})";
+      std::string match_dst = "MATCH (dst_inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + dst_op_name + "', inst: '" + dst_str + "', func_name: '" + f_name + "', basic_block: '" + dst_bb_name + "', bb_id: " + std::to_string(dst_bb_id) + ", module_name: '" + module_name + "', kind: 'instruction'})";
       std::string rel = "MERGE (src_inst)-[:" + rel_type + "{op_idx: " + std::to_string(op_idx) +  ", out_idx: " + std::to_string(out_idx) + ", op_reg_name: '" + op_reg_name + "', op_reg_type: '" + op_reg_type + "', op_reg_class: '" + op_reg_class + "', op_reg_size: '" + op_reg_size + "', op_reg_single_use: " + (op_reg_single_use ? "true" : "false") + "}]->(dst_inst);";
       std::string qry = match_src + '\n' + match_dst + '\n' + rel + '\n';
       exec_qeury(session, qry.c_str());
@@ -460,6 +463,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
     std::string parent_bb_name = bb_name;
+    unsigned bb_id = bb.getBBID()->BaseID;
+    unsigned parent_bb_id = bb_id;
 #if DEBUG
     // llvm::outs() << "bb_name=" << bb_name << std::endl;
 #endif
@@ -508,7 +513,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
 #if DEBUG
       llvm::outs() << "op_type_str=" << op_type_str << "\n";
 #endif
-      create_inst(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage);
+      create_inst(session, inst_str, name, op_type_str, f_name, bb_name, bb_id, module_name, CurrentStage);
       bool mayLoad = MI.mayLoad();
       bool mayStore = MI.mayStore();
       bool isPseudo = MI.isPseudo();
@@ -518,7 +523,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       bool isBranch = MI.isBranch();
       bool hasUnmodeledSideEffects = MI.hasUnmodeledSideEffects();
       bool isCommutable = MI.isCommutable();
-      add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects, isCommutable);
+      add_inst_preds(session, inst_str, name, op_type_str, f_name, bb_name, bb_id, module_name, CurrentStage, mayLoad, mayStore, isPseudo, isReturn, isCall, isTerminator, isBranch, hasUnmodeledSideEffects, isCommutable);
       std::string out_reg_name = "unknown";
       std::string out_reg_type = "unknown";
       std::string out_reg_class = "unknown";
@@ -552,7 +557,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         }
         break; // TODO: support multiple out types
       }
-      add_inst_reg(session, inst_str, name, op_type_str, f_name, bb_name, module_name, CurrentStage, out_reg_name, out_reg_type, out_reg_class, out_reg_size);
+      add_inst_reg(session, inst_str, name, op_type_str, f_name, bb_name, bb_id, module_name, CurrentStage, out_reg_name, out_reg_type, out_reg_class, out_reg_size);
       if (MI.getNumOperands() == 0) continue;
 #if DEBUG
       llvm::outs() << "instr_str=" << inst_str << "\n";
@@ -621,6 +626,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                   op_type_ = INPUT;
                 }
                 parent_bb_name = get_bb_name(ParentMBB);
+                parent_bb_id = ParentMBB->getBBID()->BaseID;
                 src_str = llvm_to_string(MI_);
                 src_op_name = std::string(TII->getName(MI_->getOpcode()));
                 // llvm::outs() << "src_op_name=" << name << "\n";
@@ -798,16 +804,16 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         // bool crossBBMode = true;
         if (crossBBMode) {
           if (parent_bb_name != bb_name) {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, module_name, CurrentStage, "CROSS", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, parent_bb_name, bb_name, parent_bb_id, bb_id, module_name, CurrentStage, "CROSS", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
           } else {
-            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
+            connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, bb_id, bb_id, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
           }
         } else {
           if (op_type_ == INPUT || op_type_ == CONSTANT) {
-            create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage);
-            add_inst_reg(session, src_str, src_op_name, op_type_str_, f_name, bb_name, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+            create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, bb_id, module_name, CurrentStage);
+            add_inst_reg(session, src_str, src_op_name, op_type_str_, f_name, bb_name, bb_id, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
-          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
+          connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, bb_id, bb_id, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
         }
         // if (MO.isReg()) {
         //   auto reg = MO.getReg();
