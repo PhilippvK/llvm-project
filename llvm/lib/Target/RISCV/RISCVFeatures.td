@@ -772,6 +772,8 @@ def HasStdExtSvinval : Predicate<"Subtarget->hasStdExtSvinval()">,
                            "'Svinval' (Fine-Grained Address-Translation Cache Invalidation)">;
 
 // RISCVFeatures.td - riscv_features - INSERTION_START
+def FeatureExtScalarEfficiencyRV32 : SubtargetFeature<"scalarefficiencyrv32", "HasExtScalarEfficiencyRV32", "true", "'ScalarEfficiencyRV32' (ScalarEfficiencyRV32 Extension)">;
+def HasExtScalarEfficiencyRV32 : Predicate<"Subtarget->hasExtScalarEfficiencyRV32()">, AssemblerPredicate<(any_of FeatureExtScalarEfficiencyRV32), "'ScalarEfficiencyRV32' (ScalarEfficiencyRV32 Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
