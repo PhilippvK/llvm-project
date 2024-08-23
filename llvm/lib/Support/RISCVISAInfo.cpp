@@ -64,6 +64,7 @@ static const RISCVSupportedExtension SupportedExtensions[] = {
     {"v", {1, 0}},
 
 // RISCVISAInfo.cpp - riscv_isa_info - INSERTION_START
+    {"scalarefficiencyrv32", {1, 0}},
 // RISCVISAInfo.cpp - riscv_isa_info - INSERTION_END
 
     // vendor-defined ('X') extensions
