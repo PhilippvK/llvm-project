@@ -38,6 +38,6 @@ class RVInst_LI16<dag outs, dag ins> : Instruction, Sched<[]> {
     // Constraints
     let Constraints = "$rd = $rd_wb";
 }
-def LI16 : RVInst_LI16<(outs GPR:$rd_wb), (ins GPR:$rd, uimm1:$n)>;
+def LI16 : RVInst_LI16<(outs GPR:$rd_wb), (ins GPR:$rd, uimm16:$imm16, uimm1:$n)>;
 
 }
