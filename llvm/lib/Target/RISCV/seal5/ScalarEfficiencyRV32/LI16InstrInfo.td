@@ -1,5 +1,4 @@
 let Predicates = [HasExtScalarEfficiencyRV32, IsRV32] in {
-// class RVInst_LI16<dag outs, dag ins> : RVInst<outs, ins, "cv.add.h", "$rd, $rs1, $rs2", [], InstFormatOther> {
 class RVInst_LI16<dag outs, dag ins> : Instruction, Sched<[]> {
     // General
     let Namespace = "RISCV";
