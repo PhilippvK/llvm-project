@@ -311,6 +311,8 @@ def simm21_lsb0_jal : Operand<OtherVT> {
 
 // RISCVInstrInfo.td - field_types - INSERTION_START
 def uimm12 : RISCVUImmLeafOp<12>;
+def uimm16 : RISCVUImmLeafOp<16>;
+def uimm17 : RISCVUImmLeafOp<17>;
 // RISCVInstrInfo.td - field_types - INSERTION_END
 
 def BareSymbol : AsmOperandClass {
