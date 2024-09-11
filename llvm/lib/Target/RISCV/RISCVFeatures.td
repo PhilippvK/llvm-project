@@ -772,6 +772,8 @@ def HasStdExtSvinval : Predicate<"Subtarget->hasStdExtSvinval()">,
                            "'Svinval' (Fine-Grained Address-Translation Cache Invalidation)">;
 
 // RISCVFeatures.td - riscv_features - INSERTION_START
+def FeatureVendorOpenASIPbase : SubtargetFeature<"xopenasipbase", "HasVendorOpenASIPbase", "true", "'OpenASIPbase' (OpenASIP_base Extension)">;
+def HasVendorOpenASIPbase : Predicate<"Subtarget->hasVendorOpenASIPbase()">, AssemblerPredicate<(any_of FeatureVendorOpenASIPbase), "'OpenASIPbase' (OpenASIP_base Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
