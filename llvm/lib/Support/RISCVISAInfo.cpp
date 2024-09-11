@@ -196,6 +196,7 @@ static const RISCVSupportedExtension SupportedExtensions[] = {
 // NOTE: This table should be sorted alphabetically by extension name.
 static const RISCVSupportedExtension SupportedExperimentalExtensions[] = {
 // RISCVISAInfo.cpp - riscv_isa_info_experimental - INSERTION_START
+    {"xopenasipbase", {1, 0}},
 // RISCVISAInfo.cpp - riscv_isa_info_experimental - INSERTION_END
     {"zacas", {1, 0}},
 
