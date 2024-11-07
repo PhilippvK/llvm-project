@@ -285,7 +285,9 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   // }
   void create_bb(mg_session *session, MachineBasicBlock *bb, std::string f_name, std::string module_name, int stage)
   {
-      unsigned bb_id = bb->getBBID()->BaseID;
+      int bb_id = -1;
+      if (auto bbid = bb->getBBID())
+          bb_id = bbid->BaseID;
       std::string store_bb = "MERGE (bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(bb) + "', bb_id: " + std::to_string(bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string set_bb_code = " SET bb.code =  '" + sanitize_str(llvm_to_string(bb)) + "'";
       std::string qry = store_bb + set_bb_code;
@@ -295,8 +297,12 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   void connect_bbs(mg_session *session, MachineBasicBlock *first_bb, MachineBasicBlock *second_bb, std::string f_name, std::string module_name, int stage)
   {
       // MERGE: create if not exist else match
-      unsigned first_bb_id = first_bb->getBBID()->BaseID;
-      unsigned second_bb_id = second_bb->getBBID()->BaseID;
+      int first_bb_id = -1;
+      int second_bb_id = -1;
+      if (auto bbid = first_bb->getBBID())
+          first_bb_id = bbid->BaseID;
+      if (auto bbid = second_bb->getBBID())
+          second_bb_id = bbid->BaseID;
       std::string match_first = "MATCH (first_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(first_bb) + "', bb_id: " + std::to_string(first_bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string match_second = "MATCH (second_bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(second_bb) + "', bb_id: " + std::to_string(second_bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string rel = " MERGE (first_bb)-[:CFG]->(second_bb);";
@@ -319,7 +325,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage)
+  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage)
   {
       code = sanitize_str(code);
 
@@ -327,7 +333,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
-  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects, bool isCommutable)
+  void add_inst_preds(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage, bool mayLoad, bool mayStore, bool isPseudo, bool isReturn, bool isCall, bool isTerminator, bool isBranch, bool hasUnmodeledSideEffects, bool isCommutable)
   {
       code = sanitize_str(code);
 
@@ -345,7 +351,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, unsigned bb_id, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
+  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
   {
       code = sanitize_str(code);
 
@@ -358,7 +364,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, unsigned src_bb_id, unsigned dst_bb_id, std::string module_name, int stage, std::string rel_type, int op_idx, int out_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size, bool op_reg_single_use)
+  void connect_insts(mg_session *session, std::string src_str, std::string src_op_name, std::string dst_str, std::string dst_op_name, std::string f_name, std::string src_bb_name, std::string dst_bb_name, int src_bb_id, int dst_bb_id, std::string module_name, int stage, std::string rel_type, int op_idx, int out_idx, std::string op_reg_name, std::string op_reg_type, std::string op_reg_class, std::string op_reg_size, bool op_reg_single_use)
   {
       // MERGE: create if not exist else match
       src_str = sanitize_str(src_str);
@@ -463,8 +469,10 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
     std::string parent_bb_name = bb_name;
-    unsigned bb_id = bb.getBBID()->BaseID;
-    unsigned parent_bb_id = bb_id;
+    int bb_id = -1;
+    if (auto bbid = bb.getBBID())
+      bb_id = bbid->BaseID;
+    int parent_bb_id = bb_id;
 #if DEBUG
     // llvm::outs() << "bb_name=" << bb_name << std::endl;
 #endif
@@ -626,7 +634,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                   op_type_ = INPUT;
                 }
                 parent_bb_name = get_bb_name(ParentMBB);
-                parent_bb_id = ParentMBB->getBBID()->BaseID;
+                if (auto bbid = ParentMBB->getBBID())
+                    parent_bb_id = bbid->BaseID;
                 src_str = llvm_to_string(MI_);
                 src_op_name = std::string(TII->getName(MI_->getOpcode()));
                 // llvm::outs() << "src_op_name=" << name << "\n";
