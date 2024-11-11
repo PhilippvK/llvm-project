@@ -553,12 +553,12 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             raw_string_ostream tmpstream3(temp3);
             tmpstream3 << printRegClassOrBank(Reg2, MRI, TRI);
             out_reg_class = tmpstream3.str();
+            auto reg_size = TRI->getRegSizeInBits(Reg2, MRI);
+            std::string temp4;
+            raw_string_ostream tmpstream4(temp4);
+            reg_size.print(tmpstream4);
+            out_reg_size = tmpstream4.str();
           }
-          auto reg_size = TRI->getRegSizeInBits(Reg2, MRI);
-          std::string temp4;
-          raw_string_ostream tmpstream4(temp4);
-          reg_size.print(tmpstream4);
-          out_reg_size = tmpstream4.str();
           // if (Reg2.isVirtual()) {
           // llvm::outs() << "printRegClassOrBank2=" << printRegClassOrBank(Reg2, MRI, TRI) << "\n";
           // }
