@@ -87,7 +87,7 @@ static cl::opt<std::string>
 static cl::opt<bool>
     EnablePass("cdfg-enable", cl::desc("Enable CDFGPass"));
 
-typedef enum OpType {NONE, INPUT, OUTPUT, OPERATOR, CONSTANT} op_type_t;
+typedef enum OpType {NONE, INPUT, OUTPUT, OPERATOR, CONSTANT, LABEL} op_type_t;
 
 std::string op_type_to_str(op_type_t op_type) {
   switch (op_type) {
@@ -101,6 +101,8 @@ std::string op_type_to_str(op_type_t op_type) {
       return "operator";
     case CONSTANT:
       return "constant";
+    case LABEL:
+      return "label";
     default:
       return "unkown";
   };
@@ -325,11 +327,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage)
+  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string label_type, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage)
   {
       code = sanitize_str(code);
 
-      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})";
+      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', label_type: '" + label_type + "'})";
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
@@ -351,11 +353,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       exec_qeury(session, qry.c_str());
   }
 
-  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
+  void add_inst_reg(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string label_type, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage, std::string out_reg_name, std::string out_reg_type, std::string out_reg_class, std::string out_reg_size)
   {
       code = sanitize_str(code);
 
-      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "'})\n";
+      std::string match_inst = "MATCH (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', label_type: '" + label_type + "'})\n";
       std::string set_name = "SET inst.out_reg_name = '" + out_reg_name + "'\n";
       std::string set_type = "SET inst.out_reg_type = '" + out_reg_type + "'\n";
       std::string set_class = "SET inst.out_reg_class = '" + out_reg_class + "'\n";
@@ -521,7 +523,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
 #if DEBUG
       llvm::outs() << "op_type_str=" << op_type_str << "\n";
 #endif
-      create_inst(session, inst_str, name, op_type_str, f_name, bb_name, bb_id, module_name, CurrentStage);
+      create_inst(session, inst_str, name, op_type_str, "", f_name, bb_name, bb_id, module_name, CurrentStage);
       bool mayLoad = MI.mayLoad();
       bool mayStore = MI.mayStore();
       bool isPseudo = MI.isPseudo();
@@ -553,19 +555,19 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             raw_string_ostream tmpstream3(temp3);
             tmpstream3 << printRegClassOrBank(Reg2, MRI, TRI);
             out_reg_class = tmpstream3.str();
-            auto reg_size = TRI->getRegSizeInBits(Reg2, MRI);
-            std::string temp4;
-            raw_string_ostream tmpstream4(temp4);
-            reg_size.print(tmpstream4);
-            out_reg_size = tmpstream4.str();
           }
+          auto reg_size = TRI->getRegSizeInBits(Reg2, MRI);
+          std::string temp4;
+          raw_string_ostream tmpstream4(temp4);
+          reg_size.print(tmpstream4);
+          out_reg_size = tmpstream4.str();
           // if (Reg2.isVirtual()) {
           // llvm::outs() << "printRegClassOrBank2=" << printRegClassOrBank(Reg2, MRI, TRI) << "\n";
           // }
         }
         break; // TODO: support multiple out types
       }
-      add_inst_reg(session, inst_str, name, op_type_str, f_name, bb_name, bb_id, module_name, CurrentStage, out_reg_name, out_reg_type, out_reg_class, out_reg_size);
+      add_inst_reg(session, inst_str, name, op_type_str, "", f_name, bb_name, bb_id, module_name, CurrentStage, out_reg_name, out_reg_type, out_reg_class, out_reg_size);
       if (MI.getNumOperands() == 0) continue;
 #if DEBUG
       llvm::outs() << "instr_str=" << inst_str << "\n";
@@ -579,6 +581,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         llvm::outs() << "MO" << "\n";
 #endif
         op_type_t op_type_ = NONE;
+        std::string label_type = "";
         std::string src_str = llvm_to_string(&MO);
         std::string src_op_name = "Const";
         std::string src_reg_name = "unknown";
@@ -688,21 +691,29 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           }
           case MachineOperand::MO_GlobalAddress: {
             llvm::outs() << "=> GA" << "\n";
-            isLabelOp = true;
+            // isLabelOp = true;
+            src_op_name = src_str;
+            label_type = "GA";
             // op_type_ = CONSTANT;
+            op_type_ = LABEL;
             break;
           }
           case MachineOperand::MO_MachineBasicBlock: {
             llvm::outs() << "=> MBB" << "\n";
-            isLabelOp = true;
+            // isLabelOp = true;
+            src_op_name = src_str;
+            label_type = "MBB";
             // op_type_ = CONSTANT;
+            op_type_ = LABEL;
             break;
           }
           case MachineOperand::MO_FrameIndex: {  // TODO: huffbench
             llvm::outs() << "=> FI" << "\n";
             // llvm_unreachable("Not Implemented!");
-            isLabelOp = true;
-            // op_type_ = CONSTANT;
+            src_op_name = src_str;
+            // isLabelOp = true;
+            label_type = "FI";
+            op_type_ = LABEL;
             break;
           }
           case MachineOperand::MO_ConstantPoolIndex: {
@@ -818,9 +829,10 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, bb_id, bb_id, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
           }
         } else {
-          if (op_type_ == INPUT || op_type_ == CONSTANT) {
-            create_inst(session, src_str, src_op_name, op_type_str_, f_name, bb_name, bb_id, module_name, CurrentStage);
-            add_inst_reg(session, src_str, src_op_name, op_type_str_, f_name, bb_name, bb_id, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
+          if (op_type_ == INPUT || op_type_ == CONSTANT || op_type_ == LABEL) {
+            // TODO: create_label, create_const?
+            create_inst(session, src_str, src_op_name, op_type_str_, label_type, f_name, bb_name, bb_id, module_name, CurrentStage);
+            add_inst_reg(session, src_str, src_op_name, op_type_str_, label_type, f_name, bb_name, bb_id, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
           connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, bb_id, bb_id, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
         }
