@@ -493,6 +493,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       std::string name = std::string(TII->getName(MI.getOpcode()));
       // llvm::outs() << "name=" << name << "\n";
       if (name == "DBG_VALUE") continue;
+      if (name == "DBG_VALUE_LIST") continue;
       // llvm::outs() << "> " << inst_str << "\n";
       if (MI.isTerminator()) {
         op_type = OUTPUT;
