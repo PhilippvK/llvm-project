@@ -780,6 +780,8 @@ def FeatureVendorXCoreVBitmanip : SubtargetFeature<"xcorevbitmanip", "HasVendorX
 def HasVendorXCoreVBitmanip : Predicate<"Subtarget->hasVendorXCoreVBitmanip()">, AssemblerPredicate<(any_of FeatureVendorXCoreVBitmanip), "'XCoreVBitmanip' (XCoreVBitmanip Extension)">;
 def FeatureVendorXCoreVSimd : SubtargetFeature<"xcorevsimd", "HasVendorXCoreVSimd", "true", "'XCoreVSimd' (XCoreVSimd Extension)">;
 def HasVendorXCoreVSimd : Predicate<"Subtarget->hasVendorXCoreVSimd()">, AssemblerPredicate<(any_of FeatureVendorXCoreVSimd), "'XCoreVSimd' (XCoreVSimd Extension)">;
+def FeatureVendorXCoreVMem : SubtargetFeature<"xcorevmem", "HasVendorXCoreVMem", "true", "'XCoreVMem' (XCoreVMem Extension)">;
+def HasVendorXCoreVMem : Predicate<"Subtarget->hasVendorXCoreVMem()">, AssemblerPredicate<(any_of FeatureVendorXCoreVMem), "'XCoreVMem' (XCoreVMem Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
