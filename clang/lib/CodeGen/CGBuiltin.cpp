@@ -21361,6 +21361,27 @@ case RISCV::BI__builtin_xcorevalu_alu_abs:
   case RISCV::BI__builtin_xcorevalu_alu_suburn:
     ID = Intrinsic::riscv_xcorevalu_alu_suburn;
     break;
+case RISCV::BI__builtin_xcorevbitmanip_bitmanip_ff1:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_ff1;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_fl1:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_fl1;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_clb:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_clb;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_cnt:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_cnt;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_ror:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_ror;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_extractr:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_extractr;
+    break;
+  case RISCV::BI__builtin_xcorevbitmanip_bitmanip_extractur:
+    ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_extractur;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed
