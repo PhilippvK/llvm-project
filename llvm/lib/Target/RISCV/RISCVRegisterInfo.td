@@ -606,6 +606,27 @@ def FFLAGS : RISCVReg<0, "fflags">;
 def FRM    : RISCVReg<0, "frm">;
 
 // RISCVRegisterInfo.td - riscv_register_info - INSERTION_START
+def GPR32V2 : RegisterClass<"RISCV", [v2i16], 32, (add
+    (sequence "X%u", 10, 17),
+    (sequence "X%u", 5, 7),
+    (sequence "X%u", 28, 31),
+    (sequence "X%u", 8, 9),
+    (sequence "X%u", 18, 27),
+    (sequence "X%u", 0, 4)
+  )> {
+    let RegInfos = XLenRI;
+}
+
+def GPR32V4 : RegisterClass<"RISCV", [v4i8], 32, (add
+    (sequence "X%u", 10, 17),
+    (sequence "X%u", 5, 7),
+    (sequence "X%u", 28, 31),
+    (sequence "X%u", 8, 9),
+    (sequence "X%u", 18, 27),
+    (sequence "X%u", 0, 4)
+  )> {
+    let RegInfos = XLenRI;
+}
 // RISCVRegisterInfo.td - riscv_register_info - INSERTION_END
 
 // Shadow Stack register

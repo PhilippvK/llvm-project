@@ -782,6 +782,13 @@ def FeatureVendorXCoreVSimd : SubtargetFeature<"xcorevsimd", "HasVendorXCoreVSim
 def HasVendorXCoreVSimd : Predicate<"Subtarget->hasVendorXCoreVSimd()">, AssemblerPredicate<(any_of FeatureVendorXCoreVSimd), "'XCoreVSimd' (XCoreVSimd Extension)">;
 def FeatureVendorXCoreVMem : SubtargetFeature<"xcorevmem", "HasVendorXCoreVMem", "true", "'XCoreVMem' (XCoreVMem Extension)">;
 def HasVendorXCoreVMem : Predicate<"Subtarget->hasVendorXCoreVMem()">, AssemblerPredicate<(any_of FeatureVendorXCoreVMem), "'XCoreVMem' (XCoreVMem Extension)">;
+
+
+def FeatureGPR32V : SubtargetFeature<"gpr32v", "HasGPR32V", "true", "TODO">;
+def HasGPR32V
+   : Predicate<"Subtarget->hasGPR32V)">,
+     AssemblerPredicate<(any_of FeatureGPR32V),
+                        "'GPR32V' (TODO)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
