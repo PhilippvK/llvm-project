@@ -90,6 +90,25 @@ TARGET_BUILTIN(__builtin_riscv_ntl_load, "v.", "t", "zihintntl")
 TARGET_BUILTIN(__builtin_riscv_ntl_store, "v.", "t", "zihintntl")
 
 // BuiltinsRISCV.def - builtins_riscv - INSERTION_START
+// xcorevmac
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mac, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_msu, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulun, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulhhun, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulsn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulhhsn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulurn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulhhurn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulsrn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_mulhhsrn, "ZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_macun, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_machhun, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_macsn, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_machhsn, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_macurn, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_machhurn, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_macsrn, "ZiZiZiZiZi", "nc", "xcorevmac")
+TARGET_BUILTIN(__builtin_xcorevmac_mac_machhsrn, "ZiZiZiZiZi", "nc", "xcorevmac")
 // BuiltinsRISCV.def - builtins_riscv - INSERTION_END
 
 #undef BUILTIN
