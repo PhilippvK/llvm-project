@@ -830,28 +830,25 @@ struct RegisterNode : public PatternNode {
       std::string Str;
       if (Type.isScalar() && Type.getSizeInBits() == XLen)
         Str = "GPR:$" + std::string(Name);
+      // Vector Types (currently rv32 only)
+      if ((uint64_t)XLen == 32) {
+        if (Type.isFixedVector() && Type.getSizeInBits() == 32 &&
+            Type.getElementType().isScalar() &&
+            Type.getElementType().getSizeInBits() == 8)
+          Str = "GPR32V4:$" + std::string(Name);
+        if (Type.isFixedVector() && Type.getSizeInBits() == 32 &&
+            Type.getElementType().isScalar() &&
+            Type.getElementType().getSizeInBits() == 16)
+          Str = "GPR32V2:$" + std::string(Name);
+      }
+      // TODO: assert not empty
+      // TODO: refactor
       if (PrintType)
         return "(" + TypeStr + " " + Str + ")";
       return Str;
       abort();
     }
 
-    // Vector Types (currently rv32 only)
-    if ((uint64_t)Size == 32 && XLen == 32) {
-      std::string Str;
-      if (Type.isFixedVector() && Type.getSizeInBits() == 32 &&
-          Type.getElementType().isScalar() &&
-          Type.getElementType().getSizeInBits() == 8)
-        Str = "GPR32V4:$" + std::string(Name);
-      if (Type.isFixedVector() && Type.getSizeInBits() == 32 &&
-          Type.getElementType().isScalar() &&
-          Type.getElementType().getSizeInBits() == 16)
-        Str = "GPR32V2:$" + std::string(Name);
-      if (PrintType)
-        return "(" + TypeStr + " " + Str + ")";
-      return Str;
-      abort();
-    }
 
     // Sub-Register Operands
     if (Size == 8 || Size == 16 || (Size == 32 && XLen == 64)) {
