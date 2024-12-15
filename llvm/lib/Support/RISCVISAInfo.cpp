@@ -68,6 +68,7 @@ static const RISCVSupportedExtension SupportedExtensions[] = {
     {"xcorevalu", {1, 0}},
     {"xcorevbitmanip", {1, 0}},
     {"xcorevsimd", {1, 0}},
+    {"xcorevmem", {1, 0}},
 // RISCVISAInfo.cpp - riscv_isa_info - INSERTION_END
 
     // vendor-defined ('X') extensions
