@@ -774,6 +774,8 @@ def HasStdExtSvinval : Predicate<"Subtarget->hasStdExtSvinval()">,
 // RISCVFeatures.td - riscv_features - INSERTION_START
 def FeatureVendorXCoreVMac : SubtargetFeature<"xcorevmac", "HasVendorXCoreVMac", "true", "'XCoreVMac' (XCoreVMac Extension)">;
 def HasVendorXCoreVMac : Predicate<"Subtarget->hasVendorXCoreVMac()">, AssemblerPredicate<(any_of FeatureVendorXCoreVMac), "'XCoreVMac' (XCoreVMac Extension)">;
+def FeatureVendorXCoreVAlu : SubtargetFeature<"xcorevalu", "HasVendorXCoreVAlu", "true", "'XCoreVAlu' (XCoreVAlu Extension)">;
+def HasVendorXCoreVAlu : Predicate<"Subtarget->hasVendorXCoreVAlu()">, AssemblerPredicate<(any_of FeatureVendorXCoreVAlu), "'XCoreVAlu' (XCoreVAlu Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
