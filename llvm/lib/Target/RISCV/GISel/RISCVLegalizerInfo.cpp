@@ -407,6 +407,18 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
       //     },
       //     changeTo(0, 1));
 
+  if (ST.hasGPR32V()) {
+    getActionDefinitionsBuilder(G_VECREDUCE_ADD)
+        .lower();
+        // .legalFor({{s32, v4s8}, {s32, v2s16}})
+        // .minScalarOrElt(0, s8)
+        // .clampMaxNumElements(1, s8, 4)
+        // .clampMaxNumElements(1, s16, 2)
+  } else {
+    getActionDefinitionsBuilder(G_VECREDUCE_ADD)
+        .lower();
+
+  }
 
   getActionDefinitionsBuilder(G_FRAME_INDEX).legalFor({p0});
 
