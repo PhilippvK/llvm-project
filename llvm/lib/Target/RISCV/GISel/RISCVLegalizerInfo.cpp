@@ -375,36 +375,38 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
       .widenVectorEltsToVectorMinSize(0, 32)
       .minScalarSameAs(1, 0);
   getActionDefinitionsBuilder(G_SHUFFLE_VECTOR)
-      .legalIf([=](const LegalityQuery &Query) {
-        const LLT &DstTy = Query.Types[0];
-        const LLT &SrcTy = Query.Types[1];
-        if (DstTy != SrcTy)
-          return false;
-        return llvm::is_contained(
-            {v2s16, v4s8}, DstTy);
-      })
-      // G_SHUFFLE_VECTOR can have scalar sources (from 1 x s vectors), we
-      // just want those lowered into G_BUILD_VECTOR
-      .lowerIf([=](const LegalityQuery &Query) {
-        return !Query.Types[1].isVector();
-      })
-      .moreElementsIf(
-          [](const LegalityQuery &Query) {
-            return Query.Types[0].isVector() && Query.Types[1].isVector() &&
-                   Query.Types[0].getNumElements() >
-                       Query.Types[1].getNumElements();
-          },
-          changeTo(1, 0))
-      .moreElementsToNextPow2(0)
-      .clampNumElements(0, v4s8, v4s8)
-      .clampNumElements(0, v2s16, v2s16)
-      .moreElementsIf(
-          [](const LegalityQuery &Query) {
-            return Query.Types[0].isVector() && Query.Types[1].isVector() &&
-                   Query.Types[0].getNumElements() <
-                       Query.Types[1].getNumElements();
-          },
-          changeTo(0, 1));
+      .lower();
+      // .legalIf([=](const LegalityQuery &Query) {
+      //   const LLT &DstTy = Query.Types[0];
+      //   const LLT &SrcTy = Query.Types[1];
+      //   if (DstTy != SrcTy)
+      //     return false;
+      //   return llvm::is_contained(
+      //       {v2s16, v4s8}, DstTy);
+      // })
+      // // G_SHUFFLE_VECTOR can have scalar sources (from 1 x s vectors), we
+      // // just want those lowered into G_BUILD_VECTOR
+      // .lowerIf([=](const LegalityQuery &Query) {
+      //   return !Query.Types[1].isVector();
+      // })
+      // .moreElementsIf(
+      //     [](const LegalityQuery &Query) {
+      //       return Query.Types[0].isVector() && Query.Types[1].isVector() &&
+      //              Query.Types[0].getNumElements() >
+      //                  Query.Types[1].getNumElements();
+      //     },
+      //     changeTo(1, 0))
+      // .moreElementsToNextPow2(0)
+      // .clampNumElements(0, v4s8, v4s8)
+      // .clampNumElements(0, v2s16, v2s16)
+      // .moreElementsIf(
+      //     [](const LegalityQuery &Query) {
+      //       return Query.Types[0].isVector() && Query.Types[1].isVector() &&
+      //              Query.Types[0].getNumElements() <
+      //                  Query.Types[1].getNumElements();
+      //     },
+      //     changeTo(0, 1));
+
 
   getActionDefinitionsBuilder(G_FRAME_INDEX).legalFor({p0});
 
