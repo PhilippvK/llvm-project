@@ -240,6 +240,8 @@ Missing in map: G_SHUFFLE_VECTOR (?)
 #include <string>
 #include <utility>
 
+#include "MCTargetDesc/RISCVMCTargetDesc.h"
+
 #define DEBUG_TYPE "pattern-gen"
 
 using namespace llvm;
@@ -542,7 +544,9 @@ struct TernopNode : public PatternNode {
         {TargetOpcode::G_FSHL, "fshl"},
         {TargetOpcode::G_FSHR, "fshr"},
         {TargetOpcode::G_INSERT_VECTOR_ELT, "vector_insert"},
-        {TargetOpcode::G_SELECT, "select"}};
+        {TargetOpcode::G_SELECT, "select"},
+        {RISCV::G_UDOT, "riscvudot"},
+        {RISCV::G_SDOT, "riscvsdot"}};
 
     std::string TypeStr = lltToString(Type);
     std::string OpString = "(" + std::string(TernopStr.at(Op)) + " " +
@@ -1114,6 +1118,8 @@ traverse(MachineRegisterInfo &MRI, MachineInstr &Cur) {
 
     return std::make_pair(SUCCESS, std::move(Node));
   }
+  case RISCV::G_UDOT:
+  case RISCV::G_SDOT:
   case TargetOpcode::G_FSHL:
   case TargetOpcode::G_FSHR:
   case TargetOpcode::G_SELECT:
