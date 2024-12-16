@@ -11,8 +11,20 @@
 
 include "llvm/Target/GlobalISel/Combine.td"
 
+// Boolean: 0 = G_ZEXT, 1 = G_SEXT
+def ext_addv_to_udot_addv_matchinfo : GIDefMatchData<"std::tuple<Register, Register, bool>">;
+
+// let Predicates = [HasDotProd] in {
+def ext_addv_to_udot_addv : GICombineRule<
+  (defs root:$root, ext_addv_to_udot_addv_matchinfo:$matchinfo),
+  (match (wip_match_opcode G_VECREDUCE_ADD):$root,
+         [{ return matchExtAddvToUdotAddv(*${root}, MRI, STI, ${matchinfo}); }]),
+  (apply [{ applyExtAddvToUdotAddv(*${root}, MRI, B, Observer, STI, ${matchinfo}); }])
+>;
+// }
+
 def RISCVPreLegalizerCombiner: GICombiner<
-  "RISCVPreLegalizerCombinerImpl", [all_combines]> {
+  "RISCVPreLegalizerCombinerImpl", [all_combines, ext_addv_to_udot_addv]> {
 }
 
 def RISCVO0PreLegalizerCombiner: GICombiner<

@@ -24,3 +24,19 @@ def G_FCLASS : RISCVGenericInstruction {
   let hasSideEffects = false;
 }
 def : GINodeEquiv<G_FCLASS, riscv_fclass>;
+
+// Copied over from AArch64
+def G_UDOT : RISCVGenericInstruction {
+  let OutOperandList = (outs type0:$dst);
+  let InOperandList = (ins type0:$src1, type0:$src2, type0:$src3);
+  let hasSideEffects = 0;
+}
+// def : GINodeEquiv<G_UDOT, AArch64udot>;
+
+def G_SDOT : RISCVGenericInstruction {
+  let OutOperandList = (outs type0:$dst);
+  let InOperandList = (ins type0:$src1, type0:$src2, type0:$src3);
+  let hasSideEffects = 0;
+}
+
+// GINodeEquiv<G_SDOT, AArch64sdot>;
