@@ -624,7 +624,8 @@ struct BinopNode : public PatternNode {
         {TargetOpcode::G_UMIN, "umin"},
         {TargetOpcode::G_ROTR, "rotr"},
         {TargetOpcode::G_ROTL, "rotl"},
-        {TargetOpcode::G_EXTRACT_VECTOR_ELT, "vector_extract"}};
+        {TargetOpcode::G_EXTRACT_VECTOR_ELT, "vector_extract"},
+        {TargetOpcode::G_EXTRACT_VECTOR_ELT, "extractelt"}};
 
     static const std::vector<double> CommOps = {TargetOpcode::G_ADD, TargetOpcode::G_MUL, TargetOpcode::G_UMULH, TargetOpcode::G_SMULH, TargetOpcode::G_AND, TargetOpcode::G_OR, TargetOpcode::G_XOR, TargetOpcode::G_UMAX, TargetOpcode::G_SMIN, TargetOpcode::G_UMIN}; // TODO: extend list
     bool IsCommutable = std::find(CommOps.begin(), CommOps.end(), Op) != CommOps.end();
@@ -1481,4 +1482,3 @@ bool PatternGen::runOnMachineFunction(MachineFunction &MF) {
 
   return true;
 }
-
