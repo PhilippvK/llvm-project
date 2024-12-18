@@ -46,5 +46,5 @@ add_llvm_component_library(LLVMGlobalISel
   TransformUtils
   )
 
-include_directories(../../lib/Target/RISCV)
+include_directories(../../../lib/Target/RISCV)
 include_directories(${CMAKE_BINARY_DIR}/lib/Target/RISCV)
