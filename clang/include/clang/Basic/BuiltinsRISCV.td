@@ -146,3 +146,6 @@ let Features = "zihintntl", Attributes = [CustomTypeChecking] in {
 def ntl_load : RISCVBuiltin<"void(...)">;
 def ntl_store : RISCVBuiltin<"void(...)">;
 } // Features = "zihintntl", Attributes = [CustomTypeChecking]
+
+// BuiltinsRISCV.td - builtins_riscv - INSERTION_START
+// BuiltinsRISCV.td - builtins_riscv - INSERTION_END

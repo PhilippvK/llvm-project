@@ -657,6 +657,8 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   setOperationAction(ISD::ATOMIC_FENCE, MVT::Other, Custom);
 
   setBooleanContents(ZeroOrOneBooleanContent);
+// RISCVISelLowering.cpp - legal_ops - INSERTION_START
+// RISCVISelLowering.cpp - legal_ops - INSERTION_END
 
   if (getTargetMachine().getTargetTriple().isOSLinux()) {
     // Custom lowering of llvm.clear_cache.
