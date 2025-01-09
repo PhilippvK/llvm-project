@@ -22006,6 +22006,66 @@ Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
     break;
 
 // CGBuiltin.cpp - cg_builtin - INSERTION_START
+case RISCV::BI__builtin_riscv_xcorevmac_mac_mac:
+    ID = Intrinsic::riscv_xcorevmac_mac_mac;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_msu:
+    ID = Intrinsic::riscv_xcorevmac_mac_msu;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulun:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulhhun:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulhhun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulsn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulhhsn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulhhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulurn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulurn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulhhurn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulhhurn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulsrn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_mulhhsrn:
+    ID = Intrinsic::riscv_xcorevmac_mac_mulhhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_macun:
+    ID = Intrinsic::riscv_xcorevmac_mac_macun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_machhun:
+    ID = Intrinsic::riscv_xcorevmac_mac_machhun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_macsn:
+    ID = Intrinsic::riscv_xcorevmac_mac_macsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_machhsn:
+    ID = Intrinsic::riscv_xcorevmac_mac_machhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_macurn:
+    ID = Intrinsic::riscv_xcorevmac_mac_macurn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_machhurn:
+    ID = Intrinsic::riscv_xcorevmac_mac_machhurn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_macsrn:
+    ID = Intrinsic::riscv_xcorevmac_mac_macsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_mac_machhsrn:
+    ID = Intrinsic::riscv_xcorevmac_mac_machhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_alu_exthz:
+    ID = Intrinsic::riscv_xcorevmac_alu_exthz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmac_alu_extbz:
+    ID = Intrinsic::riscv_xcorevmac_alu_extbz;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed

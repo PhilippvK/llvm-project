@@ -148,4 +148,65 @@ def ntl_store : RISCVBuiltin<"void(...)">;
 } // Features = "zihintntl", Attributes = [CustomTypeChecking]
 
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_START
+// xcorevmac
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mac : RISCVBuiltin<"int32_t(int32_t, int32_t, int32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_msu : RISCVBuiltin<"int32_t(int32_t, int32_t, int32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulun : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulhhun : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulhhsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulurn : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulhhurn : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_mulhhsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_macun : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_machhun : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_macsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_machhsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_macurn : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_machhurn : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_macsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_mac_machhsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_alu_exthz : RISCVBuiltin<"void(uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmac_alu_extbz : RISCVBuiltin<"void(uint32_t)", "xcorevmac,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END
