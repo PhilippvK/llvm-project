@@ -998,6 +998,8 @@ def HasStdExtSvinval : Predicate<"Subtarget->hasStdExtSvinval()">,
                            "'Svinval' (Fine-Grained Address-Translation Cache Invalidation)">;
 
 // RISCVFeatures.td - riscv_features - INSERTION_START
+def FeatureVendorXCoreVMac : RISCVExtension<"xcorevmac", 1, 0, "'XCoreVMac' (XCoreVMac Extension)">;
+def HasVendorXCoreVMac : Predicate<"Subtarget->hasVendorXCoreVMac()">, AssemblerPredicate<(any_of FeatureVendorXCoreVMac), "'XCoreVMac' (XCoreVMac Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
