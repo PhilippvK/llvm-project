@@ -300,4 +300,59 @@ def xcorevalu_alu_subrn : RISCVBuiltin<"int32_t(int32_t, int32_t, uint32_t)", "x
 let Attributes = [NoThrow, Const] in {
 def xcorevalu_alu_suburn : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevalu,32bit">;
 } // Attributes = [NoThrow, Const]
+// xcorevbitmanip
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_mulhhun : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_mulsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_mulhhsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_mulsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_mulhhsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_macsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_machhsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_macsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_mac_machhsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_alu_exthz : RISCVBuiltin<"void(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_alu_extbz : RISCVBuiltin<"void(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_ff1 : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_fl1 : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_clb : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_cnt : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_ror : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_extractr : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevbitmanip_bitmanip_extractur : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

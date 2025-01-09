@@ -2104,6 +2104,81 @@ let TargetPrefix = "riscv" in {
     [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
 
 }
+let TargetPrefix = "riscv" in {
+  def int_riscv_xcorevbitmanip_mac_mulhhun : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_mulsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_mulhhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_mulsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_mulhhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_macsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_machhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_macsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_mac_machhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_alu_exthz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_alu_extbz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_ff1 : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_fl1 : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_clb : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_cnt : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_ror : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_extractr : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevbitmanip_bitmanip_extractur : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+
+}
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_END
 } // TargetPrefix = "riscv"
 
