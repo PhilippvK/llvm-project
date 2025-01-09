@@ -22066,6 +22066,96 @@ case RISCV::BI__builtin_riscv_xcorevmac_mac_mac:
   case RISCV::BI__builtin_riscv_xcorevmac_alu_extbz:
     ID = Intrinsic::riscv_xcorevmac_alu_extbz;
     break;
+case RISCV::BI__builtin_riscv_xcorevalu_mac_mulhhun:
+    ID = Intrinsic::riscv_xcorevalu_mac_mulhhun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_mulsn:
+    ID = Intrinsic::riscv_xcorevalu_mac_mulsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_mulhhsn:
+    ID = Intrinsic::riscv_xcorevalu_mac_mulhhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_mulsrn:
+    ID = Intrinsic::riscv_xcorevalu_mac_mulsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_mulhhsrn:
+    ID = Intrinsic::riscv_xcorevalu_mac_mulhhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_macsn:
+    ID = Intrinsic::riscv_xcorevalu_mac_macsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_machhsn:
+    ID = Intrinsic::riscv_xcorevalu_mac_machhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_macsrn:
+    ID = Intrinsic::riscv_xcorevalu_mac_macsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_mac_machhsrn:
+    ID = Intrinsic::riscv_xcorevalu_mac_machhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_abs:
+    ID = Intrinsic::riscv_xcorevalu_alu_abs;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_exths:
+    ID = Intrinsic::riscv_xcorevalu_alu_exths;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_exthz:
+    ID = Intrinsic::riscv_xcorevalu_alu_exthz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_extbs:
+    ID = Intrinsic::riscv_xcorevalu_alu_extbs;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_extbz:
+    ID = Intrinsic::riscv_xcorevalu_alu_extbz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_slet:
+    ID = Intrinsic::riscv_xcorevalu_alu_slet;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_sletu:
+    ID = Intrinsic::riscv_xcorevalu_alu_sletu;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_min:
+    ID = Intrinsic::riscv_xcorevalu_alu_min;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_minu:
+    ID = Intrinsic::riscv_xcorevalu_alu_minu;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_max:
+    ID = Intrinsic::riscv_xcorevalu_alu_max;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_maxu:
+    ID = Intrinsic::riscv_xcorevalu_alu_maxu;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_clip:
+    ID = Intrinsic::riscv_xcorevalu_alu_clip;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_clipu:
+    ID = Intrinsic::riscv_xcorevalu_alu_clipu;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_addn:
+    ID = Intrinsic::riscv_xcorevalu_alu_addn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_addun:
+    ID = Intrinsic::riscv_xcorevalu_alu_addun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_addrn:
+    ID = Intrinsic::riscv_xcorevalu_alu_addrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_addurn:
+    ID = Intrinsic::riscv_xcorevalu_alu_addurn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_subn:
+    ID = Intrinsic::riscv_xcorevalu_alu_subn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_subun:
+    ID = Intrinsic::riscv_xcorevalu_alu_subun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_subrn:
+    ID = Intrinsic::riscv_xcorevalu_alu_subrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevalu_alu_suburn:
+    ID = Intrinsic::riscv_xcorevalu_alu_suburn;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed
