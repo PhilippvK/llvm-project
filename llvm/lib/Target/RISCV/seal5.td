@@ -9,5 +9,7 @@ include "seal5/XCoreVAlu.td"
 include "seal5/XCoreVBitmanip.td"
 // XCoreVSimd
 include "seal5/XCoreVSimd.td"
+// XCoreVMem
+include "seal5/XCoreVMem.td"
 // seal5.td - seal5_td_includes - INSERTION_END
 
