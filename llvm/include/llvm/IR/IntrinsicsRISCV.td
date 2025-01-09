@@ -2179,6 +2179,613 @@ let TargetPrefix = "riscv" in {
     [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
 
 }
+let TargetPrefix = "riscv" in {
+  def int_riscv_xcorevsimd_mac_mulhhun : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_mulsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_mulhhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_mulsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_mulhhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_macsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_machhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_macsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_mac_machhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_alu_exthz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_alu_extbz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_abs_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_abs_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cplxconj : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_add_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_add_b_sc : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_add_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_add_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sub_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sub_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sub_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sub_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avg_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avg_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avg_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avg_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avgu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avgu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avgu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_avgu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_min_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_min_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_min_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_min_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_minu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_minu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_minu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_minu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_max_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_max_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_max_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_max_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_maxu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_maxu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_maxu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_maxu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_slr_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_slr_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_slr_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_slr_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sra_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sra_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sra_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sra_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sll_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sll_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sll_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sll_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_or_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_or_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_or_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_or_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_xor_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_xor_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_xor_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_xor_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_and_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_and_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_and_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_and_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotup_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotup_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotup_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotup_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotusp_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotusp_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotusp_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotusp_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotsp_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotsp_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotsp_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_dotsp_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_pack : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_pack_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpeq_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpeq_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpeq_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpeq_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpne_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpne_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpne_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpne_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgt_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgt_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgt_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgt_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpge_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpge_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpge_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpge_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmplt_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmplt_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmplt_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmplt_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmple_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmple_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmple_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmple_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgtu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgtu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgtu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgtu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgeu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgeu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgeu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpgeu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpltu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpltu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpltu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpltu_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpleu_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpleu_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpleu_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cmpleu_h_S : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_subrotmj : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_extract_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_extract_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle_sci_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle_sci_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotup_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotup_b_sc : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotup_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotup_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotusp_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotusp_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotusp_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotusp_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotsp_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotsp_b_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotsp_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_sdotsp_h_SC : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle2_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_shuffle2_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_packhi_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_packlo_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cplxmul_r : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_cplxmul_i : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_insert_b : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevsimd_simd_insert_h : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+
+}
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_END
 } // TargetPrefix = "riscv"
 

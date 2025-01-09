@@ -355,4 +355,458 @@ def xcorevbitmanip_bitmanip_extractr : RISCVBuiltin<"uint32_t(uint32_t, uint32_t
 let Attributes = [NoThrow, Const] in {
 def xcorevbitmanip_bitmanip_extractur : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevbitmanip,32bit">;
 } // Attributes = [NoThrow, Const]
+// xcorevsimd
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_mulhhun : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_mulsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_mulhhsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_mulsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_mulhhsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_macsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_machhsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_macsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_mac_machhsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_alu_exthz : RISCVBuiltin<"void(uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_alu_extbz : RISCVBuiltin<"void(uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_abs_b : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_abs_h : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cplxconj : RISCVBuiltin<"uint32_t(uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_add_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_add_b_sc : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_add_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_add_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sub_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sub_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sub_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sub_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avg_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avg_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avg_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avg_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avgu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avgu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avgu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_avgu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_min_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_min_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_min_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_min_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_minu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_minu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_minu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_minu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_max_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_max_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_max_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_max_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_maxu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_maxu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_maxu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_maxu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_slr_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_slr_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_slr_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_slr_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sra_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sra_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sra_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sra_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sll_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sll_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sll_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sll_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_or_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_or_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_or_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_or_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_xor_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_xor_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_xor_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_xor_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_and_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_and_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_and_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_and_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotup_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotup_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotup_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotup_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotusp_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotusp_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotusp_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotusp_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotsp_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotsp_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotsp_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_dotsp_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_pack : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_pack_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpeq_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpeq_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpeq_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpeq_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpne_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpne_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpne_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpne_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgt_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgt_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgt_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgt_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpge_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpge_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpge_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpge_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmplt_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmplt_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmplt_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmplt_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmple_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmple_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmple_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmple_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgtu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgtu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgtu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgtu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgeu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgeu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgeu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpgeu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpltu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpltu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpltu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpltu_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpleu_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpleu_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpleu_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cmpleu_h_S : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_subrotmj : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_extract_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_extract_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle_sci_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle_sci_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotup_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotup_b_sc : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotup_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotup_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotusp_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotusp_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotusp_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotusp_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotsp_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotsp_b_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotsp_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_sdotsp_h_SC : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle2_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_shuffle2_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_packhi_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_packlo_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cplxmul_r : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_cplxmul_i : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_insert_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevsimd_simd_insert_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

@@ -22210,6 +22210,459 @@ case RISCV::BI__builtin_riscv_xcorevbitmanip_mac_mulhhun:
   case RISCV::BI__builtin_riscv_xcorevbitmanip_bitmanip_extractur:
     ID = Intrinsic::riscv_xcorevbitmanip_bitmanip_extractur;
     break;
+case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulhhun:
+    ID = Intrinsic::riscv_xcorevsimd_mac_mulhhun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulsn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_mulsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulhhsn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_mulhhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulsrn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_mulsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulhhsrn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_mulhhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_macsn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_macsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_machhsn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_machhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_macsrn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_macsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_mac_machhsrn:
+    ID = Intrinsic::riscv_xcorevsimd_mac_machhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_alu_exthz:
+    ID = Intrinsic::riscv_xcorevsimd_alu_exthz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_alu_extbz:
+    ID = Intrinsic::riscv_xcorevsimd_alu_extbz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_abs_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_abs_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_abs_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_abs_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cplxconj:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cplxconj;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_add_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_add_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_add_b_sc:
+    ID = Intrinsic::riscv_xcorevsimd_simd_add_b_sc;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_add_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_add_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_add_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_add_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sub_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sub_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sub_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sub_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sub_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sub_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sub_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sub_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avg_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avg_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avg_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avg_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avg_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avg_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avg_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avg_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avgu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avgu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avgu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avgu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avgu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avgu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_avgu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_avgu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_min_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_min_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_min_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_min_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_min_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_min_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_min_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_min_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_minu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_minu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_minu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_minu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_minu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_minu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_minu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_minu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_max_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_max_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_max_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_max_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_max_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_max_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_max_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_max_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_maxu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_maxu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_maxu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_maxu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_maxu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_maxu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_maxu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_maxu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_slr_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_slr_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_slr_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_slr_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_slr_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_slr_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_slr_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_slr_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sra_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sra_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sra_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sra_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sra_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sra_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sra_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sra_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sll_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sll_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sll_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sll_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sll_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sll_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sll_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sll_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_or_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_or_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_or_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_or_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_or_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_or_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_or_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_or_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_xor_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_xor_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_xor_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_xor_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_xor_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_xor_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_xor_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_xor_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_and_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_and_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_and_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_and_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_and_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_and_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_and_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_and_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotup_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotup_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotup_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotup_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotup_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotup_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotup_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotup_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotusp_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotusp_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotusp_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotusp_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotusp_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotusp_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotusp_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotusp_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotsp_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotsp_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotsp_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotsp_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotsp_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotsp_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_dotsp_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_dotsp_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_pack:
+    ID = Intrinsic::riscv_xcorevsimd_simd_pack;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_pack_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_pack_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpeq_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpeq_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpeq_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpeq_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpeq_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpeq_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpeq_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpeq_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpne_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpne_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpne_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpne_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpne_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpne_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpne_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpne_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgt_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgt_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgt_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgt_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgt_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgt_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgt_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgt_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpge_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpge_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpge_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpge_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpge_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpge_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpge_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpge_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmplt_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmplt_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmplt_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmplt_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmplt_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmplt_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmplt_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmplt_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmple_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmple_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmple_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmple_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmple_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmple_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmple_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmple_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgtu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgtu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgtu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgtu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgtu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgtu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgtu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgtu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgeu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgeu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgeu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgeu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgeu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgeu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpgeu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpgeu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpltu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpltu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpltu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpltu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpltu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpltu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpltu_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpltu_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpleu_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpleu_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpleu_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpleu_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpleu_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpleu_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cmpleu_h_S:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cmpleu_h_S;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_subrotmj:
+    ID = Intrinsic::riscv_xcorevsimd_simd_subrotmj;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_extract_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_extract_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_extract_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_extract_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle_sci_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle_sci_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle_sci_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle_sci_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotup_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotup_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotup_b_sc:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotup_b_sc;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotup_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotup_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotup_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotup_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotusp_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotusp_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotusp_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotusp_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotusp_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotusp_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotusp_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotusp_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotsp_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotsp_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotsp_b_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotsp_b_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotsp_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotsp_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_sdotsp_h_SC:
+    ID = Intrinsic::riscv_xcorevsimd_simd_sdotsp_h_SC;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle2_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle2_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_shuffle2_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_shuffle2_h;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_packhi_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_packhi_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_packlo_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_packlo_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cplxmul_r:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cplxmul_r;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_cplxmul_i:
+    ID = Intrinsic::riscv_xcorevsimd_simd_cplxmul_i;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_insert_b:
+    ID = Intrinsic::riscv_xcorevsimd_simd_insert_b;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevsimd_simd_insert_h:
+    ID = Intrinsic::riscv_xcorevsimd_simd_insert_h;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed
