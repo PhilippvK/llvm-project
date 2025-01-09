@@ -809,4 +809,38 @@ def xcorevsimd_simd_insert_b : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32
 let Attributes = [NoThrow, Const] in {
 def xcorevsimd_simd_insert_h : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xcorevsimd,32bit">;
 } // Attributes = [NoThrow, Const]
+// xcorevmem
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_mulhhun : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_mulsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_mulhhsn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_mulsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_mulhhsrn : RISCVBuiltin<"int32_t(uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_macsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_machhsn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_macsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_mac_machhsrn : RISCVBuiltin<"int32_t(int32_t, uint32_t, uint32_t, uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_alu_exthz : RISCVBuiltin<"void(uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xcorevmem_alu_extbz : RISCVBuiltin<"void(uint32_t)", "xcorevmem,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

@@ -22663,6 +22663,39 @@ case RISCV::BI__builtin_riscv_xcorevsimd_mac_mulhhun:
   case RISCV::BI__builtin_riscv_xcorevsimd_simd_insert_h:
     ID = Intrinsic::riscv_xcorevsimd_simd_insert_h;
     break;
+case RISCV::BI__builtin_riscv_xcorevmem_mac_mulhhun:
+    ID = Intrinsic::riscv_xcorevmem_mac_mulhhun;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_mulsn:
+    ID = Intrinsic::riscv_xcorevmem_mac_mulsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_mulhhsn:
+    ID = Intrinsic::riscv_xcorevmem_mac_mulhhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_mulsrn:
+    ID = Intrinsic::riscv_xcorevmem_mac_mulsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_mulhhsrn:
+    ID = Intrinsic::riscv_xcorevmem_mac_mulhhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_macsn:
+    ID = Intrinsic::riscv_xcorevmem_mac_macsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_machhsn:
+    ID = Intrinsic::riscv_xcorevmem_mac_machhsn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_macsrn:
+    ID = Intrinsic::riscv_xcorevmem_mac_macsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_mac_machhsrn:
+    ID = Intrinsic::riscv_xcorevmem_mac_machhsrn;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_alu_exthz:
+    ID = Intrinsic::riscv_xcorevmem_alu_exthz;
+    break;
+  case RISCV::BI__builtin_riscv_xcorevmem_alu_extbz:
+    ID = Intrinsic::riscv_xcorevmem_alu_extbz;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed

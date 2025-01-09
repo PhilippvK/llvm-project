@@ -2786,6 +2786,53 @@ let TargetPrefix = "riscv" in {
     [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
 
 }
+let TargetPrefix = "riscv" in {
+  def int_riscv_xcorevmem_mac_mulhhun : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_mulsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_mulhhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_mulsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_mulhhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_macsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_machhsn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_macsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_mac_machhsrn : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_alu_exthz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xcorevmem_alu_extbz : Intrinsic<
+    [],
+    [llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+
+}
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_END
 } // TargetPrefix = "riscv"
 
