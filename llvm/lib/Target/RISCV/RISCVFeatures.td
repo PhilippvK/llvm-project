@@ -1002,6 +1002,8 @@ def FeatureVendorXCoreVMac : RISCVExtension<"xcorevmac", 1, 0, "'XCoreVMac' (XCo
 def HasVendorXCoreVMac : Predicate<"Subtarget->hasVendorXCoreVMac()">, AssemblerPredicate<(any_of FeatureVendorXCoreVMac), "'XCoreVMac' (XCoreVMac Extension)">;
 def FeatureVendorXCoreVAlu : RISCVExtension<"xcorevalu", 1, 0, "'XCoreVAlu' (XCoreVAlu Extension)">;
 def HasVendorXCoreVAlu : Predicate<"Subtarget->hasVendorXCoreVAlu()">, AssemblerPredicate<(any_of FeatureVendorXCoreVAlu), "'XCoreVAlu' (XCoreVAlu Extension)">;
+def FeatureVendorXCoreVBitmanip : RISCVExtension<"xcorevbitmanip", 1, 0, "'XCoreVBitmanip' (XCoreVBitmanip Extension)">;
+def HasVendorXCoreVBitmanip : Predicate<"Subtarget->hasVendorXCoreVBitmanip()">, AssemblerPredicate<(any_of FeatureVendorXCoreVBitmanip), "'XCoreVBitmanip' (XCoreVBitmanip Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
