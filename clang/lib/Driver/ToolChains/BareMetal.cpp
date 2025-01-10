@@ -26,6 +26,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 #include <sstream>
+#include <iostream>
 
 using namespace llvm::opt;
 using namespace clang;
@@ -100,6 +101,7 @@ static bool findRISCVMultilibs(const Driver &D,
 BareMetal::BareMetal(const Driver &D, const llvm::Triple &Triple,
                      const ArgList &Args)
     : ToolChain(D, Triple, Args) {
+  std::cout << "BareMetal" << std::endl;
   getProgramPaths().push_back(getDriver().getInstalledDir());
   if (getDriver().getInstalledDir() != getDriver().Dir)
     getProgramPaths().push_back(getDriver().Dir);
@@ -109,9 +111,15 @@ BareMetal::BareMetal(const Driver &D, const llvm::Triple &Triple,
   if (!SysRoot.empty()) {
     for (const Multilib &M : getOrderedMultilibs()) {
       SmallString<128> Dir(SysRoot);
-      llvm::sys::path::append(Dir, M.osSuffix(), "lib");
+      SmallString<128> Dir2(SysRoot);
+      // llvm::sys::path::append(Dir, M.osSuffix(), "lib");
+      llvm::sys::path::append(Dir, "lib", M.osSuffix());
+      llvm::sys::path::append(Dir, "..", "lib", M.osSuffix());
       getFilePaths().push_back(std::string(Dir));
+      std::cout << "LibDir=" << std::string(Dir.str()).c_str() << std::endl;
+      std::cout << "LibDir2=" << std::string(Dir2.str()).c_str() << std::endl;
       getLibraryPaths().push_back(std::string(Dir));
+      getLibraryPaths().push_back(std::string(Dir2));
     }
   }
 }
@@ -217,21 +225,23 @@ static std::string computeBaseSysRoot(const Driver &D,
   return std::string(SysRootDir);
 }
 
+
 void BareMetal::findMultilibs(const Driver &D, const llvm::Triple &Triple,
                               const ArgList &Args) {
+  std::cout << "findMultilibs" << std::endl;
   DetectedMultilibs Result;
-  if (isRISCVBareMetal(Triple)) {
-    if (findRISCVMultilibs(D, Triple, Args, Result)) {
-      SelectedMultilibs = Result.SelectedMultilibs;
-      Multilibs = Result.Multilibs;
-    }
-  } else {
+  // if (isRISCVBareMetal(Triple)) {
+  //   if (findRISCVMultilibs(D, Triple, Args, Result)) {
+  //     SelectedMultilibs = Result.SelectedMultilibs;
+  //     Multilibs = Result.Multilibs;
+  //   }
+  // } else {
     llvm::SmallString<128> MultilibPath(computeBaseSysRoot(D, Triple));
     llvm::sys::path::append(MultilibPath, MultilibFilename);
     findMultilibsFromYAML(*this, D, MultilibPath, Args, Result);
     SelectedMultilibs = Result.SelectedMultilibs;
     Multilibs = Result.Multilibs;
-  }
+  // }
 }
 
 bool BareMetal::handlesTarget(const llvm::Triple &Triple) {
@@ -263,6 +273,7 @@ BareMetal::OrderedMultilibs BareMetal::getOrderedMultilibs() const {
 
 void BareMetal::AddClangSystemIncludeArgs(const ArgList &DriverArgs,
                                           ArgStringList &CC1Args) const {
+  std::cout << "BareMetal::AddClangSystemIncludeArgs" << std::endl;
   if (DriverArgs.hasArg(options::OPT_nostdinc))
     return;
 
@@ -274,11 +285,16 @@ void BareMetal::AddClangSystemIncludeArgs(const ArgList &DriverArgs,
 
   if (!DriverArgs.hasArg(options::OPT_nostdlibinc)) {
     const SmallString<128> SysRoot(computeSysRoot());
+    std::cout << "SysRoot=" << std::string(SysRoot.str()).c_str() << std::endl;
     if (!SysRoot.empty()) {
+      std::cout << "Not empty" << std::endl;
       for (const Multilib &M : getOrderedMultilibs()) {
+        // std::cout << "M=" << M << std::endl;
+        std::cout << "M.includeSuffix()=" << M.includeSuffix() << std::endl;
         SmallString<128> Dir(SysRoot);
-        llvm::sys::path::append(Dir, M.includeSuffix());
+        // llvm::sys::path::append(Dir, M.includeSuffix());
         llvm::sys::path::append(Dir, "include");
+        std::cout << "Dir=" << std::string(Dir.str()).c_str() << std::endl;
         addSystemInclude(DriverArgs, CC1Args, Dir.str());
       }
     }
@@ -367,6 +383,7 @@ void BareMetal::AddCXXStdlibLibArgs(const ArgList &Args,
 void BareMetal::AddLinkRuntimeLib(const ArgList &Args,
                                   ArgStringList &CmdArgs) const {
   ToolChain::RuntimeLibType RLT = GetRuntimeLibType(Args);
+  std::cout << "RLT" << RLT << std::endl;
   switch (RLT) {
   case ToolChain::RLT_CompilerRT: {
     const std::string FileName = getCompilerRT(Args, "builtins");

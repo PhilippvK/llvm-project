@@ -16,6 +16,8 @@
 #include "llvm/Support/Path.h"
 #include "llvm/Support/raw_ostream.h"
 
+#include <iostream>
+
 using namespace clang::driver;
 using namespace clang::driver::toolchains;
 using namespace clang::driver::tools;
@@ -50,18 +52,21 @@ bool RISCVToolChain::hasGCCToolchain(const Driver &D,
 RISCVToolChain::RISCVToolChain(const Driver &D, const llvm::Triple &Triple,
                                const ArgList &Args)
     : Generic_ELF(D, Triple, Args) {
+  std::cout << "RISCVToolChain::RISCVToolChain" << std::endl;
   GCCInstallation.init(Triple, Args);
   if (GCCInstallation.isValid()) {
     Multilibs = GCCInstallation.getMultilibs();
     SelectedMultilibs.assign({GCCInstallation.getMultilib()});
     path_list &Paths = getFilePaths();
     // Add toolchain/multilib specific file paths.
+  std::cout << "GI.gIP=" << std::string(GCCInstallation.getInstallPath()).c_str() << std::endl;
     addMultilibsFilePaths(D, Multilibs, SelectedMultilibs.back(),
                           GCCInstallation.getInstallPath(), Paths);
     getFilePaths().push_back(GCCInstallation.getInstallPath().str());
     ToolChain::path_list &PPaths = getProgramPaths();
     // Multilib cross-compiler GCC installations put ld in a triple-prefixed
     // directory off of the parent of the GCC installation.
+  std::cout << "GI.gPLP=" << std::string(GCCInstallation.getParentLibPath()).c_str() << std::endl;
     PPaths.push_back(Twine(GCCInstallation.getParentLibPath() + "/../" +
                            GCCInstallation.getTriple().str() + "/bin")
                          .str());
