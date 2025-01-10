@@ -1,0 +1,1424 @@
+Args: clang (LLVM option parsing) -global-isel -debug 
+Clearing AST...
+
+Features:+32bit,+c,+m,+relax,-a,-d,-e,-experimental-zacas,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicond,-experimental-ztso,-experimental-zvbb,-experimental-zvbc,-experimental-zvfbfmin,-experimental-zvfbfwma,-experimental-zvkb,-experimental-zvkg,-experimental-zvkn,-experimental-zvknc,-experimental-zvkned,-experimental-zvkng,-experimental-zvknha,-experimental-zvknhb,-experimental-zvks,-experimental-zvksc,-experimental-zvksed,-experimental-zvksg,-experimental-zvksh,-experimental-zvkt,-f,-h,-save-restore,-smaia,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfcie,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zca,-zcb,-zcd,-zce,-zcf,-zcmp,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zicbom,-zicbop,-zicboz,-zicntr,-zicsr,-zifencei,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b
+CPU:generic-rv32
+TuneCPU:generic-rv32
+
+FOUND IF CONDITION!    %cmp = icmp slt i32 %0, %1  T: cond.true  F: cond.false
+Removing BB: 
+
+cond.true:                                        ; No predecessors!
+  br label %cond.end
+Removing BB: 
+
+cond.false:                                       ; No predecessors!
+  br label %cond.end
+Merging: cond.end into entry
+SROA function: foo
+SROA alloca:   %y.addr = alloca i32, align 4
+  Rewriting FCA loads and stores...
+Slices of alloca:   %y.addr = alloca i32, align 4
+  [0,4) slice #0 (splittable)
+    used by:   store i32 %y, ptr %y.addr, align 4, !tbaa !5
+  [0,4) slice #1 (splittable)
+    used by:   %1 = load i32, ptr %y.addr, align 4, !tbaa !5
+  [0,4) slice #2 (splittable)
+    used by:   %3 = load i32, ptr %y.addr, align 4
+Pre-splitting loads and stores
+  Searching for candidate loads and stores
+Rewriting alloca partition [0,4) to:   %y.addr = alloca i32, align 4
+  rewriting [0,4) slice #0 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   store i32 %y, ptr %y.addr, align 4, !tbaa !5
+          to:   store i32 %y, ptr %y.addr, align 4, !tbaa !5
+  rewriting [0,4) slice #1 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   %1 = load i32, ptr %y.addr, align 4, !tbaa !5
+          to:   %y.addr.0.load = load i32, ptr %y.addr, align 4
+  rewriting [0,4) slice #2 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   %3 = load i32, ptr %y.addr, align 4
+          to:   %y.addr.0.load1 = load i32, ptr %y.addr, align 4
+  Speculating PHIs
+  Rewriting Selects
+Deleting dead instruction:   %3 = load i32, ptr %y.addr, align 4
+Deleting dead instruction:   %1 = load i32, ptr %y.addr, align 4, !tbaa !5
+Deleting dead instruction:   store i32 %y, ptr %y.addr, align 4, !tbaa !5
+SROA alloca:   %x.addr = alloca i32, align 4
+  Rewriting FCA loads and stores...
+Slices of alloca:   %x.addr = alloca i32, align 4
+  [0,4) slice #0 (splittable)
+    used by:   store i32 %x, ptr %x.addr, align 4, !tbaa !5
+  [0,4) slice #1 (splittable)
+    used by:   %0 = load i32, ptr %x.addr, align 4, !tbaa !5
+  [0,4) slice #2 (splittable)
+    used by:   %1 = load i32, ptr %x.addr, align 4
+Pre-splitting loads and stores
+  Searching for candidate loads and stores
+Rewriting alloca partition [0,4) to:   %x.addr = alloca i32, align 4
+  rewriting [0,4) slice #0 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   store i32 %x, ptr %x.addr, align 4, !tbaa !5
+          to:   store i32 %x, ptr %x.addr, align 4, !tbaa !5
+  rewriting [0,4) slice #1 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   %0 = load i32, ptr %x.addr, align 4, !tbaa !5
+          to:   %x.addr.0.load = load i32, ptr %x.addr, align 4
+  rewriting [0,4) slice #2 (splittable)
+   Begin:(0, 4) NewBegin:(0, 4) NewAllocaBegin:(0, 4)
+    original:   %1 = load i32, ptr %x.addr, align 4
+          to:   %x.addr.0.load2 = load i32, ptr %x.addr, align 4
+  Speculating PHIs
+  Rewriting Selects
+Deleting dead instruction:   %1 = load i32, ptr %x.addr, align 4
+Deleting dead instruction:   %0 = load i32, ptr %x.addr, align 4, !tbaa !5
+Deleting dead instruction:   store i32 %x, ptr %x.addr, align 4, !tbaa !5
+Promoting allocas with mem2reg...
+Marking Block Executable: entry
+markOverdefined: i32 %x
+markOverdefined: i32 %y
+
+Popped off OI-WL: i32 %y
+markOverdefined:   %cmp = icmp slt i32 %x, %y
+updated overdefined:   %cond = select i1 %cmp, i32 %x, i32 %y
+
+Popped off OI-WL:   %cond = select i1 %cmp, i32 %x, i32 %y
+Merged overdefined into ; Function Attrs: nounwind uwtable
+define dso_local i32 @foo(i32 noundef %x, i32 noundef %y) #0 {
+entry:
+  %cmp = icmp slt i32 %x, %y
+  %cond = select i1 %cmp, i32 %x, i32 %y
+  ret i32 %cond
+}
+ : overdefined
+
+Popped off OI-WL: ; Function Attrs: nounwind uwtable
+define dso_local i32 @foo(i32 noundef %x, i32 noundef %y) #0 {
+entry:
+  %cmp = icmp slt i32 %x, %y
+  %cond = select i1 %cmp, i32 %x, i32 %y
+  ret i32 %cond
+}
+
+
+Popped off OI-WL:   %cmp = icmp slt i32 %x, %y
+
+Popped off OI-WL: i32 %x
+
+Popped off BBWL: 
+entry:
+  %cmp = icmp slt i32 %x, %y
+  %cond = select i1 %cmp, i32 %x, i32 %y
+  ret i32 %cond
+
+FnSpecialization: Try function: foo
+FnSpecialization: No possible specializations found in module
+Marking Block Executable: entry
+
+Popped off BBWL: 
+entry:
+  %cmp = icmp slt i32 %x, %y
+  %cond = select i1 %cmp, i32 %x, i32 %y
+  ret i32 %cond
+
+Popped off V-WL: ; Function Attrs: nounwind uwtable
+define dso_local i32 @foo(i32 noundef %x, i32 noundef %y) #0 {
+entry:
+  %cmp = icmp slt i32 %x, %y
+  %cond = select i1 %cmp, i32 %x, i32 %y
+  ret i32 %cond
+}
+
+
+Popped off V-WL:   %cond = select i1 %cmp, i32 %x, i32 %y
+
+Popped off V-WL:   %cmp = icmp slt i32 %x, %y
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = select i1 %cmp, i32 %x, i32 %y
+ADD:   %cmp = icmp slt i32 %x, %y
+IC: Visiting:   %cmp = icmp slt i32 %x, %y
+IC: Visiting:   %cond = select i1 %cmp, i32 %x, i32 %y
+ADD DEFERRED:   %0 = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Replacing   %cond = select i1 %cmp, i32 %x, i32 %y
+    with   %0 = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Mod =   %cond = select i1 %cmp, i32 %x, i32 %y
+    New =   %0 = select i1 %cmp, i32 %x, i32 %y
+IC: ERASE   %0 = select i1 %cmp, i32 %x, i32 %y
+ADD DEFERRED:   %cmp = icmp slt i32 %x, %y
+IC: ERASE   %cmp = icmp slt i32 %x, %y
+ADD:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+
+
+[IC] Iteration limit #1 on foo reached; stopping without verifying fixpoint
+Using default inliner heuristic.
+Building CG for module: foo.c
+  Adding 'foo' to entry set of the graph.
+    Added callable function: foo
+  Adding functions referenced by global initializers to the entry set.
+  Adding functions called by 'foo' to the graph.
+Running an SCC pass across the RefSCC: [(foo)]
+Running function passes across an SCC: (foo)
+SROA function: foo
+Not running SpeculativeExecution because TTI->hasBranchDivergence() is false.
+Jump threading on function 'foo'
+LVI Getting block end value i32 %x at 'entry'
+PUSH: i32 %x in entry
+POP i32 %x in entry = overdefined
+  Result = overdefined
+LVI Getting block end value   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y) at 'entry'
+PUSH:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y) in entry
+PUSH: i32 %y in entry
+POP i32 %y in entry = overdefined
+POP   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y) in entry = overdefined
+  Result = overdefined
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+Marked as tail call candidate:   %cond = call i32 @llvm.smin.i32(i32 %x, i32 %y)
+Calculated Rank[x] = 3
+Calculated Rank[y] = 4
+Processing fact to add to the system: sle i32 %cond, %x
+Adding 'sle %cond, %x'
+  constraint: -1 * %x + %cond <= 0
+
+fact to add to the system: sle i32 %cond, %y
+Adding 'sle %cond, %y'
+  constraint: -1 * %y + %cond <= 0
+
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+SROA function: foo
+Instruction Merger
+GVN iteration: 0
+SCCP on function 'foo'
+Marking Block Executable: entry
+markOverdefined: i32 %x
+markOverdefined: i32 %y
+
+Popped off OI-WL: i32 %y
+Merged overdefined into   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) : overdefined
+
+Popped off OI-WL:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+
+Popped off OI-WL: i32 %x
+
+Popped off BBWL: 
+entry:
+  %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+  ret i32 %cond
+
+RESOLVING UNDEFs
+DemandedBits: Root:   ret i32 %cond
+DemandedBits: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) Alive Out: 0xffffffff
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+Jump threading on function 'foo'
+LVI Getting block end value i32 %x at 'entry'
+PUSH: i32 %x in entry
+POP i32 %x in entry = overdefined
+  Result = overdefined
+LVI Getting block end value   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) at 'entry'
+PUSH:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) in entry
+PUSH: i32 %y in entry
+POP i32 %y in entry = overdefined
+POP   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) in entry = overdefined
+  Result = overdefined
+		Looking for trivial roots
+Found a new trivial root: %entry
+Last visited node: %entry
+		Looking for non-trivial roots
+Total: 1, Num: 2
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %entry
+Found roots: %entry 
+mark live:   ret i32 %cond
+mark block live: entry
+post-dom root child is a return: entry
+work live:   ret i32 %cond
+mark live:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+work live:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+final dead terminator blocks: 
+Trying to eliminate MemoryDefs that write the already existing value
+Trying to eliminate MemoryDefs at the end of the function
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+Adding nosync attr to fn foo
+Running function passes across an SCC: (foo)
+DeadArgumentEliminationPass - Deleting dead varargs
+DeadArgumentEliminationPass - Determining liveness
+DeadArgumentEliminationPass - Intrinsically live fn: foo
+DeadArgumentEliminationPass - Intrinsically live fn: llvm.smin.i32
+F2I: Looking at function foo
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+SLP: Didn't find any vector registers for target, abort.
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+SROA function: foo
+
+
+INSTCOMBINE ITERATION #1 on foo
+ADD:   ret i32 %cond
+ADD:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+IC: Visiting:   ret i32 %cond
+**** ObjCARC Contract ****
+Visiting:   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y)
+Visiting:   ret i32 %cond
+Please set both PrefetchDistance and CacheLineSize for loop data prefetch.
+*** Interleaved Access Pass: foo
+MergeICmpsLegacyPass: foo
+		Looking for trivial roots
+Found a new trivial root: %entry
+Last visited node: %entry
+		Looking for non-trivial roots
+Total: 1, Num: 2
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %entry
+Found roots: %entry 
+---- Branch Probability Info : foo ----
+
+Computing probabilities for entry
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: entry
+loop-detection
+compute-mass-in-function
+ - node: entry
+  => mass:  ffffffffffffffff
+float-to-int: min = 1.0, max = 1.0, factor = 18014398509481984.0
+ - entry: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - entry: float = 1.0, int = 18014398509481984
+
+********** Begin Constant Hoisting **********
+********** Function: foo
+********** End Constant Hoisting **********
+********** Begin TLS Variable Hoist **********
+********** Function: foo
+********** End TLS Variable Hoist **********
+---- Branch Probability Info : foo ----
+
+		Looking for trivial roots
+Found a new trivial root: %entry
+Last visited node: %entry
+		Looking for non-trivial roots
+Total: 1, Num: 2
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %entry
+Found roots: %entry 
+Computing probabilities for entry
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: entry
+loop-detection
+compute-mass-in-function
+ - node: entry
+  => mass:  ffffffffffffffff
+float-to-int: min = 1.0, max = 1.0, factor = 18014398509481984.0
+ - entry: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - entry: float = 1.0, int = 18014398509481984
+
+[SafeStack] Function: foo
+[SafeStack]     safestack is not requested for this function
+		Looking for trivial roots
+Found a new trivial root: %entry
+Last visited node: %entry
+		Looking for non-trivial roots
+Total: 1, Num: 2
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %entry
+Found roots: %entry 
+---- Branch Probability Info : foo ----
+
+Computing probabilities for entry
+Checking DILocation from   %cond = tail call i32 @llvm.smin.i32(i32 %x, i32 %y) was copied to G_SMIN
+Checking DILocation from   ret i32 %cond was copied to COPY
+Checking DILocation from   ret i32 %cond was copied to PseudoRET implicit $x10
+Generic MI Combiner for: foo
+
+Try combining %0:_(s32) = COPY $x10
+5: GIM_SwitchOpcode(MIs[0], [19, 224), Default=3064, JumpTable...) // Got=19
+211: Begin try-block
+214: GIM_CheckSimplePredicate(Predicate=1)
+217: GIM_CheckCxxPredicate(MIs[0], Predicate=1)
+217: Rejected
+220: Resume at 220 (1 try-blocks remain)
+221: GIM_Reject
+221: Rejected
+3064: Resume at 3064 (0 try-blocks remain)
+3065: GIM_Reject
+3065: Rejected
+
+Try combining %1:_(s32) = COPY $x11
+5: GIM_SwitchOpcode(MIs[0], [19, 224), Default=3064, JumpTable...) // Got=19
+211: Begin try-block
+214: GIM_CheckSimplePredicate(Predicate=1)
+217: GIM_CheckCxxPredicate(MIs[0], Predicate=1)
+217: Rejected
+220: Resume at 220 (1 try-blocks remain)
+221: GIM_Reject
+221: Rejected
+3064: Resume at 3064 (0 try-blocks remain)
+3065: GIM_Reject
+3065: Rejected
+
+Try combining %2:_(s32) = G_SMIN %0:_, %1:_
+5: GIM_SwitchOpcode(MIs[0], [19, 224), Default=3064, JumpTable...) // Got=201
+2919: Begin try-block
+2922: GIM_CheckSimplePredicate(Predicate=120)
+2925: GIM_CheckCxxPredicate(MIs[0], Predicate=96)
+2925: Rejected
+2928: Resume at 2928 (1 try-blocks remain)
+2929: GIM_Reject
+2929: Rejected
+3064: Resume at 3064 (0 try-blocks remain)
+3065: GIM_Reject
+3065: Rejected
+
+Try combining $x10 = COPY %2:_(s32)
+5: GIM_SwitchOpcode(MIs[0], [19, 224), Default=3064, JumpTable...) // Got=19
+211: Begin try-block
+214: GIM_CheckSimplePredicate(Predicate=1)
+217: GIM_CheckCxxPredicate(MIs[0], Predicate=1)
+217: Rejected
+220: Resume at 220 (1 try-blocks remain)
+221: GIM_Reject
+221: Rejected
+3064: Resume at 3064 (0 try-blocks remain)
+3065: GIM_Reject
+3065: Rejected
+
+Try combining PseudoRET implicit $x10
+5: GIM_SwitchOpcode(MIs[0], [19, 224), Default=3064, JumpTable...) // Got=367
+3065: GIM_Reject
+3065: Rejected
+Legalize Machine IR for: foo
+=== New Iteration ===
+Legalizing: %2:_(s32) = G_SMIN %0:_, %1:_
+.. opcode 201 is aliased to 204
+Applying legalizer ruleset to: 201, Tys={s32, }, Opcode=201, MMOs={}
+.. match
+.. .. Lower, 0, LLT_invalid
+.. Lower
+.. .. Erasing: %2:_(s32) = G_SMIN %0:_, %1:_
+.. .. New MI: %3:_(s1) = G_ICMP intpred(slt), %0:_(s32), %1:_
+.. .. New MI: %2:_(s32) = G_SELECT %3:_(s1), %0:_, %1:_
+.. No debug info was present
+Legalizing: %2:_(s32) = G_SELECT %3:_(s1), %0:_, %1:_
+Applying legalizer ruleset to: 135, Tys={s32, s1, }, Opcode=135, MMOs={}
+.. no match
+.. no match
+.. no match
+.. no match
+.. match
+.. .. WidenScalar, 1, s32
+.. Widen scalar
+.. .. Changing MI: %2:_(s32) = G_SELECT %3:_(s1), %0:_, %1:_
+.. .. Changed MI: %2:_(s32) = G_SELECT %4:_(s32), %0:_, %1:_
+.. .. New MI: %4:_(s32) = G_ZEXT %3:_(s1)
+.. No debug info was present
+Legalizing: %2:_(s32) = G_SELECT %4:_(s32), %0:_, %1:_
+Applying legalizer ruleset to: 135, Tys={s32, s32, }, Opcode=135, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+.. Already legal
+.. No debug info was present
+Legalizing: %3:_(s1) = G_ICMP intpred(slt), %0:_(s32), %1:_
+Applying legalizer ruleset to: 133, Tys={s1, s32, }, Opcode=133, MMOs={}
+.. no match
+.. no match
+.. no match
+.. no match
+.. match
+.. .. WidenScalar, 0, s32
+.. Widen scalar
+.. .. Changing MI: %3:_(s1) = G_ICMP intpred(slt), %0:_(s32), %1:_
+.. .. Changed MI: %5:_(s32) = G_ICMP intpred(slt), %0:_(s32), %1:_
+.. .. New MI: %3:_(s1) = G_TRUNC %5:_(s32)
+.. No debug info was present
+Legalizing: %5:_(s32) = G_ICMP intpred(slt), %0:_(s32), %1:_
+Applying legalizer ruleset to: 133, Tys={s32, s32, }, Opcode=133, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+.. Already legal
+.. No debug info was present
+.. No debug info was present
+Trying to combine: %3:_(s1) = G_TRUNC %5:_(s32)
+.. .. Changed MI: %4:_(s32) = G_ZEXT %3:_(s1)
+.. Not combined, moving to instructions list
+Trying to combine: %4:_(s32) = G_ZEXT %3:_(s1)
+.. opcode 56 is aliased to 47
+Applying legalizer ruleset to: 56, Tys={s32, }, Opcode=56, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+Applying legalizer ruleset to: 119, Tys={s32, }, Opcode=119, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+.. Combine MI: %4:_(s32) = G_ZEXT %3:_(s1)
+[0] Compute known bits: %5:_(s32) = G_ICMP intpred(slt), %0:_(s32), %1:_
+[0] Computed for: %5:_(s32) = G_ICMP intpred(slt), %0:_(s32), %1:_
+[0] Known: 0xFFFFFFFE
+[0] Zero: 0xFFFFFFFE
+[0] One:  0x0
+.. .. Changing MI: %2:_(s32) = G_SELECT %4:_(s32), %0:_, %1:_
+.. .. Changed MI: %2:_(s32) = G_SELECT %5:_(s32), %0:_, %1:_
+.. .. Changed MI: %3:_(s1) = G_TRUNC %5:_(s32)
+%5:_(s32) = G_ZEXT %3:_(s1)
+Is dead; erasing.
+.. .. Erasing: %5:_(s32) = G_ZEXT %3:_(s1)
+%3:_(s1) = G_TRUNC %5:_(s32)
+Is dead; erasing.
+.. .. Erasing: %3:_(s1) = G_TRUNC %5:_(s32)
+=== New Iteration ===
+Legalizing: %2:_(s32) = G_SELECT %5:_(s32), %0:_, %1:_
+Applying legalizer ruleset to: 135, Tys={s32, s32, }, Opcode=135, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+.. Already legal
+.. No debug info was present
+.. No debug info was present
+Generic MI Combiner for: foo
+
+Try combining %0:_(s32) = COPY $x10
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=19
+767: GIM_Reject
+767: Rejected
+
+Try combining %1:_(s32) = COPY $x11
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=19
+767: GIM_Reject
+767: Rejected
+
+Try combining %5:_(s32) = G_ICMP intpred(slt), %0:_(s32), %1:_
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=133
+767: GIM_Reject
+767: Rejected
+
+Try combining %2:_(s32) = G_SELECT %5:_(s32), %0:_, %1:_
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=135
+666: Begin try-block
+669: GIM_CheckSimplePredicate(Predicate=2)
+672: GIM_CheckCxxPredicate(MIs[0], Predicate=2)
+672: Rejected
+675: Resume at 675 (1 try-blocks remain)
+676: GIM_Reject
+676: Rejected
+766: Resume at 766 (0 try-blocks remain)
+767: GIM_Reject
+767: Rejected
+
+Try combining $x10 = COPY %2:_(s32)
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=19
+767: GIM_Reject
+767: Rejected
+
+Try combining PseudoRET implicit $x10
+5: GIM_SwitchOpcode(MIs[0], [47, 200), Default=766, JumpTable...) // Got=367
+767: GIM_Reject
+767: Rejected
+Assign register banks for: foo
+Applying legalizer ruleset to: 133, Tys={s32, s32, }, Opcode=133, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+Applying legalizer ruleset to: 135, Tys={s32, s32, }, Opcode=135, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+Assign: %0:_(s32) = COPY $x10
+Evaluating mapping cost for: %0:_(s32) = COPY $x10
+With: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Opd0
+Does assignment already match: none against GPRB
+=> is free (simple assignment).
+Total cost is: 1 * 1 + 0
+Best Mapping: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Actual mapping of the operands: Mapping ID: 4294967295 Operand Mapping: 
+Applying default-like mapping
+OpIdx 0 has not been repaired, nothing to be done
+Assign: %1:_(s32) = COPY $x11
+Evaluating mapping cost for: %1:_(s32) = COPY $x11
+With: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Opd0
+Does assignment already match: none against GPRB
+=> is free (simple assignment).
+Total cost is: 1 * 1 + 0
+Best Mapping: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Actual mapping of the operands: Mapping ID: 4294967295 Operand Mapping: 
+Applying default-like mapping
+OpIdx 0 has not been repaired, nothing to be done
+Assign: %5:_(s32) = G_ICMP intpred(slt), %0:gprb(s32), %1:gprb
+Evaluating mapping cost for: %5:_(s32) = G_ICMP intpred(slt), %0:gprb(s32), %1:gprb
+With: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 1 Map: #BreakDown: 0 }, { Idx: 2 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 3 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Opd0
+Does assignment already match: none against GPRB
+=> is free (simple assignment).
+Opd2
+Does assignment already match: GPRB against GPRB
+=> is free (match).
+Opd3
+Does assignment already match: GPRB against GPRB
+=> is free (match).
+Total cost is: 1 * 1 + 0
+Best Mapping: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 1 Map: #BreakDown: 0 }, { Idx: 2 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 3 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Actual mapping of the operands: Mapping ID: 4294967295 Operand Mapping: 
+Applying default-like mapping
+OpIdx 0 has not been repaired, nothing to be done
+OpIdx 1 is not a register, nothing to be done
+OpIdx 2 has not been repaired, nothing to be done
+OpIdx 3 has not been repaired, nothing to be done
+Assign: %2:_(s32) = G_SELECT %5:gprb(s32), %0:gprb, %1:gprb
+Evaluating mapping cost for: %2:_(s32) = G_SELECT %5:gprb(s32), %0:gprb, %1:gprb
+With: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 1 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 2 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 3 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Opd0
+Does assignment already match: none against GPRB
+=> is free (simple assignment).
+Opd1
+Does assignment already match: GPRB against GPRB
+=> is free (match).
+Opd2
+Does assignment already match: GPRB against GPRB
+=> is free (match).
+Opd3
+Does assignment already match: GPRB against GPRB
+=> is free (match).
+Total cost is: 1 * 1 + 0
+Best Mapping: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 1 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 2 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}, { Idx: 3 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Actual mapping of the operands: Mapping ID: 4294967295 Operand Mapping: 
+Applying default-like mapping
+OpIdx 0 has not been repaired, nothing to be done
+OpIdx 1 has not been repaired, nothing to be done
+OpIdx 2 has not been repaired, nothing to be done
+OpIdx 3 has not been repaired, nothing to be done
+Assign: $x10 = COPY %2:gprb(s32)
+Evaluating mapping cost for: $x10 = COPY %2:gprb(s32)
+With: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Total cost is: 1 * 1 + 0
+Best Mapping: ID: 4294967295 Cost: 1 Mapping: { Idx: 0 Map: #BreakDown: 1 [[0, 31], RegBank = GPRB]}
+Actual mapping of the operands: Mapping ID: 4294967295 Operand Mapping: 
+Applying default-like mapping
+OpIdx 0Selecting function: foo
+Applying legalizer ruleset to: 133, Tys={s32, s32, }, Opcode=133, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+Applying legalizer ruleset to: 135, Tys={s32, s32, }, Opcode=135, MMOs={}
+.. match
+.. .. Legal, 0, LLT_invalid
+Selecting: 
+  PseudoRET implicit $x10
+Into:
+  PseudoRET implicit $x10
+
+Selecting: 
+  $x10 = COPY %2:gprb(s32)
+Into:
+  $x10 = COPY %2:gprb(s32)
+
+Selecting: 
+  %2:gprb(s32) = G_SELECT %5:gprb(s32), %0:gprb, %1:gprb
+5: GIM_SwitchOpcode(MIs[0], [47, 240), Default=273717, JumpTable...) // Got=135
+131680: GIM_SwitchType(MIs[0]->getOperand(0), [3, 5), Default=131946, JumpTable...) // Got=s32
+131683: Begin try-block
+131688: GIM_CheckType(MIs[0]->getOperand(1), TypeID=3)
+131692: GIM_CheckType(MIs[0]->getOperand(2), TypeID=3)
+131696: GIM_CheckType(MIs[0]->getOperand(3), TypeID=3)
+131700: GIM_CheckRegBankForClass(MIs[0]->getOperand(0), RCEnum=3)
+131704: GIM_CheckRegBankForClass(MIs[0]->getOperand(1), RCEnum=3)
+131705: Begin try-block
+131708: GIM_CheckFeatures(ExpectedBitsetID=66)
+131708: Rejected
+131740: Resume at 131740 (3 try-blocks remain)
+131741: Begin try-block
+131744: GIM_CheckFeatures(ExpectedBitsetID=66)
+131744: Rejected
+131776: Resume at 131776 (3 try-blocks remain)
+131777: Begin try-block
+131780: GIM_CheckFeatures(ExpectedBitsetID=66)
+131780: Rejected
+131812: Resume at 131812 (3 try-blocks remain)
+131813: GIM_Reject
+131813: Rejected
+131813: Resume at 131813 (2 try-blocks remain)
+131814: GIM_Reject
+131814: Rejected
+131946: Resume at 131946 (1 try-blocks remain)
+131947: GIM_Reject
+131947: Rejected
+273717: Resume at 273717 (0 try-blocks remain)
+273718: GIM_Reject
+273718: Rejected
+Converting operand: %2:gprb
+Converting operand: %0:gprb
+Converting operand: %1:gprb
+Converting operand: %0:gpr
+Converting operand: %1:gpr
+Into:
+  %2:gpr(s32) = Select_GPR_Using_CC_GPR %0:gpr(s32), %1:gpr(s32), 2, %0:gpr(s32), %1:gpr(s32)
+
+Selecting: 
+  %5:gprb(s32) = G_ICMP intpred(slt), %0:gpr(s32), %1:gpr
+Is dead; erasing.
+Selecting: 
+  %1:gpr(s32) = COPY $x11
+Into:
+  %1:gpr(s32) = COPY $x11
+
+Selecting: 
+  %0:gpr(s32) = COPY $x10
+Into:
+  %0:gpr(s32) = COPY $x10
+
+Rules covered by selecting function: foo:
+
+# Machine code for function foo: IsSSA, TracksLiveness, Legalized, RegBankSelected, Selected
+Function Live Ins: $x10, $x11
+
+0B	bb.1.entry:
+	  successors: %bb.2(0x40000000), %bb.3(0x40000000); %bb.2(50.00%), %bb.3(50.00%)
+	  liveins: $x10, $x11
+16B	  %0:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+48B	  BLT %0:gpr, %1:gpr, %bb.3
+
+64B	bb.2.entry:
+	; predecessors: %bb.1
+	  successors: %bb.3(0x80000000); %bb.3(100.00%)
+
+
+80B	bb.3.entry:
+	; predecessors: %bb.1, %bb.2
+
+96B	  %2:gpr = PHI %0:gpr, %bb.1, %1:gpr, %bb.2
+112B	  $x10 = COPY %2:gpr
+128B	  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+********** Stack Coloring **********
+********** Function: foo
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: BB1[entry]
+ - 1: BB2[entry]
+ - 2: BB3[entry]
+loop-detection
+compute-mass-in-function
+ - node: BB1[entry]
+  => [ local  ] weight = 1073741824, succ = BB2[entry]
+  => [ local  ] weight = 1073741824, succ = BB3[entry]
+  => mass:  ffffffffffffffff
+  => assign 7fffffffffffffff (8000000000000000) to BB2[entry]
+  => assign 8000000000000000 (0000000000000000) to BB3[entry]
+ - node: BB2[entry]
+  => [ local  ] weight = 2147483648, succ = BB3[entry]
+  => mass:  7fffffffffffffff
+  => assign 7fffffffffffffff (0000000000000000) to BB3[entry]
+ - node: BB3[entry]
+  => mass:  ffffffffffffffff
+float-to-int: min = 0.5, max = 1.0, factor = 18014398509481984.0
+ - BB1[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+ - BB2[entry]: float = 0.5, scaled = 9007199254740992.0, int = 9007199254740992
+ - BB3[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - BB1[entry]: float = 1.0, int = 18014398509481984
+ - BB2[entry]: float = 0.5, int = 9007199254740992
+ - BB3[entry]: float = 1.0, int = 18014398509481984
+
+******** Pre-regalloc Machine LICM: foo ********
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: BB1[entry]
+ - 1: BB2[entry]
+ - 2: BB3[entry]
+loop-detection
+compute-mass-in-function
+ - node: BB1[entry]
+  => [ local  ] weight = 1073741824, succ = BB2[entry]
+  => [ local  ] weight = 1073741824, succ = BB3[entry]
+  => mass:  ffffffffffffffff
+  => assign 7fffffffffffffff (8000000000000000) to BB2[entry]
+  => assign 8000000000000000 (0000000000000000) to BB3[entry]
+ - node: BB2[entry]
+  => [ local  ] weight = 2147483648, succ = BB3[entry]
+  => mass:  7fffffffffffffff
+  => assign 7fffffffffffffff (0000000000000000) to BB3[entry]
+ - node: BB3[entry]
+  => mass:  ffffffffffffffff
+float-to-int: min = 0.5, max = 1.0, factor = 18014398509481984.0
+ - BB1[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+ - BB2[entry]: float = 0.5, scaled = 9007199254740992.0, int = 9007199254740992
+ - BB3[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - BB1[entry]: float = 1.0, int = 18014398509481984
+ - BB2[entry]: float = 0.5, int = 9007199254740992
+ - BB3[entry]: float = 1.0, int = 18014398509481984
+
+Entering: entry
+Entering: entry
+Exiting: entry
+Entering: entry
+Exiting: entry
+Exiting: entry
+		Looking for trivial roots
+Found a new trivial root: %bb.3
+Last visited node: %bb.1
+		Looking for non-trivial roots
+Total: 3, Num: 4
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %bb.3
+3: %bb.2
+4: %bb.1
+Found roots: %bb.3 
+Computing cycles for function: foo
+Entry block: bb.1.entry
+DFS visiting block: bb.1.entry
+  first encountered at depth 1
+  preorder number: 1
+DFS visiting block: bb.3.entry
+  first encountered at depth 3
+  preorder number: 2
+DFS visiting block: bb.3.entry
+  ended at 2
+DFS visiting block: bb.2.entry
+  first encountered at depth 2
+  preorder number: 3
+DFS visiting block: bb.3.entry
+  already done
+DFS visiting block: bb.2.entry
+  ended at 3
+DFS visiting block: bb.1.entry
+  ended at 3
+Preorder:
+  bb.1.entry: 0
+  bb.3.entry: 1
+  bb.2.entry: 2
+******** Machine Sinking ********
+********** PEEPHOLE OPTIMIZER **********
+********** Function: foo
+Machine InstCombiner: foo
+Combining MBB entry
+Combining MBB entry
+Combining MBB entry
+MBB: entry
+MBB: entry
+MBB: entry
+***** RISCVDeadRegisterDefinitions *****
+Defined/Used lanes:
+%0 Used: 0000000000000001 Def: 0000000000000001
+%1 Used: 0000000000000001 Def: 0000000000000001
+%2 Used: 0000000000000001 Def: 0000000000000001
+%3 Used: 0000000000000000 Def: FFFFFFFFFFFFFFFF
+%4 Used: 0000000000000000 Def: FFFFFFFFFFFFFFFF
+%5 Used: 0000000000000000 Def: FFFFFFFFFFFFFFFF
+
+********** PROCESS IMPLICIT DEFS **********
+********** Function: foo
+********** REWRITING TWO-ADDR INSTRS **********
+********** Function: foo
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten
+Function Live Ins: $x10, $x11
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %0:gpr = COPY killed $x10
+32B	  %1:gpr = COPY killed $x11
+48B	  %6:gpr = COPY %0:gpr
+64B	  BLT killed %0:gpr, %1:gpr, %bb.2
+
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+96B	  %6:gpr = COPY killed %1:gpr
+
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+
+128B	  %2:gpr = COPY killed %6:gpr
+144B	  $x10 = COPY killed %2:gpr
+160B	  PseudoRET implicit killed $x10
+
+# End machine code for function foo.
+
+Computing live-in reg-units in ABI blocks.
+0B	%bb.0 X10#0 X11#0
+Created 2 new intervals.
+********** INTERVALS **********
+X10 [0B,16r:0)[144r,160r:1) 0@0B-phi 1@144r
+X11 [0B,32r:0) 0@0B-phi
+%0 [16r,64r:0) 0@16r  weight:0.000000e+00
+%1 [32r,96r:0) 0@32r  weight:0.000000e+00
+%2 [128r,144r:0) 0@128r  weight:0.000000e+00
+%6 [48r,80B:0)[96r,112B:1)[112B,128r:2) 0@48r 1@96r 2@112B-phi  weight:0.000000e+00
+RegMasks:
+********** MACHINEINSTRS **********
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten
+Function Live Ins: $x10, $x11
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %0:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+48B	  %6:gpr = COPY %0:gpr
+64B	  BLT %0:gpr, %1:gpr, %bb.2
+
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+96B	  %6:gpr = COPY %1:gpr
+
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+
+128B	  %2:gpr = COPY %6:gpr
+144B	  $x10 = COPY %2:gpr
+160B	  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+********** REGISTER COALESCER **********
+********** Function: foo
+********** JOINING INTERVALS ***********
+entry:
+16B	%0:gpr = COPY $x10
+	Considering merging %0 with $x10
+	Can only merge into reserved registers.
+32B	%1:gpr = COPY $x11
+	Considering merging %1 with $x11
+	Can only merge into reserved registers.
+entry:
+96B	%6:gpr = COPY %1:gpr
+	Considering merging to GPR with %1 in %6
+		RHS = %1 [32r,96r:0) 0@32r  weight:0.000000e+00
+		LHS = %6 [48r,80B:0)[96r,112B:1)[112B,128r:2) 0@48r 1@96r 2@112B-phi  weight:0.000000e+00
+		interference at %6:0@48r
+	Interference!
+entry:
+144B	$x10 = COPY %2:gpr
+	Considering merging %2 with $x10
+	Can only merge into reserved registers.
+48B	%6:gpr = COPY %0:gpr
+	Considering merging to GPR with %0 in %6
+		RHS = %0 [16r,64r:0) 0@16r  weight:0.000000e+00
+		LHS = %6 [48r,80B:0)[96r,112B:1)[112B,128r:2) 0@48r 1@96r 2@112B-phi  weight:0.000000e+00
+		merge %6:0@48r into %0:0@16r --> @16r
+		erased:	48r	%6:gpr = COPY %0:gpr
+AllocationOrder(GPR) = [ $x10 $x11 $x12 $x13 $x14 $x15 $x16 $x17 $x5 $x6 $x7 $x28 $x29 $x30 $x31 $x8 $x9 $x18 $x19 $x20 $x21 $x22 $x23 $x24 $x25 $x26 $x27 $x1 ]
+		updated: 16B	%6:gpr = COPY $x10
+		updated: 64B	BLT %6:gpr, %1:gpr, %bb.2
+	Success: %0 -> %6
+	Result = %6 [16r,80B:0)[96r,112B:1)[112B,128r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+128B	%2:gpr = COPY %6:gpr
+	Considering merging to GPR with %2 in %6
+		RHS = %2 [128r,144r:0) 0@128r  weight:0.000000e+00
+		LHS = %6 [16r,80B:0)[96r,112B:1)[112B,128r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+		merge %2:0@128r into %6:2@112B --> @112B
+		erased:	128r	%2:gpr = COPY %6:gpr
+		updated: 144B	$x10 = COPY %6:gpr
+	Success: %2 -> %6
+	Result = %6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+96B	%6:gpr = COPY %1:gpr
+	Considering merging to GPR with %1 in %6
+		RHS = %1 [32r,96r:0) 0@32r  weight:0.000000e+00
+		LHS = %6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+		merge %6:1@96r into %1:0@32r --> @32r
+		interference at %1:0@32r
+	Interference!
+144B	$x10 = COPY %6:gpr
+	Considering merging %6 with $x10
+	Can only merge into reserved registers.
+Trying to inflate 0 regs.
+********** INTERVALS **********
+X10 [0B,16r:0)[144r,160r:1) 0@0B-phi 1@144r
+X11 [0B,32r:0) 0@0B-phi
+%1 [32r,96r:0) 0@32r  weight:0.000000e+00
+%6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+RegMasks:
+********** MACHINEINSTRS **********
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten
+Function Live Ins: $x10, $x11
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %6:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+64B	  BLT %6:gpr, %1:gpr, %bb.2
+
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+96B	  %6:gpr = COPY %1:gpr
+
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+
+144B	  $x10 = COPY %6:gpr
+160B	  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+Renaming independent subregister live ranges in foo
+Before MISched:
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten
+Function Live Ins: $x10, $x11
+
+bb.0.entry:
+  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+  liveins: $x10, $x11
+  %6:gpr = COPY $x10
+  %1:gpr = COPY $x11
+  BLT %6:gpr, %1:gpr, %bb.2
+
+bb.1.entry:
+; predecessors: %bb.0
+  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+  %6:gpr = COPY %1:gpr
+
+bb.2.entry:
+; predecessors: %bb.0, %bb.1
+
+  $x10 = COPY %6:gpr
+  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+AllocationOrder(GPR) = [ $x10 $x11 $x12 $x13 $x14 $x15 $x16 $x17 $x5 $x6 $x7 $x28 $x29 $x30 $x31 $x8 $x9 $x18 $x19 $x20 $x21 $x22 $x23 $x24 $x25 $x26 $x27 $x1 ]
+********** MI Scheduling **********
+foo:%bb.0 entry
+  From: %6:gpr = COPY $x10
+    To: BLT %6:gpr, %1:gpr, %bb.2
+ RegionInstrs: 2
+ScheduleDAGMILive::schedule starting
+GenericScheduler RegionPolicy:  ShouldTrackPressure=0 OnlyTopDown=0 OnlyBottomUp=1
+Disabled scoreboard hazard recognizer
+Disabled scoreboard hazard recognizer
+SU(0):   %6:gpr = COPY $x10
+  # preds left       : 0
+  # succs left       : 1
+  # rdefs left       : 0
+  Latency            : 0
+  Depth              : 0
+  Height             : 0
+  Successors:
+    ExitSU: Data Latency=0 Reg=%6
+  Single Issue       : false;
+SU(1):   %1:gpr = COPY $x11
+  # preds left       : 0
+  # succs left       : 1
+  # rdefs left       : 0
+  Latency            : 0
+  Depth              : 0
+  Height             : 0
+  Successors:
+    ExitSU: Data Latency=0 Reg=%1
+  Single Issue       : false;
+ExitSU:   BLT %6:gpr, %1:gpr, %bb.2
+  # preds left       : 2
+  # succs left       : 0
+  # rdefs left       : 0
+  Latency            : 0
+  Depth              : 0
+  Height             : 0
+  Predecessors:
+    SU(1): Data Latency=0 Reg=%1
+    SU(0): Data Latency=0 Reg=%6
+Critical Path(GS-RR ): 0
+** ScheduleDAGMILive::schedule picking next node
+Queue BotQ.P: 
+Queue BotQ.A: 1 0 
+  Cand SU(1) ORDER                              
+Pick Bot ORDER     
+Scheduling SU(1) %1:gpr = COPY $x11
+  Ready @0c
+BotQ.A @0c
+  Retired: 0
+  Executed: 0c
+  Critical: 0c, 0 MOps
+  ExpectedLatency: 0c
+  - Latency limited.
+** ScheduleDAGMILive::schedule picking next node
+Queue BotQ.P: 
+Queue BotQ.A: 0 
+Scheduling SU(0) %6:gpr = COPY $x10
+  Ready @0c
+BotQ.A @0c
+  Retired: 0
+  Executed: 0c
+  Critical: 0c, 0 MOps
+  ExpectedLatency: 0c
+  - Latency limited.
+** ScheduleDAGMILive::schedule picking next node
+*** Final schedule for %bb.0 ***
+SU(0):   %6:gpr = COPY $x10
+SU(1):   %1:gpr = COPY $x11
+
+********** INTERVALS **********
+X10 [0B,16r:0)[144r,160r:1) 0@0B-phi 1@144r
+X11 [0B,32r:0) 0@0B-phi
+%1 [32r,96r:0) 0@32r  weight:0.000000e+00
+%6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:0.000000e+00
+RegMasks:
+********** MACHINEINSTRS **********
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten
+Function Live Ins: $x10, $x11
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %6:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+64B	  BLT %6:gpr, %1:gpr, %bb.2
+
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+96B	  %6:gpr = COPY %1:gpr
+
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+
+144B	  $x10 = COPY %6:gpr
+160B	  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: BB0[entry]
+ - 1: BB1[entry]
+ - 2: BB2[entry]
+loop-detection
+compute-mass-in-function
+ - node: BB0[entry]
+  => [ local  ] weight = 1073741824, succ = BB1[entry]
+  => [ local  ] weight = 1073741824, succ = BB2[entry]
+  => mass:  ffffffffffffffff
+  => assign 7fffffffffffffff (8000000000000000) to BB1[entry]
+  => assign 8000000000000000 (0000000000000000) to BB2[entry]
+ - node: BB1[entry]
+  => [ local  ] weight = 2147483648, succ = BB2[entry]
+  => mass:  7fffffffffffffff
+  => assign 7fffffffffffffff (0000000000000000) to BB2[entry]
+ - node: BB2[entry]
+  => mass:  ffffffffffffffff
+float-to-int: min = 0.5, max = 1.0, factor = 18014398509481984.0
+ - BB0[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, scaled = 9007199254740992.0, int = 9007199254740992
+ - BB2[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - BB0[entry]: float = 1.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, int = 9007199254740992
+ - BB2[entry]: float = 1.0, int = 18014398509481984
+
+********** GREEDY REGISTER ALLOCATION **********
+********** Function: foo
+********** Compute Spill Weights **********
+********** Function: foo
+********** INTERVALS **********
+X10 [0B,16r:0)[144r,160r:1) 0@0B-phi 1@144r
+X11 [0B,32r:0) 0@0B-phi
+%1 [32r,96r:0) 0@32r  weight:5.441810e-03
+%6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:6.931372e-03
+RegMasks:
+********** MACHINEINSTRS **********
+# Machine code for function foo: NoPHIs, TracksLiveness, Legalized, RegBankSelected, Selected, TiedOpsRewritten, TracksDebugUserValues
+Function Live Ins: $x10, $x11
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %6:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+64B	  BLT %6:gpr, %1:gpr, %bb.2
+
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+
+96B	  %6:gpr = COPY %1:gpr
+
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+
+144B	  $x10 = COPY %6:gpr
+160B	  PseudoRET implicit $x10
+
+# End machine code for function foo.
+
+Enqueuing %1
+AllocationOrder(GPR) = [ $x10 $x11 $x12 $x13 $x14 $x15 $x16 $x17 $x5 $x6 $x7 $x28 $x29 $x30 $x31 $x8 $x9 $x18 $x19 $x20 $x21 $x22 $x23 $x24 $x25 $x26 $x27 $x1 ]
+Enqueuing %6
+
+selectOrSplit GPR:%6 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi  weight:6.931372e-03 w=6.931372e-03
+hints: $x10
+assigning %6 to $x10: X10 [16r,80B:0)[96r,112B:1)[112B,144r:2) 0@16r 1@96r 2@112B-phi
+
+selectOrSplit GPR:%1 [32r,96r:0) 0@32r  weight:5.441810e-03 w=5.441810e-03
+hints: $x11 $x10
+assigning %1 to $x11: X11 [32r,96r:0) 0@32r
+********** REWRITE VIRTUAL REGISTERS **********
+********** Function: foo
+********** REGISTER MAP **********
+[%1 -> $x11] GPR
+[%6 -> $x10] GPR
+
+0B	bb.0.entry:
+	  successors: %bb.1(0x40000000), %bb.2(0x40000000); %bb.1(50.00%), %bb.2(50.00%)
+	  liveins: $x10, $x11
+16B	  %6:gpr = COPY $x10
+32B	  %1:gpr = COPY $x11
+64B	  BLT %6:gpr, %1:gpr, %bb.2
+> renamable $x10 = COPY $x10
+Identity copy: renamable $x10 = COPY $x10
+  deleted.
+> renamable $x11 = COPY $x11
+Identity copy: renamable $x11 = COPY $x11
+  deleted.
+> BLT renamable $x10, renamable $x11, %bb.2
+80B	bb.1.entry:
+	; predecessors: %bb.0
+	  successors: %bb.2(0x80000000); %bb.2(100.00%)
+	  liveins: $x11
+96B	  %6:gpr = COPY killed %1:gpr
+> renamable $x10 = COPY killed renamable $x11
+112B	bb.2.entry:
+	; predecessors: %bb.0, %bb.1
+	  liveins: $x10
+144B	  $x10 = COPY killed %6:gpr
+160B	  PseudoRET implicit $x10
+> $x10 = COPY killed renamable $x10
+Identity copy: $x10 = COPY killed renamable $x10
+  deleted.
+> PseudoRET implicit $x10
+********** Stack Slot Coloring **********
+********** Function: foo
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: Copy is a deletion candidate:   renamable $x10 = COPY killed renamable $x11
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+******** Post-regalloc Machine LICM: foo ********
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: BB0[entry]
+ - 1: BB1[entry]
+ - 2: BB2[entry]
+loop-detection
+compute-mass-in-function
+ - node: BB0[entry]
+  => [ local  ] weight = 1073741824, succ = BB1[entry]
+  => [ local  ] weight = 1073741824, succ = BB2[entry]
+  => mass:  ffffffffffffffff
+  => assign 7fffffffffffffff (8000000000000000) to BB1[entry]
+  => assign 8000000000000000 (0000000000000000) to BB2[entry]
+ - node: BB1[entry]
+  => [ local  ] weight = 2147483648, succ = BB2[entry]
+  => mass:  7fffffffffffffff
+  => assign 7fffffffffffffff (0000000000000000) to BB2[entry]
+ - node: BB2[entry]
+  => mass:  ffffffffffffffff
+float-to-int: min = 0.5, max = 1.0, factor = 18014398509481984.0
+ - BB0[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, scaled = 9007199254740992.0, int = 9007199254740992
+ - BB2[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - BB0[entry]: float = 1.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, int = 9007199254740992
+ - BB2[entry]: float = 1.0, int = 18014398509481984
+
+		Looking for trivial roots
+Found a new trivial root: %bb.2
+Last visited node: %bb.0
+		Looking for non-trivial roots
+Total: 3, Num: 4
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %bb.2
+3: %bb.1
+4: %bb.0
+Found roots: %bb.2 
+**** Analysing foo
+Look into: %bb.0
+Look into: %bb.1
+Look into: %bb.2
+Nothing to shrink-wrap
+
+TryTailMergeBlocks: %bb.0, %bb.1
+  with successor %bb.2
+  which has fall-through from %bb.1
+Looking for common tails of at least 3 instructions
+
+*** Tail-duplicating %bb.2
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: Copy is a deletion candidate:   renamable $x10 = COPY killed renamable $x11
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+Machine Function
+********** EXPANDING POST-RA PSEUDO INSTRS **********
+********** Function: foo
+Subtarget disables post-MI-sched.
+
+block-frequency: foo
+====================
+reverse-post-order-traversal
+ - 0: BB0[entry]
+ - 1: BB1[entry]
+ - 2: BB2[entry]
+loop-detection
+compute-mass-in-function
+ - node: BB0[entry]
+  => [ local  ] weight = 1073741824, succ = BB1[entry]
+  => [ local  ] weight = 1073741824, succ = BB2[entry]
+  => mass:  ffffffffffffffff
+  => assign 7fffffffffffffff (8000000000000000) to BB1[entry]
+  => assign 8000000000000000 (0000000000000000) to BB2[entry]
+ - node: BB1[entry]
+  => [ local  ] weight = 2147483648, succ = BB2[entry]
+  => mass:  7fffffffffffffff
+  => assign 7fffffffffffffff (0000000000000000) to BB2[entry]
+ - node: BB2[entry]
+  => mass:  ffffffffffffffff
+float-to-int: min = 0.5, max = 1.0, factor = 18014398509481984.0
+ - BB0[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, scaled = 9007199254740992.0, int = 9007199254740992
+ - BB2[entry]: float = 1.0, scaled = 18014398509481984.0, int = 18014398509481984
+block-frequency-info: foo
+ - BB0[entry]: float = 1.0, int = 18014398509481984
+ - BB1[entry]: float = 0.5, int = 9007199254740992
+ - BB2[entry]: float = 1.0, int = 18014398509481984
+
+		Looking for trivial roots
+Found a new trivial root: %bb.2
+Last visited node: %bb.0
+		Looking for non-trivial roots
+Total: 3, Num: 4
+Discovered CFG nodes:
+0: nullptr
+1: nullptr
+2: %bb.2
+3: %bb.1
+4: %bb.0
+Found roots: %bb.2 
+Pre-computing triangle chains.
+Selecting best successor for: %bb.0 ('entry')
+    Candidate: %bb.1 ('entry'), probability: 0x40000000 / 0x80000000 = 50.00%
+    Setting it as best candidate
+    Not a candidate: %bb.2 ('entry') -> 0x40000000 / 0x80000000 = 50.00% (prob) (non-cold CFG conflict)
+    Selected: %bb.1 ('entry')
+Merging from %bb.0 ('entry') to %bb.1 ('entry')
+Selecting best successor for: %bb.1 ('entry')
+    Candidate: %bb.2 ('entry'), probability: 0x80000000 / 0x80000000 = 100.00%
+    Setting it as best candidate
+    Selected: %bb.2 ('entry')
+Merging from %bb.1 ('entry') to %bb.2 ('entry')
+Selecting best successor for: %bb.2 ('entry')
+Finished forming chain for header block %bb.0 ('entry')
+[MBP] Function: foo
+Placing chain %bb.0 ('entry')
+          ... %bb.1 ('entry')
+Updating terminators on %bb.0
+          ... %bb.2 ('entry')
+Updating terminators on %bb.1
+***** BranchRelaxation *****
+  Basic blocks before relaxation
+%bb.0	offset=00000000	size=0x4
+%bb.1	offset=00000004	size=0x2
+%bb.2	offset=00000006	size=0x4
+  Basic blocks after relaxation
+
+%bb.0	offset=00000000	size=0x4
+%bb.1	offset=00000004	size=0x2
+%bb.2	offset=00000006	size=0x4
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+MCP: Copy is a deletion candidate:   $x10 = ADDI killed $x11, 0
+MCP: BackwardCopyPropagateBlock entry
+MCP: ForwardCopyPropagateBlock entry
+********** COMPUTING STACKMAP LIVENESS: foo **********
+
+Debug Range Extension: foo
+Machine Outliner: Running on target-default functions
+*** Populating mapper ***
+MAPPING FUNCTION: foo
+SKIP: Target does not want to outline from function by default
+MAPPING FUNCTION: llvm.smin.i32
+SKIP: Function does not have a MachineFunction
+*** Discarding overlapping candidates *** 
+Searching for overlaps in all repeated sequences...
+*** Outlining ***
+NUMBER OF POTENTIAL FUNCTIONS: 0
+WALKING FUNCTION LIST
+OutlinedSomething = 0
+Stopped outlining at iteration 0 because no changes were found.
