@@ -218,6 +218,7 @@ struct PatternNode {
     PN_Compare,
     PN_Unop,
     PN_Constant,
+    PN_ConstantFP,
     PN_Register,
     PN_Load,
     PN_Select,
@@ -387,15 +388,18 @@ struct BinopNode : public PatternNode {
   std::string patternString() override {
     static const std::unordered_map<int, std::string> BinopStr = {
         {TargetOpcode::G_ADD, "add"},
+        {TargetOpcode::G_FADD, "fadd"},
         {TargetOpcode::G_PTR_ADD, "ptradd"},
         {TargetOpcode::G_SUB, "sub"},
         {TargetOpcode::G_MUL, "mul"},
+        {TargetOpcode::G_FMUL, "fmul"},
         {TargetOpcode::G_UMULH, "mulhu"},
         {TargetOpcode::G_SMULH, "mulhs"},
         {TargetOpcode::G_UDIV, "udiv"},
         {TargetOpcode::G_SREM, "srem"},
         {TargetOpcode::G_UREM, "urem"},
         {TargetOpcode::G_SDIV, "sdiv"},
+        {TargetOpcode::G_FDIV, "fdiv"},
         {TargetOpcode::G_SADDSAT, "saddsat"},
         {TargetOpcode::G_UADDSAT, "uaddsat"},
         {TargetOpcode::G_SSUBSAT, "ssubsat"},
@@ -610,6 +614,26 @@ struct ConstantNode : public PatternNode {
 
   static bool classof(const PatternNode *Pat) {
     return Pat->getKind() == PN_Constant;
+  }
+};
+
+struct ConstantFPNode : public PatternNode {
+  float Constant;
+  ConstantFPNode(LLT Type, float Const)
+      : PatternNode(PN_ConstantFP, Type, true), Constant(Const) {}
+
+  std::string patternString() override {
+    std::string ConstantStr = std::to_string(Constant);
+    if (Type.isFixedVector()) {
+
+      std::string TypeStr = lltToString(Type);
+      return "(" + TypeStr + " (" + RegT + " " + ConstantStr + "))";
+    }
+    return "(" + lltToString(Type) + " " + ConstantStr + ")";
+  }
+
+  static bool classof(const PatternNode *Pat) {
+    return Pat->getKind() == PN_ConstantFP;
   }
 };
 
@@ -992,13 +1016,16 @@ static PatternOrError traverse(MachineRegisterInfo &MRI, MachineInstr &Cur) {
 
   switch (Cur.getOpcode()) {
   case TargetOpcode::G_ADD:
+  case TargetOpcode::G_FADD:
   case TargetOpcode::G_PTR_ADD:
   case TargetOpcode::G_SUB:
   case TargetOpcode::G_MUL:
+  case TargetOpcode::G_FMUL:
   case TargetOpcode::G_UMULH:
   case TargetOpcode::G_SMULH:
   case TargetOpcode::G_SDIV:
   case TargetOpcode::G_UDIV:
+  case TargetOpcode::G_FDIV:
   case TargetOpcode::G_SREM:
   case TargetOpcode::G_UREM:
   case TargetOpcode::G_SADDSAT:
@@ -1109,6 +1136,14 @@ static PatternOrError traverse(MachineRegisterInfo &MRI, MachineInstr &Cur) {
     return std::make_pair(SUCCESS, std::make_unique<ConstantNode>(
                                        MRI.getType(Cur.getOperand(0).getReg()),
                                        Imm->getLimitedValue()));
+  }
+  case TargetOpcode::G_FCONSTANT: {
+    // auto *Imm = Cur.getOperand(1).getCImm();
+    auto *Imm = Cur.getOperand(1).getFPImm();
+    assert(Cur.getOperand(0).isReg() && "expected register");
+    return std::make_pair(SUCCESS, std::make_unique<ConstantFPNode>(
+                                       MRI.getType(Cur.getOperand(0).getReg()),
+                                       Imm->getValueAPF().convertToFloat()));
   }
   case TargetOpcode::G_IMPLICIT_DEF: {
     assert(Cur.getOperand(0).isReg() && "expected register");
@@ -1420,4 +1455,3 @@ bool PatternGen::runOnMachineFunction(MachineFunction &MF) {
 
   return true;
 }
-

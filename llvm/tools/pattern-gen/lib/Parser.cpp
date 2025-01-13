@@ -805,8 +805,9 @@ Value ParseExpressionTerminal(TokenStream &ts, llvm::Function *func,
         len = xlen;
       return Value{addrPtr, len, false};
     }
-    if (t.ident.str == "X" || t.ident.str == "XW") {
+    if (t.ident.str == "X" || t.ident.str == "XW" || t.ident.str == "F") {
       bool sizeIs32 = t.ident.str == "XW";
+      bool isFloat = t.ident.str == "XW";
       pop_cur(ts, ABrOpen);
       auto ident = pop_cur(ts, Identifier).ident;
       pop_cur(ts, ABrClose);
@@ -840,10 +841,98 @@ Value ParseExpressionTerminal(TokenStream &ts, llvm::Function *func,
         return v;
       }
     }
+    // TODO: check if float reg and get flen
+    // TODO: parse funtion call util
+    if (t.ident.str == "llvm_fmuladd_f32") {
+      llvm::outs() << "A" << "\n";
+      pop_cur(ts, RBrOpen);
+      llvm::outs() << "B" << "\n";
+      auto A = ParseExpression(ts, func, build);
+      promote_lvalue(build, A);
+      llvm::outs() << "C" << "\n";
+      pop_cur(ts, Comma);
+      llvm::outs() << "D" << "\n";
+      auto B = ParseExpression(ts, func, build);
+      promote_lvalue(build, B);
+      llvm::outs() << "E" << "\n";
+      pop_cur(ts, Comma);
+      llvm::outs() << "F" << "\n";
+      auto M = ParseExpression(ts, func, build);
+      promote_lvalue(build, M);
+      llvm::outs() << "G" << "\n";
+      pop_cur(ts, RBrClose);
+      llvm::outs() << "H" << "\n";
+      // build.CreateIntrinsic(M.ll->getType(), llvm::Intrinsic::fmuladd, llvm::ArrayRef<llvm::Value *>{M.ll, A.ll, B.ll}, nullptr, "?");
+      // build.CreateIntrinsic(build.getFloatTy(), llvm::Intrinsic::fmuladd, llvm::ArrayRef<llvm::Value *>{M.ll, A.ll, B.ll}, nullptr, "?");
+      llvm::Type *FloatTy = build.getFloatTy();
+      auto A_ = build.CreateBitCast(A.ll, FloatTy);
+      auto B_ = build.CreateBitCast(B.ll, FloatTy);
+      auto M_ = build.CreateBitCast(M.ll, FloatTy);
+      // auto M_ = build.CreateUIToFP(M.ll, FloatTy);;
+      // build.CreateIntrinsic(FloatTy, llvm::Intrinsic::fmuladd, llvm::ArrayRef<llvm::Value *>{M.ll, A.ll, B.ll}, nullptr, "?");
+      auto temp = build.CreateIntrinsic(FloatTy, llvm::Intrinsic::fmuladd, llvm::ArrayRef<llvm::Value *>{M_, A_, B_}, nullptr);
+      auto temp_ = build.CreateBitCast(temp, regT);
+      llvm::outs() << "I" << "\n";
+      // error("not implemented: llvm_fmuladd_f32", ts);
+      Value v = {temp_, false};
+      v.bitWidth = xlen;  // TODO
+      return v;
+    } else if (t.ident.str == "llvm_fdiv_fp32") {
+      pop_cur(ts, RBrOpen);
+      auto A = ParseExpression(ts, func, build);
+      promote_lvalue(build, A);
+      pop_cur(ts, Comma);
+      auto B = ParseExpression(ts, func, build);
+      promote_lvalue(build, B);
+      pop_cur(ts, RBrClose);
+      llvm::Type *FloatTy = build.getFloatTy();
+      auto A_ = build.CreateBitCast(A.ll, FloatTy);
+      auto B_ = build.CreateBitCast(B.ll, FloatTy);
+      auto temp = build.CreateFDiv(A_, B_);
+      auto temp_ = build.CreateBitCast(temp, regT);
+      Value v = {temp_, false};
+      v.bitWidth = xlen;  // TODO
+      return v;
+    } else if (t.ident.str == "llvm_fadd_fp32") {
+      pop_cur(ts, RBrOpen);
+      auto A = ParseExpression(ts, func, build);
+      promote_lvalue(build, A);
+      pop_cur(ts, Comma);
+      auto B = ParseExpression(ts, func, build);
+      promote_lvalue(build, B);
+      pop_cur(ts, RBrClose);
+      llvm::Type *FloatTy = build.getFloatTy();
+      auto A_ = build.CreateBitCast(A.ll, FloatTy);
+      auto B_ = build.CreateBitCast(B.ll, FloatTy);
+      auto temp = build.CreateFAdd(A_, B_);
+      auto temp_ = build.CreateBitCast(temp, regT);
+      Value v = {temp_, false};
+      v.bitWidth = xlen;  // TODO
+      return v;
+    } else if (t.ident.str == "llvm_uitofp_fp32") {
+      pop_cur(ts, RBrOpen);
+      auto A = ParseExpression(ts, func, build);
+      promote_lvalue(build, A);
+      pop_cur(ts, RBrClose);
+      if (A.bitWidth != xlen) {
+        A.isSigned = false;
+        A.bitWidth = xlen;
+        fit_to_size(A, build);
+      }
+      llvm::Type *FloatTy = build.getFloatTy();
+      // auto A_ = build.CreateBitCast(A.ll, FloatTy);
+      auto A_ = A.ll;
+      auto temp = build.CreateUIToFP(A_, FloatTy);
+      auto temp_ = build.CreateBitCast(temp, regT);
+      Value v = {temp_, false};
+      v.bitWidth = xlen;  // TODO
+      return v;
+    }
 
     auto iter = variables.find(t.ident.idx);
     if (iter != variables.end())
       return iter->getSecond().back().val;
+
 
     error(("undefined symbol: " + std::string(t.ident.str)).c_str(), ts);
   }
@@ -1490,4 +1579,3 @@ std::vector<CDSLInstr> ParseCoreDSL2(TokenStream &ts, bool is64Bit,
   }
   return instrs;
 }
-

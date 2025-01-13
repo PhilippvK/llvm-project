@@ -3248,24 +3248,38 @@ CastInst::getCastOpcode(
 /// of the types involved.
 bool
 CastInst::castIsValid(Instruction::CastOps op, Type *SrcTy, Type *DstTy) {
+  llvm::outs() << "castIsValid" << "\n";
+  llvm::outs() << "op=" << op << "\n";
+  llvm::outs() << "SrcTy=" << SrcTy << "\n";
+  SrcTy->dump();
+  llvm::outs() << "DstTy=" << DstTy << "\n";
+  DstTy->dump();
   if (!SrcTy->isFirstClassType() || !DstTy->isFirstClassType() ||
       SrcTy->isAggregateType() || DstTy->isAggregateType())
     return false;
+  llvm::outs() << "111" << "\n";
 
   // Get the size of the types in bits, and whether we are dealing
   // with vector types, we'll need this later.
   bool SrcIsVec = isa<VectorType>(SrcTy);
+  llvm::outs() << "SrcIsVec=" << SrcIsVec << "\n";
   bool DstIsVec = isa<VectorType>(DstTy);
+  llvm::outs() << "DstIsVec=" << DstIsVec << "\n";
   unsigned SrcScalarBitSize = SrcTy->getScalarSizeInBits();
+  llvm::outs() << "SrcScalarBitSize=" << SrcScalarBitSize << "\n";
   unsigned DstScalarBitSize = DstTy->getScalarSizeInBits();
+  llvm::outs() << "DstScalarBitSize=" << DstScalarBitSize << "\n";
 
   // If these are vector types, get the lengths of the vectors (using zero for
   // scalar types means that checking that vector lengths match also checks that
   // scalars are not being converted to vectors or vectors to scalars).
   ElementCount SrcEC = SrcIsVec ? cast<VectorType>(SrcTy)->getElementCount()
                                 : ElementCount::getFixed(0);
+  llvm::outs() << "SrcEC=" << SrcEC << "\n";
   ElementCount DstEC = DstIsVec ? cast<VectorType>(DstTy)->getElementCount()
                                 : ElementCount::getFixed(0);
+  llvm::outs() << "DstEC=" << DstEC << "\n";
+  llvm::outs() << "222" << "\n";
 
   // Switch on the opcode provided
   switch (op) {
@@ -3287,6 +3301,10 @@ CastInst::castIsValid(Instruction::CastOps op, Type *SrcTy, Type *DstTy) {
            SrcEC == DstEC && SrcScalarBitSize < DstScalarBitSize;
   case Instruction::UIToFP:
   case Instruction::SIToFP:
+    llvm::outs() << "UItoFP/SItoFP" << "\n";
+    llvm::outs() << "SrcTy->isIntOrIntVectorTy()=" << SrcTy->isIntOrIntVectorTy() << "\n";
+    llvm::outs() << "DstTy->isFPOrFPVectorTy()=" << DstTy->isFPOrFPVectorTy() << "\n";
+    llvm::outs() << "SrcEC == DstEC;=" << (SrcEC == DstEC) << "\n";
     return SrcTy->isIntOrIntVectorTy() && DstTy->isFPOrFPVectorTy() &&
            SrcEC == DstEC;
   case Instruction::FPToUI:
