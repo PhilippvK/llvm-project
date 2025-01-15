@@ -1,0 +1,2 @@
+/tmp/seal5_llvm_corev_llvm19/.seal5/build/release_assertions/bin/clang -S -emit-llvm mac_fp32.c -o - -O3
+/tmp/seal5_llvm_corev_llvm19/.seal5/build/release_assertions/bin/pattern-gen mean_fp32.core_desc --print-ir --skip-formats -O 3 --mattr=+m,+f --no-extend

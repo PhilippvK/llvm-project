@@ -1,0 +1,16 @@
+InstructionSet XExample extends RISCVBase {
+    instructions {
+        MAC {
+            encoding: 7'b0101000 :: rs2[4:0] :: rs1[4:0] :: 3'b011 :: rd[4:0] :: 7'b0101011;
+            assembly: "{name(rd)}, {name(rs1)}, {name(rs2)}";
+            behavior: {
+                // F[rd] = (unsigned<FLEN>)fmadd_s(F[rs1], F[rs2], F[rs3], 0, rm<7? (unsigned char)rm:(unsigned char)FCSR);
+                // unsigned<32> flags = fget_flags();
+                // FCSR = (FCSR & ~FFLAG_MASK) | (flags & FFLAG_MASK);
+                F[rd] = llvm_fmuladd_f32(F[rs1], F[rs2], F[rd]);
+                // X[rd] = llvm_fmuladd_f32(X[rs1], X[rs2], X[rd]);
+                // X[rd] = X[rs1];
+            }
+        }
+    }
+}
