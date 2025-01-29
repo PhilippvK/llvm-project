@@ -1,4 +1,5 @@
 add_llvm_component_library(LLVMGlobalISel
+  CDFGPass.cpp
   CSEInfo.cpp
   GISelKnownBits.cpp
   CSEMIRBuilder.cpp
@@ -25,7 +26,6 @@ add_llvm_component_library(LLVMGlobalISel
   MachineIRBuilder.cpp
   RegBankSelect.cpp
   Utils.cpp
-  CDFGPass.cpp
 
   ADDITIONAL_HEADER_DIRS
   ${LLVM_MAIN_INCLUDE_DIR}/llvm/CodeGen/GlobalISel
