@@ -431,12 +431,11 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
     return true;  // TODO: return false?
   }
   std::string f_name = MF.getName().str();
-  const Module *M = nullptr;
-  const llvm::Function *F = nullptr;
-  F = &MF.getFunction();
-  M = F->getParent();
-  // std::string module_name = "moduleABC";
-  std::string module_name = M->getName().str();
+  const llvm::Function *F = &MF.getFunction();
+  const Module *M = F->getParent();
+  std::string module_name = "moduleABC";
+  // std::string module_name = M->getName().str();
+  // const std::string module_name = M->getModuleIdentifier();
   if (MF.getProperties().hasProperty(
      MachineFunctionProperties::Property::FailedISel)) {  // check non-gisel?
      llvm::errs() << "skipping CDFGPass in func '" << f_name << "' due to gisel failure" << "\n";
