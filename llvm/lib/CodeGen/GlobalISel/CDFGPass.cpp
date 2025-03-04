@@ -162,8 +162,11 @@ bool isOutputForBasicBlock(MachineInstr* MI, MachineRegisterInfo* MRI) {
     return true;
   }
   MachineBasicBlock *MBB = MI->getParent();
-	if (isUsedOutsideOfBlock(MI, MBB, MRI))
-		return true;
+  // FIXME: broken as this flags nodes with MOs defined in other BBs
+	// if (isUsedOutsideOfBlock(MI, MBB, MRI)) {
+  //   llvm::outs() << "-> true (used outside)" << "\n";
+	// 	return true;
+  // }
   for (MachineInstr &TermMI :
        llvm::make_range(MBB->getFirstInstrTerminator(), MBB->instr_end())) {
     if (TermMI.isReturn() || TermMI.isBranch()) {
