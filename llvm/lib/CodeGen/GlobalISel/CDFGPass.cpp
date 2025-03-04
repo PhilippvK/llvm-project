@@ -702,7 +702,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_GlobalAddress: {
-            llvm::outs() << "=> GA" << "\n";
+            // llvm::outs() << "=> GA" << "\n";
             // isLabelOp = true;
             src_op_name = src_str;
             label_type = "GA";
@@ -711,7 +711,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_MachineBasicBlock: {
-            llvm::outs() << "=> MBB" << "\n";
+            // llvm::outs() << "=> MBB" << "\n";
             // isLabelOp = true;
             src_op_name = src_str;
             label_type = "MBB";
@@ -720,7 +720,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_FrameIndex: {  // TODO: huffbench
-            llvm::outs() << "=> FI" << "\n";
+            // llvm::outs() << "=> FI" << "\n";
             // llvm_unreachable("Not Implemented!");
             src_op_name = src_str;
             // isLabelOp = true;
@@ -729,24 +729,24 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_ConstantPoolIndex: {
-            llvm::outs() << "=> CPI" << "\n";
+            // llvm::outs() << "=> CPI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_TargetIndex: {
-            llvm::outs() << "=> TI" << "\n";
+            // llvm::outs() << "=> TI" << "\n";
             llvm_unreachable("Not Implemented!");
             break;
           }
           case MachineOperand::MO_JumpTableIndex: {
-            llvm::outs() << "=> JTI" << "\n";
+            // llvm::outs() << "=> JTI" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
           }
           case MachineOperand::MO_ExternalSymbol: {
-            llvm::outs() << "=> ES" << "\n";
+            // llvm::outs() << "=> ES" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
@@ -757,7 +757,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_RegisterMask: {  // TODO: edn, matmult-int, md5sum
-            llvm::outs() << "=> RM" << "\n";
+            // llvm::outs() << "=> RM" << "\n";
             isLabelOp = true;
             // llvm_unreachable("Not Implemented!");
             break;
@@ -768,7 +768,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_MCSymbol: {
-            llvm::outs() << "=> MCS" << "\n";
+            // llvm::outs() << "=> MCS" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;  // TODO: add label op_type?
             break;
@@ -795,7 +795,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_Predicate: {
-            llvm::outs() << "=> PC" << "\n";
+            // llvm::outs() << "=> PC" << "\n";
             // llvm_unreachable("Not Implemented!");
             isLabelOp = true;
             break;
