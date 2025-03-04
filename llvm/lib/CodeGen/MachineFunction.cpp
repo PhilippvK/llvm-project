@@ -471,6 +471,7 @@ MachineFunction::CreateMachineBasicBlock(const BasicBlock *BB,
       Target.Options.BBAddrMap ||
       Target.getBBSectionsType() == BasicBlockSection::List)
     MBB->setBBID(BBID.has_value() ? *BBID : UniqueBBID{NextBBID++, 0});
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Created BB " << MBB->getNumber() << " with bb_id " << MBB->getBBID()->BaseID << "\n");
   return MBB;
 }
 
