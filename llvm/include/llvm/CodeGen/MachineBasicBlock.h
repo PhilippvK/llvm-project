@@ -1079,11 +1079,18 @@ public:
   ///
   /// The instruction at 'Where' must not be included in the range of
   /// instructions to move.
+// TODO: move to c++ file with DEBUG_TYPE
+#ifndef DEBUG_TYPE
+#define DEBUG_TYPE "codegen"
+
   void splice(iterator Where, MachineBasicBlock *Other,
               iterator From, iterator To) {
+    LLVM_DEBUG(dbgs() << "BBIDLOG: Splice: BB " << Other->getBBID()->BaseID << " → BB " << getBBID()->BaseID << "\n");
     Insts.splice(Where.getInstrIterator(), Other->Insts,
                  From.getInstrIterator(), To.getInstrIterator());
   }
+#undef DEBUG_TYPE
+#endif
 
   /// This method unlinks 'this' from the containing function, and returns it,
   /// but does not delete it.

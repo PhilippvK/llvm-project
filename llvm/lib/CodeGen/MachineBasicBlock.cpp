@@ -666,10 +666,12 @@ MachineBasicBlock::addLiveIn(MCRegister PhysReg, const TargetRegisterClass *RC) 
 }
 
 void MachineBasicBlock::moveBefore(MachineBasicBlock *NewAfter) {
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Moved BB " << getBBID()->BaseID << " before BB " << NewAfter->getBBID()->BaseID << "\n");
   getParent()->splice(NewAfter->getIterator(), getIterator());
 }
 
 void MachineBasicBlock::moveAfter(MachineBasicBlock *NewBefore) {
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Moved BB " << getBBID()->BaseID << " after BB " << NewBefore->getBBID()->BaseID << "\n");
   getParent()->splice(++NewBefore->getIterator(), getIterator());
 }
 
@@ -1051,6 +1053,7 @@ MachineBasicBlock *MachineBasicBlock::splitAt(MachineInstr &MI,
 
   if (LIS)
     LIS->insertMBBInMaps(SplitBB);
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Split BB " << getBBID()->BaseID << " -> New BB " << SplitBB->getBBID()->BaseID << "\n");
 
   return SplitBB;
 }
@@ -1451,6 +1454,7 @@ MachineBasicBlock::insert(instr_iterator I, MachineInstr *MI) {
 /// does not delete it.
 MachineBasicBlock *MachineBasicBlock::removeFromParent() {
   assert(getParent() && "Not embedded in a function!");
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Erasing BB " << this->getNumber() << " with bb_id " << getBBID()->BaseID << "\n");
   getParent()->remove(this);
   return this;
 }
@@ -1458,6 +1462,7 @@ MachineBasicBlock *MachineBasicBlock::removeFromParent() {
 /// This method unlinks 'this' from the containing function, and deletes it.
 void MachineBasicBlock::eraseFromParent() {
   assert(getParent() && "Not embedded in a function!");
+  LLVM_DEBUG(dbgs() << "BBIDLOG: Removing BB " << this->getNumber() << " with bb_id " << getBBID()->BaseID << "\n");
   getParent()->erase(this);
 }
 
