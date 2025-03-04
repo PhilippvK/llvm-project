@@ -87,6 +87,11 @@ static cl::opt<std::string>
 static cl::opt<bool>
     EnablePass("cdfg-enable", cl::desc("Enable CDFGPass"));
 
+bool is_numeric(const std::string &str)
+{
+    return std::all_of(str.begin(), str.end(), ::isdigit); // C++11
+}
+
 typedef enum OpType {NONE, INPUT, OUTPUT, OPERATOR, CONSTANT, LABEL} op_type_t;
 
 std::string op_type_to_str(op_type_t op_type) {
@@ -645,11 +650,14 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
                 // llvm::outs() << "src_op_name=" << name << "\n";
                 // llvm::outs() << ">> " << src_str << "\n";
             } else {
-                auto reg_size = TRI->getRegSizeInBits(Reg, MRI);
-                std::string temp2;
-                raw_string_ostream tmpstream2(temp2);
-                reg_size.print(tmpstream2);
-                src_reg_size = tmpstream2.str();
+                bool is_system_reg = !is_numeric(src_reg_name.substr(1));
+                if (!is_system_reg) {
+                    auto reg_size = TRI->getRegSizeInBits(Reg, MRI);
+                    std::string temp2;
+                    raw_string_ostream tmpstream2(temp2);
+                    reg_size.print(tmpstream2);
+                    src_reg_size = tmpstream2.str();
+                }
 
                 src_str = llvm_to_string(&MO);
                 std::string reg_name = reg_to_string(Reg, TRI);
