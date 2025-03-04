@@ -27,6 +27,8 @@
 #define CDFG_STAGE_4 16  // post fallback/iseldag
 #define CDFG_STAGE_5 32  // post finalizeisel/expandpseudos
 #define CDFG_STAGE_6 64  // post regalloc
+#define CDFG_STAGE_7 128  // post machine-sink
+#define CDFG_STAGE_8 256  // pre virtregrewriter
 
 namespace llvm {
 
