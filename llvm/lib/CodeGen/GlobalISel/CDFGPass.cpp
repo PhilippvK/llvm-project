@@ -507,20 +507,39 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         op_type = OUTPUT;
       } else if (name == "PHI" || name == "G_PHI") {
         op_type = INPUT;
-        for (const MachineOperand &MO : MI.operands()) {
+        // for (const MachineOperand &MO : MI.operands()) {
+        for (const MachineOperand &MO : MI.uses()) {
           if (MO.getType() == MachineOperand::MO_Register) {
             auto Reg = MO.getReg();
             if (Reg.isVirtual()) {
               MachineInstr *MI_ = MRI.getVRegDef(Reg);
+              // llvm::outs() << "MI_= " << llvm_to_string(MI_) << "\n";
               if (!MI_) continue;
+              std::string name2 = std::string(TII->getName(MI_->getOpcode()));
               MachineBasicBlock *ParentMBB = MI_->getParent();
-              // if (ParentMBB == &bb) {
+              std::string ParentMBB_name = get_bb_name(ParentMBB);
+              if (ParentMBB == &bb) {
+                // if (name2 == "OR") {
+                //   llvm::outs() << "HEYHEY!" << "\n";
+                //   llvm::outs() << "HEY!" << "\n";
+                //   llvm::outs() << "MI= " << llvm_to_string(&MI) << "\n";
+                //   llvm::outs() << "MO= " << llvm_to_string(&MO) << "\n";
+                //   llvm::outs() << "Reg= " << llvm_to_string(&Reg) << "\n";
+                //   llvm::outs() << "ParentMBB= " << ParentMBB << "\n";
+                //   llvm::outs() << "bb= " << &bb << "\n";
+                //   llvm::outs() << "bb_name= " << bb_name << "\n";
+                //   llvm::outs() << "ParentMBB_name= " << ParentMBB_name << "\n";
+                //   llvm::outs() << "MI_= " << llvm_to_string(MI_) << "\n";
+                // }
                 forcedOutputs.insert(MI_);
-              // }
+              }
             }
           }
         }
       } else if (auto iter = forcedOutputs.find(&MI); iter != forcedOutputs.end()) {
+        // if (name == "OR") {
+        //   llvm::outs() << "OR: forced out" << "\n";
+        // }
         op_type = OUTPUT;
         forcedOutputs.erase(&MI);
       } else if(isOutputForBasicBlock(&MI, &MRI)) {
