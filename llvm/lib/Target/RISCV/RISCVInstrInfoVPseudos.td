@@ -384,7 +384,7 @@ defset list<VTypeInfo> AllVectors = {
       }
       def VBF16M1:  VTypeInfo<vbfloat16m1_t, vbool16_t, 16, V_M1, bf16, FPR16>;
     }
-  
+
     defset list<GroupVTypeInfo> GroupBFloatVectors = {
       def VBF16M2: GroupVTypeInfo<vbfloat16m2_t, vbfloat16m1_t, vbool8_t, 16,
                                   V_M2, bf16, FPR16>;
@@ -1906,7 +1906,7 @@ multiclass VPseudoILoad<bit Ordered> {
           defvar Vreg = dataEMUL.vrclass;
           defvar IdxVreg = idxEMUL.vrclass;
           defvar HasConstraint = !ne(dataEEW, idxEEW);
-          defvar TypeConstraints = 
+          defvar TypeConstraints =
             !if(!eq(dataEEW, idxEEW), 1, !if(!gt(dataEEW, idxEEW), !if(!ge(idxEMULOctuple, 8), 3, 1), 2));
           let VLMul = dataEMUL.value in {
             def "EI" # idxEEW # "_V_" # IdxLInfo # "_" # DataLInfo :
@@ -2734,6 +2734,7 @@ multiclass VPseudoVALU_VV_VX_VI<bit Commutable = 0> {
   }
 }
 
+
 multiclass VPseudoVSALU_VV_VX {
   foreach m = MxList in {
     defvar mx = m.MX;
@@ -2939,7 +2940,7 @@ multiclass VPseudoVWALU_VV_VX<bit Commutable = 0> {
     defm "" : VPseudoBinaryW_VV<m, Commutable=Commutable>,
               SchedBinary<"WriteVIWALUV", "ReadVIWALUV", "ReadVIWALUV", mx,
                           forcePassthruRead=true>;
-    defm "" : VPseudoBinaryW_VX<m>, 
+    defm "" : VPseudoBinaryW_VX<m>,
               SchedBinary<"WriteVIWALUX", "ReadVIWALUV", "ReadVIWALUX", mx,
                           forcePassthruRead=true>;
   }
@@ -4686,6 +4687,24 @@ multiclass VPatBinary<string intrinsic,
                              op2_kind>;
 }
 
+// multiclass VPatFusedTernary<string intrinsic,
+//                       string inst,
+//                       ValueType result_type,
+//                       ValueType op1_type,
+//                       ValueType op2_type,
+//                       ValueType op3_type,
+//                       ValueType mask_type,
+//                       int sew,
+//                       VReg result_reg_class,
+//                       VReg op1_reg_class,
+//                       DAGOperand op2_kind> {
+//   def : VPatBinaryNoMaskTU<intrinsic, inst, result_type, op1_type, op2_type,
+//                            sew, result_reg_class, op1_reg_class, op2_kind>;
+//   def : VPatBinaryMaskPolicy<intrinsic, inst, result_type, op1_type, op2_type,
+//                              mask_type, sew, result_reg_class, op1_reg_class,
+//                              op2_kind>;
+// }
+
 multiclass VPatBinaryRoundingMode<string intrinsic,
                                   string inst,
                                   ValueType result_type,
@@ -4856,6 +4875,19 @@ multiclass VPatBinaryV_VV<string intrinsic, string instruction,
                       vti.Log2SEW, vti.RegClass,
                       vti.RegClass, vti.RegClass>;
 }
+
+// multiclass VPatFusedTernaryV_VV<string intrinsic, string instruction,
+//                           list<VTypeInfo> vtilist, bit isSEWAware = 0> {
+//   foreach vti = vtilist in
+//     let Predicates = GetVTypePredicates<vti>.Predicates in
+//     defm : VPatFusedTernary<intrinsic,
+//                       !if(isSEWAware,
+//                           instruction # "_VV_" # vti.LMul.MX # "_E" # vti.SEW,
+//                           instruction # "_VV_" # vti.LMul.MX),
+//                       vti.Vector, vti.Vector, vti.Vector, vti.Vector, vti.Mask,
+//                       vti.Log2SEW, vti.RegClass,
+//                       vti.RegClass, vti.RegClass, vti.RegClass>;
+// }
 
 multiclass VPatBinaryV_VV_RM<string intrinsic, string instruction,
                              list<VTypeInfo> vtilist, bit isSEWAware = 0> {
@@ -5364,6 +5396,14 @@ multiclass VPatBinaryV_VV_VX_VI<string intrinsic, string instruction,
       VPatBinaryV_VX<intrinsic, instruction, vtilist>,
       VPatBinaryV_VI<intrinsic, instruction, vtilist, ImmType>;
 
+// multiclass VPatFusedTernaryV_VV_VX_VI<string intrinsic, string instruction,
+//                                 list<VTypeInfo> vtilist, Operand ImmType = simm5>
+//     : VPatFusedTernaryV_VV<intrinsic, instruction, vtilist>,
+//       VPatFusedTernaryV_VX<intrinsic, instruction, vtilist>
+//       // ,
+//       // VPatBinaryV_VI<intrinsic, instruction, vtilist, ImmType>
+//       ;
+
 multiclass VPatBinaryV_VV_VX_VI_RM<string intrinsic, string instruction,
                                    list<VTypeInfo> vtilist, Operand ImmType>
     : VPatBinaryV_VV_RM<intrinsic, instruction, vtilist>,
@@ -5794,7 +5834,7 @@ multiclass VPatConversionVI_VF_RM<string intrinsic,
   }
 }
 
-multiclass VPatConversionVI_VF_RTZ<string intrinsic, 
+multiclass VPatConversionVI_VF_RTZ<string intrinsic,
                                            string instruction> {
   foreach fvti = AllFloatVectors in {
     defvar ivti = GetIntVTypeInfo<fvti>.Vti;
@@ -6147,11 +6187,25 @@ defm PseudoVLSEG : VPseudoUSSegLoadFF;
 //===----------------------------------------------------------------------===//
 // 11. Vector Integer Arithmetic Instructions
 //===----------------------------------------------------------------------===//
+multiclass VPseudoVALU2_VV_VX_VI<bit Commutable = 0> {
+  foreach m = MxList in {
+    defvar mx = m.MX;
+    defm "" : VPseudoTernaryV_VV_AAXA<m>,
+            SchedBinary<"WriteVIALUV", "ReadVIALUV", "ReadVIALUV", mx,
+                        forcePassthruRead=true>;
+    defm "" : VPseudoTernaryV_VX_AAXA<m>,
+            SchedBinary<"WriteVIALUX", "ReadVIALUV", "ReadVIALUX", mx,
+                        forcePassthruRead=true>;
+    // defm "" : VPseudoTernaryV_VI_AAXA<simm5, m>,
+    //         SchedUnary<"WriteVIALUI", "ReadVIALUV", mx, forcePassthruRead=true>;
+  }
+}
 
 //===----------------------------------------------------------------------===//
 // 11.1. Vector Single-Width Integer Add and Subtract
 //===----------------------------------------------------------------------===//
 defm PseudoVADD   : VPseudoVALU_VV_VX_VI<Commutable=1>;
+defm PseudoVADDMUL   : VPseudoVALU2_VV_VX_VI;
 defm PseudoVSUB   : VPseudoVALU_VV_VX;
 defm PseudoVRSUB  : VPseudoVALU_VX_VI;
 
@@ -6773,6 +6827,7 @@ defm PseudoVCOMPRESS : VPseudoVCPR_V;
 // 11.1. Vector Single-Width Integer Add and Subtract
 //===----------------------------------------------------------------------===//
 defm : VPatBinaryV_VV_VX_VI<"int_riscv_vadd", "PseudoVADD", AllIntegerVectors>;
+defm : VPatTernaryV_VV_VX_AAXA<"int_riscv_vaddmul", "PseudoVADDMUL", AllIntegerVectors>;
 defm : VPatBinaryV_VV_VX<"int_riscv_vsub", "PseudoVSUB", AllIntegerVectors>;
 defm : VPatBinaryV_VX_VI<"int_riscv_vrsub", "PseudoVRSUB", AllIntegerVectors>;
 
@@ -7254,7 +7309,7 @@ defvar F16WidenableFloatVectors = !filter(fvtiToFWti, AllWidenableFloatVectors,
 let Predicates = [HasVInstructionsF16Minimal] in
 defm : VPatConversionVF_WF_RM<"int_riscv_vfncvt_f_f_w", "PseudoVFNCVT_F_F",
                            F16WidenableFloatVectors, isSEWAware=1>;
-defm : VPatConversionVF_WF_BF_RM<"int_riscv_vfncvtbf16_f_f_w", 
+defm : VPatConversionVF_WF_BF_RM<"int_riscv_vfncvtbf16_f_f_w",
                                  "PseudoVFNCVTBF16_F_F", isSEWAware=1>;
 defm : VPatConversionVF_WF<"int_riscv_vfncvt_rod_f_f_w", "PseudoVFNCVT_ROD_F_F",
                            isSEWAware=1>;

@@ -649,7 +649,7 @@ let TargetPrefix = "riscv" in {
   class RISCVClassifyMasked
         : DefaultAttrsIntrinsic<[LLVMVectorOfBitcastsToInt<0>],
                     [LLVMVectorOfBitcastsToInt<0>, llvm_anyvector_ty,
-                     LLVMScalarOrSameVectorWidth<0, llvm_i1_ty>, 
+                     LLVMScalarOrSameVectorWidth<0, llvm_i1_ty>,
                      llvm_anyint_ty, LLVMMatchType<1>],
                     [IntrNoMem, ImmArg<ArgIndex<4>>]>, RISCVVIntrinsic {
     let VLOperand = 3;
@@ -1382,6 +1382,8 @@ let TargetPrefix = "riscv" in {
   def int_riscv_vsm : RISCVUSStore;
 
   defm vadd : RISCVBinaryAAX;
+  // defm vaddmul : RISCVBinaryAAX;
+  defm vaddmul : RISCVTernaryAAXA;
   defm vsub : RISCVBinaryAAX;
   defm vrsub : RISCVBinaryAAX;
 

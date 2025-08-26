@@ -1208,6 +1208,7 @@ defm : RVVIndexedSegStoreTuple<"vsoxseg">;
 // 11.1. Vector Single-Width Integer Add and Subtract
 let UnMaskedPolicyScheme = HasPassthruOperand in {
 defm vadd : RVVIntBinBuiltinSet;
+defm vaddmul : RVVIntTerBuiltinSet;
 defm vsub : RVVIntBinBuiltinSet;
 defm vrsub : RVVOutOp1BuiltinSet<"vrsub", "csil",
                                  [["vx", "v", "vve"],
