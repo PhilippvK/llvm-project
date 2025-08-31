@@ -314,7 +314,9 @@ void initializeWasmEHPreparePass(PassRegistry&);
 void initializeWinEHPreparePass(PassRegistry&);
 void initializeWriteBitcodePassPass(PassRegistry&);
 void initializeXRayInstrumentationPass(PassRegistry&);
+#ifdef HAS_CDFG_PASS
 void initializeCDFGPassPass(PassRegistry&);
+#endif
 
 } // end namespace llvm
 
