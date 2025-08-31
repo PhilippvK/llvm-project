@@ -48,7 +48,9 @@ void initializeGlobalISel(PassRegistry&);
 /// Initialize all passes linked into the CodeGen library.
 void initializeTarget(PassRegistry&);
 
+#ifdef HAS_CDFG_PASS
 void initializeCDFGPassPass(PassRegistry&);
+#endif
 void initializeAAResultsWrapperPassPass(PassRegistry&);
 void initializeAlwaysInlinerLegacyPassPass(PassRegistry&);
 void initializeAssignmentTrackingAnalysisPass(PassRegistry &);

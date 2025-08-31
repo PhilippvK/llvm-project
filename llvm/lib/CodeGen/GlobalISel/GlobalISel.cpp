@@ -15,7 +15,9 @@
 using namespace llvm;
 
 void llvm::initializeGlobalISel(PassRegistry &Registry) {
+#ifdef HAS_CDFG_PASS
   initializeCDFGPassPass(Registry);
+#endif
   initializeIRTranslatorPass(Registry);
   initializeLegalizerPass(Registry);
   initializeLoadStoreOptPass(Registry);
