@@ -21,5 +21,7 @@ void llvm::initializeGlobalISel(PassRegistry &Registry) {
   initializeLocalizerPass(Registry);
   initializeRegBankSelectPass(Registry);
   initializeInstructionSelectPass(Registry);
+#ifdef HAS_CDFG_PASS
   initializeCDFGPassPass(Registry);
+#endif
 }

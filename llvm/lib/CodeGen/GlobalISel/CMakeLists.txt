@@ -1,3 +1,13 @@
+option(ENABLE_CDFG_PASS "Enable the CDFG pass (requires mgclient)" OFF)
+
+set(EXTRA_GISEL_SRCS "")
+
+if(ENABLE_CDFG_PASS)
+  list(APPEND EXTRA_GISEL_SRCS CDFGPass.cpp)
+else()
+  list(APPEND LLVM_OPTIONAL_SOURCES CDFGPass.cpp)
+endif()
+
 add_llvm_component_library(LLVMGlobalISel
   CSEInfo.cpp
   GISelKnownBits.cpp
@@ -25,12 +35,10 @@ add_llvm_component_library(LLVMGlobalISel
   MachineIRBuilder.cpp
   RegBankSelect.cpp
   Utils.cpp
-  CDFGPass.cpp
+  ${EXTRA_GISEL_SRCS}
 
   ADDITIONAL_HEADER_DIRS
   ${LLVM_MAIN_INCLUDE_DIR}/llvm/CodeGen/GlobalISel
-  /work/git/sizalizer/mgclient/include/
-  /work/git/sizalizer/mgclient/build/src/
   DEPENDS
   intrinsics_gen
 
@@ -46,8 +54,13 @@ add_llvm_component_library(LLVMGlobalISel
   TransformUtils
   )
 
-TARGET_INCLUDE_DIRECTORIES(LLVMGlobalISel PUBLIC
-  /work/git/sizalizer/mgclient/include/
-  /work/git/sizalizer/mgclient/build/src/
-)
-TARGET_LINK_LIBRARIES(LLVMGlobalISel PUBLIC /usr/local/lib/libmgclient.so)
+
+if(ENABLE_CDFG_PASS)
+  find_package(mgclient REQUIRED)
+  TARGET_INCLUDE_DIRECTORIES(LLVMGlobalISel PUBLIC
+    ${MGCLIENT_INCLUDE_DIRS}
+  )
+  target_link_libraries(LLVMGlobalISel PUBLIC mgclient)
+  target_compile_definitions(LLVMGlobalISel PUBLIC HAS_CDFG_PASS)
+  target_compile_definitions(LLVMCodeGen PUBLIC HAS_CDFG_PASS)
+endif()
