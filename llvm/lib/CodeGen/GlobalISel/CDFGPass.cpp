@@ -121,6 +121,16 @@ std::string get_bb_name(MachineBasicBlock *bb) {
     return OS.str();
 }
 
+std::string get_bb_name_full(MachineBasicBlock *bb) {
+    std::string str;
+    raw_string_ostream OS(str);
+    OS << bb->getFullName();
+    // OS << get_bb_name(bb);
+    // if (bb->hasName())
+    //   OS << '.' << bb->getName();
+    return OS.str();
+}
+
 template <typename LLVM_Type>
 std::string llvm_to_string(LLVM_Type *obj)
 {
@@ -298,7 +308,7 @@ mg_session *connect_to_db(const char *host, uint16_t port)
       int bb_id = -1;
       if (auto bbid = bb->getBBID())
           bb_id = bbid->BaseID;
-      std::string store_bb = "MERGE (bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(bb) + "', bb_id: " + std::to_string(bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
+      std::string store_bb = "MERGE (bb:BB {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + get_bb_name(bb) + "', full_name: '" + get_bb_name_full(bb) + "', bb_id: " + std::to_string(bb_id) + ", func_name: '" + f_name + "', module_name: '" + module_name + "', kind: 'basicblock'})";
       std::string set_bb_code = " SET bb.code =  '" + sanitize_str(llvm_to_string(bb)) + "'";
       std::string qry = store_bb + set_bb_code;
       exec_qeury(session, qry.c_str());
@@ -335,11 +345,11 @@ mg_session *connect_to_db(const char *host, uint16_t port)
   //     std::string qry = store_src + '\n' + store_dst + '\n' + rel + '\n';
   //     exec_qeury(session, qry.c_str());
   // }
-  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string label_type, std::string f_name, std::string bb_name, int bb_id, std::string module_name, int stage)
+  void create_inst(mg_session *session, std::string code, std::string op_name, std::string op_type_str, std::string label_type, std::string f_name, std::string bb_name, std::string bb_name_full, int bb_id, std::string module_name, int stage)
   {
       code = sanitize_str(code);
 
-      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', label_type: '" + label_type + "'})";
+      std::string store_inst = "MERGE (inst:INSTR {session: '" + MemgraphSession + "', stage: " + std::to_string(stage) + ", name: '" + op_name + "', inst: '" + code + "', func_name: '" + f_name + "', basic_block: '" + bb_name + "', ir_basic_block: '" + bb_name_full + "', bb_id: " + std::to_string(bb_id) + ", module_name: '" + module_name + "', kind: 'instruction', op_type: '" + op_type_str + "', label_type: '" + label_type + "'})";
       std::string qry = store_inst + '\n';
       exec_qeury(session, qry.c_str());
   }
@@ -478,6 +488,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
   }
   for (MachineBasicBlock &bb : MF) {
     std::string bb_name = get_bb_name(&bb);
+    std::string bb_name_full = get_bb_name_full(&bb);
     std::string parent_bb_name = bb_name;
     int bb_id = -1;
     if (auto bbid = bb.getBBID())
@@ -551,7 +562,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
 #if DEBUG
       llvm::outs() << "op_type_str=" << op_type_str << "\n";
 #endif
-      create_inst(session, inst_str, name, op_type_str, "", f_name, bb_name, bb_id, module_name, CurrentStage);
+      create_inst(session, inst_str, name, op_type_str, "", f_name, bb_name, bb_name_full, bb_id, module_name, CurrentStage);
       bool mayLoad = MI.mayLoad();
       bool mayStore = MI.mayStore();
       bool isPseudo = MI.isPseudo();
@@ -862,7 +873,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
         } else {
           if (op_type_ == INPUT || op_type_ == CONSTANT || op_type_ == LABEL) {
             // TODO: create_label, create_const?
-            create_inst(session, src_str, src_op_name, op_type_str_, label_type, f_name, bb_name, bb_id, module_name, CurrentStage);
+            create_inst(session, src_str, src_op_name, op_type_str_, label_type, f_name, bb_name, bb_name_full, bb_id, module_name, CurrentStage);
             add_inst_reg(session, src_str, src_op_name, op_type_str_, label_type, f_name, bb_name, bb_id, module_name, CurrentStage, src_reg_name, src_reg_type, src_reg_class, src_reg_size);
           }
           connect_insts(session, src_str, src_op_name, inst_str, name, f_name, bb_name, bb_name, bb_id, bb_id, module_name, CurrentStage, "DFG", op_idx, out_idx, src_reg_name, src_reg_type, src_reg_class, src_reg_size, src_reg_single_use);
