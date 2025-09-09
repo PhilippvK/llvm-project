@@ -820,8 +820,9 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
             break;
           }
           case MachineOperand::MO_IntrinsicID: {
-            llvm::outs() << "=> IID" << "\n";
-            llvm_unreachable("Not Implemented!");
+            llvm::outs() << "=> IID" << "\n";  // G_INSTRINSIC_WITH_SIDE_EFFECTS
+            // llvm_unreachable("Not Implemented!");
+            continue;
             break;
           }
           case MachineOperand::MO_Predicate: {
