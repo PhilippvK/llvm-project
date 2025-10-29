@@ -142,7 +142,7 @@ bool isUsedOutsideOfBlock(MachineInstr* MI, MachineBasicBlock* MBB, MachineRegis
   for (const MachineOperand &MO : MI->uses()) {
     if (MO.getType() == MachineOperand::MO_Register) {  // TODO: isReg
       auto Reg = MO.getReg();
-      if (Reg.isVirtual()) {
+      if (Reg.isVirtual() && Reg.isValid()) {
         MachineInstr *MI_ = MRI->getVRegDef(Reg);
         if (!MI_) continue;
         MachineBasicBlock *ParentMBB = MI_->getParent();
@@ -173,7 +173,7 @@ bool isOutputForBasicBlock(MachineInstr* MI, MachineRegisterInfo* MRI) {
       for (const MachineOperand &MO : TermMI.operands()) {
         if (MO.isReg()) {
           auto Reg = MO.getReg();
-          if (Reg.isVirtual()) {
+          if (Reg.isVirtual() && Reg.isValid()) {
             MachineInstr *OpMI = MRI->getVRegDef(Reg);
             if (OpMI == MI) {
               return true;
@@ -569,6 +569,7 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
       for (const MachineOperand &MO : MI.defs()) {
         if (MO.isReg()) {
           auto Reg2 = MO.getReg();
+          if (!Reg2.isValid()) continue;
           std::string temp;
           raw_string_ostream tmpstream(temp);
           tmpstream << printReg(Reg2, TRI, 0, &MRI);
@@ -622,6 +623,8 @@ bool CDFGPass::runOnMachineFunction(MachineFunction &MF) {
           case MachineOperand::MO_Register: {
             // llvm::outs() << "=> REG" << "\n";
             auto Reg = MO.getReg();
+            if (!Reg.isValid()) continue;
+
             src_reg_single_use = true;
             for (MachineRegisterInfo::use_instr_nodbg_iterator I = MRI.use_instr_nodbg_begin(Reg),
                    E = MRI.use_instr_nodbg_end(); I != E; ++I) {
