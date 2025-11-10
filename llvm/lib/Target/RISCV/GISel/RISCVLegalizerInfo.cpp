@@ -122,6 +122,9 @@ RISCVLegalizerInfo::RISCVLegalizerInfo(const RISCVSubtarget &ST)
   const LLT nxv8p0 = LLT::scalable_vector(8, p0);
   const LLT nxv16p0 = LLT::scalable_vector(16, p0);
 
+// RISCVLegalizerInfo.cpp - riscv_legalizer_info - INSERTION_START
+// RISCVLegalizerInfo.cpp - riscv_legalizer_info - INSERTION_END
+
   using namespace TargetOpcode;
 
   auto BoolVecTys = {nxv1s1, nxv2s1, nxv4s1, nxv8s1, nxv16s1, nxv32s1, nxv64s1};
