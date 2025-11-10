@@ -15,11 +15,13 @@
 #ifndef LLVM_CODEGEN_GLOBALISEL_GIMATCHTABLEEXECUTORIMPL_H
 #define LLVM_CODEGEN_GLOBALISEL_GIMATCHTABLEEXECUTORIMPL_H
 
+#include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/CodeGen/GlobalISel/GIMatchTableExecutor.h"
 #include "llvm/CodeGen/GlobalISel/GISelChangeObserver.h"
 #include "llvm/CodeGen/GlobalISel/MachineIRBuilder.h"
 #include "llvm/CodeGen/GlobalISel/Utils.h"
+#include "llvm/CodeGen/MachineInstr.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "llvm/CodeGen/MachineOperand.h"
 #include "llvm/CodeGen/MachineRegisterInfo.h"
@@ -55,6 +57,7 @@ bool GIMatchTableExecutor::executeMatchTable(
 
   uint64_t CurrentIdx = 0;
   SmallVector<uint64_t, 4> OnFailResumeAt;
+  SmallDenseMap<uint32_t, uint8_t> OtherUseTries;
   NewMIVector OutMIs;
 
   GISelChangeObserver *Observer = Builder.getObserver();
@@ -187,6 +190,94 @@ bool GIMatchTableExecutor::executeMatchTable(
         assert((size_t)NewInsnID == State.MIs.size() &&
                "Expected to store MIs in order");
         State.MIs.push_back(NewMI);
+      }
+      DEBUG_WITH_TYPE(TgtExecutor::getName(),
+                      dbgs() << CurrentIdx << ": MIs[" << NewInsnID
+                             << "] = GIM_RecordInsn(" << InsnID << ", " << OpIdx
+                             << ")\n");
+      break;
+    }
+
+    case GIM_RecordExactOtherUseInsn: {
+      uint32_t StartIdx = CurrentIdx - 1;
+      uint64_t NewInsnID = readULEB();
+      uint64_t InsnID = readULEB();
+      uint64_t OpIdx = readULEB();
+      uint64_t ExpectedOtherOpIdx = readULEB();
+
+      // As an optimisation we require that MIs[0] is always the root. Refuse
+      // any attempt to modify it.
+      assert(NewInsnID != 0 && "Refusing to modify MIs[0]");
+
+      MachineOperand *MO = &State.MIs[InsnID]->getOperand(OpIdx);
+      if (!MO->isReg()) {
+        DEBUG_WITH_TYPE(TgtExecutor::getName(),
+                        dbgs() << CurrentIdx << ": Not a register\n");
+        if (handleReject() == RejectAndGiveUp)
+          return false;
+        break;
+      }
+      if (MO->getReg().isPhysical()) {
+        DEBUG_WITH_TYPE(TgtExecutor::getName(),
+                        dbgs() << CurrentIdx << ": Is a physical register\n");
+        if (handleReject() == RejectAndGiveUp)
+          return false;
+        break;
+      }
+
+      // Peek through virtual reg COPY, but not physical
+      while (1) {
+        auto *DefMO = MRI.getOneDef(MO->getReg());
+        if (!DefMO || DefMO->getParent()->getOpcode() != TargetOpcode::COPY)
+          break;
+        auto *UseMO = &DefMO->getParent()->getOperand(1);
+        if (!UseMO->isReg() || UseMO->getReg().isPhysical())
+          break;
+        MO = UseMO;
+      }
+
+      SmallVector<MachineOperand *, 4> OtherOperands;
+      bool Multiple = false;
+      for (auto &UseOperand : MRI.use_operands(MO->getReg())) {
+        if (&UseOperand == MO)
+          continue;
+        OtherOperands.push_back(&UseOperand);
+      }
+
+      MachineOperand *OtherOperand = nullptr;
+
+      if (OtherOperands.size() > 1) {
+        if (!OtherUseTries.contains(CurrentIdx))
+          OtherUseTries[CurrentIdx] = 0;
+
+        auto Tries = OtherUseTries[CurrentIdx]++;
+        OtherOperand = OtherOperands[Tries];
+
+        if (Tries != OtherOperands.size() - 1)
+          OnFailResumeAt.push_back(StartIdx);
+      } else if (OtherOperands.size() == 1)
+        OtherOperand = OtherOperands.front();
+
+      /*while (OtherOperand &&
+             OtherOperand->getParent()->getOpcode() == TargetOpcode::COPY)
+        OtherOperand = &OtherOperand->getParent()->getOperand(0);*/
+
+      if (!OtherOperand ||
+          OtherOperand->getParent()->getOpcode() >
+              TargetOpcode::PRE_ISEL_GENERIC_OPCODE_END ||
+          OtherOperand->getOperandNo() != ExpectedOtherOpIdx ||
+          OtherOperand->getParent()->getFlag(MachineInstr::MarkDelete)) {
+        if (handleReject() == RejectAndGiveUp)
+          return false;
+        break;
+      }
+
+      if ((size_t)NewInsnID < State.MIs.size())
+        State.MIs[NewInsnID] = OtherOperand->getParent();
+      else {
+        assert((size_t)NewInsnID == State.MIs.size() &&
+               "Expected to store MIs in order");
+        State.MIs.push_back(OtherOperand->getParent());
       }
       DEBUG_WITH_TYPE(TgtExecutor::getName(),
                       dbgs() << CurrentIdx << ": MIs[" << NewInsnID
@@ -957,6 +1048,21 @@ bool GIMatchTableExecutor::executeMatchTable(
       }
       break;
     }
+    case GIM_CheckIsSafeToMove: {
+      uint64_t NumInsn = MatchTable[CurrentIdx++];
+      DEBUG_WITH_TYPE(TgtExecutor::getName(),
+                      dbgs() << CurrentIdx << ": GIM_CheckIsSafeToMove(N = "
+                             << NumInsn << ")\n");
+      MachineInstr &Root = *State.MIs[0];
+      for (unsigned K = 1, E = NumInsn + 1; K < E; ++K) {
+        if (!isSafeToMove(MRI, *State.MIs[K], Root,
+                          ArrayRef(State.MIs.begin() + 1, State.MIs.end()))) {
+          if (handleReject() == RejectAndGiveUp)
+            return false;
+        }
+      }
+      break;
+    }
     case GIM_CheckIsSameOperand:
     case GIM_CheckIsSameOperandIgnoreCopies: {
       uint64_t InsnID = readULEB();
@@ -1465,6 +1571,16 @@ bool GIMatchTableExecutor::executeMatchTable(
           OutMIs[InsnID].addMemOperand(MMO);
       }
       DEBUG_WITH_TYPE(TgtExecutor::getName(), dbgs() << ")\n");
+      break;
+    }
+    case GIR_MarkEraseFromParent: {
+      uint64_t InsnID = readULEB();
+      MachineInstr *MI = State.MIs[InsnID];
+      assert(MI && "Attempted to mark erase an undefined instruction");
+      DEBUG_WITH_TYPE(TgtExecutor::getName(),
+                      dbgs() << CurrentIdx << ": GIR_MarkEraseFromParent(MIs["
+                             << InsnID << "])\n");
+      MI->setFlag(MachineInstr::MarkDelete);
       break;
     }
     case GIR_EraseFromParent: {
