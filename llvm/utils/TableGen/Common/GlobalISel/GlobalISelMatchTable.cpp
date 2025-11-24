@@ -1968,8 +1968,12 @@ void CopyOrAddZeroRegRenderer::emitRenderOpcodes(MatchTable &Table,
 
 void CopyConstantAsImmRenderer::emitRenderOpcodes(MatchTable &Table,
                                                   RuleMatcher &Rule) const {
+  llvm::errs() << "CopyConstantAsImmRenderer::emitRenderOpcodes" << "\n";
+  llvm::errs() << "SymbolicName=" << SymbolicName << "\n";
   InstructionMatcher &InsnMatcher = Rule.getInstructionMatcher(SymbolicName);
+  llvm::errs() << "qqq" << "\n";
   unsigned OldInsnVarID = Rule.getInsnVarID(InsnMatcher);
+  llvm::errs() << "www" << "\n";
   Table << MatchTable::Opcode(Signed ? "GIR_CopyConstantAsSImm"
                                      : "GIR_CopyConstantAsUImm")
         << MatchTable::Comment("NewInsnID")

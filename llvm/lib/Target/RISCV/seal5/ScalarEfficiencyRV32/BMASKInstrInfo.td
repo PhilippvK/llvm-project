@@ -7,7 +7,7 @@ class RVInst_BMASK<dag outs, dag ins> : Instruction, Sched<[]> {
     bits<32> Inst;
 
     // Operands
-    bits<12> imm12;
+    bits<12> simm12;
     bits<5> rs1;
     bits<5> rs2;
 
@@ -20,7 +20,7 @@ class RVInst_BMASK<dag outs, dag ins> : Instruction, Sched<[]> {
 
     // Encoding
 
-    let Inst{31-25} = imm12{6-0};
+    let Inst{31-25} = simm12{6-0};
 
     let Inst{24-20} = rs2;
 
@@ -28,7 +28,7 @@ class RVInst_BMASK<dag outs, dag ins> : Instruction, Sched<[]> {
 
     let Inst{14-12} = 0b011;
 
-    let Inst{11-7} = imm12{11-7};
+    let Inst{11-7} = simm12{11-7};
 
     let Inst{6-0} = 0b0101011;
 
@@ -36,9 +36,9 @@ class RVInst_BMASK<dag outs, dag ins> : Instruction, Sched<[]> {
     dag InOperandList = ins;
 
     // Assembly
-    let AsmString = "bmask\t$rs1, $rs2, $imm12";
+    let AsmString = "bmask\t$rs1, $rs2, $simm12";
 
 }
-def BMASK : RVInst_BMASK<(outs ), (ins GPR:$rs1, GPR:$rs2, simm12:$imm12)>;
+def BMASK : RVInst_BMASK<(outs ), (ins GPR:$rs1, GPR:$rs2, simm12:$simm12)>;
 
 }

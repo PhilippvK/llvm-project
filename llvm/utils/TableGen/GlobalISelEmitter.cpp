@@ -2418,7 +2418,8 @@ void GlobalISelEmitter::run(raw_ostream &OS) {
     llvm::StringMap<TreePattern *> ImmPredicates;
     // taken from RISCVInstrInfo.td (only ImmLeafOp NOT ImmOp)
     // todo: add immediates for more lengths
-    auto ImmNames = {"uimm1", "uimm2", "uimm5", "uimm6", "simm12"};
+    // auto ImmNames = {"uimm1", "uimm2", "uimm5", "uimm6", "simm12", "imm12"};  // TODO: fill!
+    auto ImmNames = {"uimm1", "uimm2", "uimm5", "uimm6", "simm12"};  // TODO: fill!
     for (auto &Name : ImmNames)
       ImmPredicates[Name] = CGP.getPatternFragment(RK.getDef(Name));
 
@@ -2427,6 +2428,163 @@ void GlobalISelEmitter::run(raw_ostream &OS) {
 
     // Include PatternGen-generated inc files here!
     // GlobalISelEmitter.cpp - gisel_table - INSERTION_START
+// DUALADD
+// for (int R_0 = 0; R_0 < 2; R_0++)
+// for (int R_1 = 0; R_1 < 2; R_1++)
+// {
+// RuleMatcher RM{Locs};
+// RuleMatcherScores[RM.getRuleID()] = 16;
+// RM.addRequiredFeature(RK.getDef("HasStdExtXScalarEfficiencyRV32"));
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// InstructionMatcher &_0 = RM.addInstructionMatcher("");
+// _0.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_ADD")));
+// auto &_1 = _0.addOperand((1+(R_0+0)%2), "", 0);
+// auto &_2 = (**(_1.addPredicate<OtherUseInstructionOperandMatcher>((1+(R_1+1)%2), RM, ""))).getInsnMatcher();
+// _2.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_ADD")));
+// auto &_3 = _2.addOperand((1+(R_1+0)%2), "rd2", 0);
+// _3.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _3.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_4 = _2.addOperand((1+(R_1+1)%2), "rs1", 0);
+// _4.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _4.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_5 = _0.addOperand((1+(R_0+1)%2), "rd1", 0);
+// _5.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _5.addPredicate<RegisterBankOperandMatcher>(GPR);
+// RM.addAction<CheckSafeToMoveInstAction>(1);
+// auto OutputInstID = RM.allocateOutputInsnID();
+// auto &DstI = Target.getInstruction(RK.getDef("DUALADD_"));
+// auto &DstMIBuilder = RM.addAction<BuildMIAction>(OutputInstID, &DstI);
+// DstMIBuilder.addRenderer<CopyRenderer>("rd1_wb");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd2_wb");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd1");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd2");
+// DstMIBuilder.addRenderer<CopyRenderer>("rs1");
+// auto &_O0 = _0.addOperand(0, "rd1_wb", 0);
+// _O0.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_O1 = _2.addOperand(0, "rd2_wb", 0);
+// _O1.addPredicate<RegisterBankOperandMatcher>(GPR);
+// RM.addAction<ConstrainOperandsToDefinitionAction>(0);
+// RM.addAction<MarkEraseInstAction>(RM.getInsnVarID(_2));
+// unsigned RootInsnID = RM.getInsnVarID(_0);
+// RM.addAction<EraseInstAction>(RootInsnID);
+// Rules.push_back(std::move(RM));;
+// }
+// for (int R_0 = 0; R_0 < 2; R_0++)
+// for (int R_1 = 0; R_1 < 2; R_1++)
+// {
+// RuleMatcher RM{Locs};
+// RuleMatcherScores[RM.getRuleID()] = 16;
+// RM.addRequiredFeature(RK.getDef("HasStdExtXScalarEfficiencyRV32"));
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// InstructionMatcher &_0 = RM.addInstructionMatcher("");
+// _0.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_ADD")));
+// auto &_1 = _0.addOperand((1+(R_0+0)%2), "rd2", 0);
+// _1.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _1.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_2 = _0.addOperand((1+(R_0+1)%2), "", 0);
+// auto &_3 = (**(_2.addPredicate<OtherUseInstructionOperandMatcher>((1+(R_1+0)%2), RM, ""))).getInsnMatcher();
+// _3.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_ADD")));
+// auto &_4 = _3.addOperand((1+(R_1+0)%2), "rs1", 0);
+// _4.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _4.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_5 = _3.addOperand((1+(R_1+1)%2), "rd1", 0);
+// _5.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// _5.addPredicate<RegisterBankOperandMatcher>(GPR);
+// RM.addAction<CheckSafeToMoveInstAction>(1);
+// auto OutputInstID = RM.allocateOutputInsnID();
+// auto &DstI = Target.getInstruction(RK.getDef("DUALADD_"));
+// auto &DstMIBuilder = RM.addAction<BuildMIAction>(OutputInstID, &DstI);
+// DstMIBuilder.addRenderer<CopyRenderer>("rd1_wb");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd2_wb");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd1");
+// DstMIBuilder.addRenderer<CopyRenderer>("rd2");
+// DstMIBuilder.addRenderer<CopyRenderer>("rs1");
+// auto &_O0 = _0.addOperand(0, "rd2_wb", 0);
+// _O0.addPredicate<RegisterBankOperandMatcher>(GPR);
+// auto &_O1 = _3.addOperand(0, "rd1_wb", 0);
+// _O1.addPredicate<RegisterBankOperandMatcher>(GPR);
+// RM.addAction<ConstrainOperandsToDefinitionAction>(0);
+// RM.addAction<MarkEraseInstAction>(RM.getInsnVarID(_3));
+// unsigned RootInsnID = RM.getInsnVarID(_0);
+// RM.addAction<EraseInstAction>(RootInsnID);
+// Rules.push_back(std::move(RM));
+// }
+// BMASK
+// for (int R_0 = 0; R_0 < 2; R_0++)
+// for (int R_1 = 0; R_1 < 2; R_1++)
+// {
+// RuleMatcher RM{Locs};
+// RuleMatcherScores[RM.getRuleID()] = 16;
+// llvm::errs() << "A1" << RK.getDef("HasStdExtXScalarEfficiencyRV32") << "\n";
+// RM.addRequiredFeature(RK.getDef("HasStdExtXScalarEfficiencyRV32"));
+// llvm::errs() << "A2" << RK.getDef("IsRV32") << "\n";
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// llvm::errs() << "A3" << RK.getDef("IsRV32") << "\n";
+// RM.addRequiredFeature(RK.getDef("IsRV32"));
+// llvm::errs() << "A4" << "\n";
+// InstructionMatcher &_0 = RM.addInstructionMatcher("");
+// llvm::errs() << "A5" << RK.getDef("G_BRCOND") << "\n";
+// _0.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_BRCOND")));
+// llvm::errs() << "A6" << "\n";
+// auto &_1 = _0.addOperand(1, "simm12", 0);
+// llvm::errs() << "A7" << "\n";
+// _1.addPredicate<MBBOperandMatcher>();
+// llvm::errs() << "A8" << "\n";
+// auto &_2 = _0.addOperand(0, "", 0);
+// llvm::errs() << "A9" << "\n";
+// auto &_3 = (**(_2.addPredicate<InstructionOperandMatcher>(RM, ""))).getInsnMatcher();
+// llvm::errs() << "A10" << RK.getDef("G_ICMP") << "\n";
+// _3.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_ICMP")));
+// llvm::errs() << "A11" << "\n";
+// _3.addPredicate<CmpPredicateOperandMatcher>(1, "ICMP_NE");
+// llvm::errs() << "A12" << "\n";
+// auto &_4 = _3.addOperand((2+(R_0+0)%2), "", 0);
+// llvm::errs() << "A13" << "\n";
+// _4.addPredicate<ConstantIntOperandMatcher>(0);
+// llvm::errs() << "A14" << "\n";
+// auto &_5 = _3.addOperand((2+(R_0+1)%2), "", 0);
+// llvm::errs() << "A15" << "\n";
+// auto &_6 = (**(_5.addPredicate<InstructionOperandMatcher>(RM, ""))).getInsnMatcher();
+// llvm::errs() << "A16" << RK.getDef("G_AND") << "\n";
+// _6.addPredicate<InstructionOpcodeMatcher>(&Target.getInstruction(RK.getDef("G_AND")));
+// llvm::errs() << "A17" << "\n";
+// auto &_7 = _6.addOperand((1+(R_1+0)%2), "rs2", 0);
+// llvm::errs() << "A18" << "\n";
+// _7.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// llvm::errs() << "A19" << "\n";
+// _7.addPredicate<RegisterBankOperandMatcher>(GPR);
+// llvm::errs() << "A20" << "\n";
+// auto &_8 = _6.addOperand((1+(R_1+1)%2), "rs1", 0);
+// llvm::errs() << "A21" << "\n";
+// _8.addPredicate<LLTOperandMatcher>(LLT::scalar(32));
+// llvm::errs() << "A22" << "\n";
+// _8.addPredicate<RegisterBankOperandMatcher>(GPR);
+// llvm::errs() << "A23" << "\n";
+// RM.addAction<CheckSafeToMoveInstAction>(2);
+// llvm::errs() << "A24" << "\n";
+// auto OutputInstID = RM.allocateOutputInsnID();
+// llvm::errs() << "A25" << RK.getDef("BMASK_") << "\n";
+// auto &DstI = Target.getInstruction(RK.getDef("BMASK_"));
+// llvm::errs() << "A26" << "\n";
+// auto &DstMIBuilder = RM.addAction<BuildMIAction>(OutputInstID, &DstI);
+// llvm::errs() << "A27" << "\n";
+// DstMIBuilder.addRenderer<CopyRenderer>("rs1");
+// llvm::errs() << "A28" << "\n";
+// DstMIBuilder.addRenderer<CopyRenderer>("rs2");
+// llvm::errs() << "A29" << "\n";
+// DstMIBuilder.addRenderer<CopyConstantAsImmRenderer>("simm12");
+// llvm::errs() << "A30" << "\n";
+// RM.addAction<ConstrainOperandsToDefinitionAction>(0);
+// llvm::errs() << "A31" << "\n";
+// unsigned RootInsnID = RM.getInsnVarID(_0);
+// llvm::errs() << "A32" << "\n";
+// RM.addAction<EraseInstAction>(RootInsnID);
+// llvm::errs() << "A33" << "\n";
+// Rules.push_back(std::move(RM));;
+// llvm::errs() << "A34" << "\n";
+// }
     // GlobalISelEmitter.cpp - gisel_table - INSERTION_END
 
 #ifdef USE_GENERATED_TABLES
