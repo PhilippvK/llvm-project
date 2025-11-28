@@ -153,4 +153,11 @@ def ntl_store : RISCVBuiltin<"void(...)">;
 include "clang/Basic/BuiltinsRISCVXCV.td"
 
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_START
+// xscalarefficiencyrv32
+let Attributes = [NoThrow, Const] in {
+def xscalarefficiencyrv32_xexample_slli_add_addi : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, unsigned char, signed char)", "xscalarefficiencyrv32,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+def xscalarefficiencyrv32_xexample_slli_add_addi_const : RISCVBuiltin<"uint32_t(uint32_t, unsigned char, signed char)", "xscalarefficiencyrv32,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

@@ -1887,6 +1887,17 @@ let TargetPrefix = "riscv" in {
   def int_riscv_vsm3c    : RISCVBinaryAAXUnMaskedZvk<IsVI=1>;
   def int_riscv_vsm3me   : RISCVBinaryAAXUnMasked;
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_START
+let TargetPrefix = "riscv" in {
+  def int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i8_ty, llvm_i8_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+  def int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i8_ty, llvm_i8_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+
+}
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_END
 } // TargetPrefix = "riscv"
 

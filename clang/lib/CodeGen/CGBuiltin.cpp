@@ -23331,6 +23331,12 @@ Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
     break;
 
 // CGBuiltin.cpp - cg_builtin - INSERTION_START
+case RISCV::BI__builtin_riscv_xscalarefficiencyrv32_xexample_slli_add_addi:
+    ID = Intrinsic::riscv_xscalarefficiencyrv32_xexample_slli_add_addi;
+    break;
+  case RISCV::BI__builtin_riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const:
+    ID = Intrinsic::riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const;
+    break;
 // CGBuiltin.cpp - cg_builtin - INSERTION_END
 
   // Zksed
