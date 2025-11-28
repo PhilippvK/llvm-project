@@ -591,6 +591,11 @@ static void getOperandsForBranch(Register CondReg, RISCVCC::CondCode &CC,
   CC = getRISCVCCFromICmp(Pred);
 }
 
+static bool selectPre(MachineInstr &MI)
+{
+  return false;
+}
+
 bool RISCVInstructionSelector::select(MachineInstr &MI) {
   MachineIRBuilder MIB(MI);
 
@@ -641,6 +646,9 @@ bool RISCVInstructionSelector::select(MachineInstr &MI) {
   case TargetOpcode::G_INTTOPTR:
   case TargetOpcode::G_TRUNC:
   case TargetOpcode::G_FREEZE:
+    return selectCopy(MI);
+  case TargetOpcode::G_BITCAST:
+    // return selectCopy2(I, TII, MRI, TRI, RBI);
     return selectCopy(MI);
   case TargetOpcode::G_CONSTANT: {
     Register DstReg = MI.getOperand(0).getReg();

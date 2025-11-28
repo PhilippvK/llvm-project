@@ -108,6 +108,16 @@ let TargetPrefix = "riscv" in {
   def int_riscv_xperm8  : BitManipGPRGPRIntrinsics;
 } // TargetPrefix = "riscv"
 
+
+let TargetPrefix = "riscv" in {
+  class PatternGenIntrinsic
+    : DefaultAttrsIntrinsic<[llvm_any_ty],
+                            [LLVMMatchType<0>],
+                            [IntrNoMem, IntrHasSideEffects]>;
+
+  def int_riscv_pg_branch : PatternGenIntrinsic;
+}
+
 //===----------------------------------------------------------------------===//
 // May-Be-Operations
 
