@@ -320,6 +320,30 @@ def simm21_lsb0_jal : Operand<OtherVT> {
 }
 
 // RISCVInstrInfo.td - field_types - INSERTION_START
+class Seal5RISCVUImmOp<int bitsNum> : RISCVOp {
+  let ParserMatchClass = UImmAsmOperand<bitsNum>;
+  let DecoderMethod = "decodeUImmOperand<" # bitsNum # ">";
+  let OperandType = "SEAL5_OPERAND_UIMM" # bitsNum;
+}
+class Seal5RISCVUImmLeafOp<int bitsNum> :
+  Seal5RISCVUImmOp<bitsNum>, ImmLeaf<XLenVT, "return isUInt<" # bitsNum # ">(Imm);">;
+class Seal5RISCVSImmOp<int bitsNum> : RISCVOp {
+  let ParserMatchClass = SImmAsmOperand<bitsNum>;
+  let EncoderMethod = "getImmOpValue";
+  let DecoderMethod = "decodeSImmOperand<" # bitsNum # ">";
+  let OperandType = "SEAL5_OPERAND_SIMM" # bitsNum;
+}
+class Seal5RISCVSImmLeafOp<int bitsNum> :
+  Seal5RISCVSImmOp<bitsNum>, ImmLeaf<XLenVT, "return isInt<" # bitsNum # ">(Imm);">;
+
+def simm3 : Seal5RISCVSImmLeafOp<3> {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isInt<3>(Imm);
+    return MCOp.isBareSymbolRef();
+  }];
+}
 // RISCVInstrInfo.td - field_types - INSERTION_END
 
 def BareSymbol : AsmOperandClass {
