@@ -1,3 +1,16 @@
+def seal5_tuimm5 : TImmLeaf<XLenVT, [{return isUInt<5>(Imm);}]>;
+def seal5_tsimm3 : Operand<XLenVT>, TImmLeaf<XLenVT, [{return isInt<3>(Imm);}]> {
+  let ParserMatchClass = SImmAsmOperand<3>;
+  let EncoderMethod = "getImmOpValue";
+  let DecoderMethod = "decodeSImmOperand<3>";
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isInt<3>(Imm);
+    return MCOp.isBareSymbolRef();
+  }];
+}
+
 let Predicates = [HasStdExtXScalarEfficiencyRV32, IsRV32] in {
 class RVInst_SLLI_ADD_ADDI<dag outs, dag ins> : Instruction, Sched<[]> {
     // General
@@ -40,8 +53,10 @@ class RVInst_SLLI_ADD_ADDI<dag outs, dag ins> : Instruction, Sched<[]> {
     let AsmString = "xexample.slli_add_addi\t$rd, $rs1, $rs2, $imm, $imm2";
 
 }
+
 def SLLI_ADD_ADDI : RVInst_SLLI_ADD_ADDI<(outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, simm3:$imm, uimm5:$imm2)>;
+// : Pat<(OpNode GPR:$rs1, GPR:$rs2, simm3:$imm, uimm5:$imm2), (Inst GPR:$rs1, GPR:$rs2, simm3:$imm, uimm5:$imm2)>;
 class Pat_SLLI_ADD_ADDI<SDPatternOperator OpNode, Instruction Inst>
-: Pat<(OpNode GPR:$rs1, GPR:$rs2, simm3:$imm, uimm5:$imm2), (Inst GPR:$rs1, GPR:$rs2, simm3:$imm, uimm5:$imm2)>;
+: Pat<(OpNode GPR:$rs1, GPR:$rs2, seal5_tsimm3:$imm, seal5_tuimm5:$imm2), (Inst GPR:$rs1, GPR:$rs2, seal5_tsimm3:$imm, seal5_tuimm5:$imm2)>;
 def : Pat_SLLI_ADD_ADDI<int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi, SLLI_ADD_ADDI>;
 }
