@@ -95,6 +95,7 @@
 #include "llvm/IR/IntrinsicsAArch64.h"
 #include "llvm/IR/IntrinsicsAMDGPU.h"
 #include "llvm/IR/IntrinsicsARM.h"
+#include "llvm/IR/IntrinsicsRISCV.h"
 #include "llvm/IR/IntrinsicsNVPTX.h"
 #include "llvm/IR/IntrinsicsWebAssembly.h"
 #include "llvm/IR/LLVMContext.h"
@@ -6288,6 +6289,19 @@ void Verifier::visitIntrinsicCall(Intrinsic::ID ID, CallBase &Call) {
   }
   case Intrinsic::experimental_noalias_scope_decl: {
     NoAliasScopeDecls.push_back(cast<IntrinsicInst>(&Call));
+    break;
+  }
+  case Intrinsic::riscv_xscalarefficiencyrv32_xexample_slli_add_addi: {
+    auto *C = dyn_cast<ConstantInt>(Call.getArgOperand(3));
+    llvm::outs() << "C->getZExtValue()=" << C->getZExtValue() << "\n";
+    llvm::outs() << "C->getSExtValue()=" << C->getSExtValue() << "\n";
+    Check(C && C->getZExtValue() >= 0 && C->getZExtValue() <= 31, "Intrinsic exceeds valid range [0,31]",
+          &Call);
+    auto *C2 = dyn_cast<ConstantInt>(Call.getArgOperand(2));
+    llvm::outs() << "C2->getZExtValue()=" << C2->getZExtValue() << "\n";
+    llvm::outs() << "C2->getSExtValue()=" << C2->getSExtValue() << "\n";
+    Check(C2 && C2->getSExtValue() >= -2 && C2->getSExtValue() <= 1, "Intrinsic exceeds valid range [-2,1]",
+          &Call);
     break;
   }
   case Intrinsic::preserve_array_access_index:
