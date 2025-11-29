@@ -40,7 +40,7 @@ class RVInst_SLLI_ADD_ADDI_CONST<dag outs, dag ins> : Instruction, Sched<[]> {
 
 }
 def SLLI_ADD_ADDI_CONST : RVInst_SLLI_ADD_ADDI_CONST<(outs GPR:$rd), (ins GPR:$rs1, simm3:$imm, uimm5:$imm2)>;
-class Pat_SLLI_ADD_ADDI_CONST<SDPatternOperator OpNode, Instruction Inst>
-: Pat<(OpNode GPR:$rs1, simm3:$imm, uimm5:$imm2), (Inst GPR:$rs1, simm3:$imm, uimm5:$imm2)>;
-def : Pat_SLLI_ADD_ADDI_CONST<int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const, SLLI_ADD_ADDI_CONST>;
+// class Pat_SLLI_ADD_ADDI_CONST<SDPatternOperator OpNode, Instruction Inst>
+// : Pat<(OpNode GPR:$rs1, simm3:$imm, uimm5:$imm2), (Inst GPR:$rs1, simm3:$imm, uimm5:$imm2)>;
+// def : Pat_SLLI_ADD_ADDI_CONST<int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const, SLLI_ADD_ADDI_CONST>;
 }
