@@ -1891,7 +1891,7 @@ let TargetPrefix = "riscv" in {
   def int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi : Intrinsic<
     [llvm_i32_ty],
     [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
-    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn, ImmArg<ArgIndex<2>>, ImmArg<ArgIndex<3>>]>;
   def int_riscv_xscalarefficiencyrv32_xexample_slli_add_addi_const : Intrinsic<
     [llvm_i32_ty],
     [llvm_i32_ty, llvm_i8_ty, llvm_i8_ty],
