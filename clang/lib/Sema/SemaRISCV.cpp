@@ -624,6 +624,8 @@ bool SemaRISCV::CheckBuiltinFunctionCall(const TargetInfo &TI,
   }
 
   switch (BuiltinID) {
+  case RISCV::BI__builtin_riscv_xscalarefficiencyrv32_xexample_slli_add_addi:
+    return SemaRef.BuiltinConstantArgRange(TheCall, 2, -2, 1) || SemaRef.BuiltinConstantArgRange(TheCall, 3, 0, 31);
   case RISCVVector::BI__builtin_rvv_vsetvli:
     return SemaRef.BuiltinConstantArgRange(TheCall, 1, 0, 3) ||
            CheckLMUL(TheCall, 2);
