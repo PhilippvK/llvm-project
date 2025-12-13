@@ -870,3 +870,6 @@ let RegInfos = XLenRI in {
   def TRM2 : RISCVRegisterClass<[untyped], 32, (add (decimate TR, 2))>;
   def TRM4 : RISCVRegisterClass<[untyped], 32, (add (decimate TR, 4))>;
 }
+
+// RISCVRegisterInfo.td - riscv_register_info - INSERTION_START
+// RISCVRegisterInfo.td - riscv_register_info - INSERTION_END

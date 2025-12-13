@@ -406,6 +406,9 @@ def simm21_lsb0_jal : Operand<OtherVT>,
   let OperandType = "OPERAND_PCREL";
 }
 
+// RISCVInstrInfo.td - field_types - INSERTION_START
+// RISCVInstrInfo.td - field_types - INSERTION_END
+
 def BareSymbol : AsmOperandClass {
   let Name = "BareSymbol";
   let RenderMethod = "addImmOperands";
@@ -507,6 +510,9 @@ class AddrRegRegScale<int N>
 class AddrRegZextRegScale<int N>
     : ComplexPattern<i64, 3, "SelectAddrRegZextRegScale<"#N#", 32>",
                      [], [], 10>;
+
+// RISCVInstrInfo.td - riscv_instr_info_includes - INSERTION_START
+// RISCVInstrInfo.td - riscv_instr_info_includes - INSERTION_END
 
 // Return the negation of an immediate value.
 def NegImm : SDNodeXForm<imm, [{
