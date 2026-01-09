@@ -1005,6 +1005,8 @@ def FeatureStdExtXScalarEfficiencyRV32 : RISCVExtension<1, 0, "ScalarEfficiencyR
 def HasStdExtXScalarEfficiencyRV32 : Predicate<"Subtarget->hasStdExtXScalarEfficiencyRV32()">, AssemblerPredicate<(any_of FeatureStdExtXScalarEfficiencyRV32), "'XScalarEfficiencyRV32' (ScalarEfficiencyRV32 Extension)">;
 def FeatureVendorXOpenASIPbase : RISCVExperimentalExtension<1, 0, "OpenASIP_base Extension", []>;
 def HasVendorXOpenASIPbase : Predicate<"Subtarget->hasVendorXOpenASIPbase()">, AssemblerPredicate<(any_of FeatureVendorXOpenASIPbase), "'XOpenASIPbase' (OpenASIP_base Extension)">;
+def FeatureVendorXOpenASIPpaper : RISCVExtension<1, 0, "OpenASIP_paper Extension", []>;
+def HasVendorXOpenASIPpaper : Predicate<"Subtarget->hasVendorXOpenASIPpaper()">, AssemblerPredicate<(any_of FeatureVendorXOpenASIPpaper), "'XOpenASIPpaper' (OpenASIP_paper Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
