@@ -128,6 +128,7 @@ set(riscv_files
   riscv_corev_alu.h
   riscv_crypto.h
   riscv_ntlh.h
+  riscv_openasip_base.h
   sifive_vector.h
   andes_vector.h
   )
