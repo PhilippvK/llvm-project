@@ -159,4 +159,11 @@ def pause : RISCVBuiltin<"void()">;
 include "clang/Basic/BuiltinsRISCVXCV.td"
 
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_START
+// xopenasipbase
+let Attributes = [NoThrow, Const] in {
+  def xopenasipbase_openasip_base_max : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "experimental-xopenasipbase,32bit">;
+} // Attributes = [NoThrow, Const]
+let Attributes = [NoThrow, Const] in {
+  def xopenasipbase_openasip_base_maxu : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "experimental-xopenasipbase,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

@@ -1216,6 +1216,12 @@ Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
     break;
 
 // RISCV.cpp - cg_builtin - INSERTION_START
+case RISCV::BI__builtin_riscv_xopenasipbase_openasip_base_max:
+    ID = Intrinsic::riscv_xopenasipbase_openasip_base_max;
+    break;
+  case RISCV::BI__builtin_riscv_xopenasipbase_openasip_base_maxu:
+    ID = Intrinsic::riscv_xopenasipbase_openasip_base_maxu;
+    break;
 // RISCV.cpp - cg_builtin - INSERTION_END
 
   // Zksed
