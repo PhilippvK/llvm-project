@@ -740,6 +740,9 @@ static constexpr FeatureBitset XCVFeatureGroup = {
     RISCV::FeatureVendorXCVbi};
 
 // RISCVDisassembler.cpp - riscv_disass_feature_groups - INSERTION_START
+static constexpr FeatureBitset ScalarEfficiencyRV32FeatureGroup = {
+    RISCV::FeatureStdExtXScalarEfficiencyRV32,
+};
 // RISCVDisassembler.cpp - riscv_disass_feature_groups - INSERTION_END
 
 static constexpr FeatureBitset XRivosFeatureGroup = {
@@ -802,6 +805,7 @@ static constexpr DecoderListEntry DecoderList32[]{
     // Standard Extensions
     {DecoderTableXCV32, XCVFeatureGroup, "CORE-V extensions"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_32 - INSERTION_START
+{DecoderTableScalarEfficiencyRV3232, ScalarEfficiencyRV32FeatureGroup, "ScalarEfficiencyRV32 opcode table"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_32 - INSERTION_END
     {DecoderTableXqci32, XqciFeatureGroup, "Qualcomm uC Extensions"},
     {DecoderTableXRivos32, XRivosFeatureGroup, "Rivos"},
