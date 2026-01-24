@@ -44,16 +44,17 @@ struct Value {
   int bitWidth;
   bool isSigned;
   bool isLValue;
+  bool isImm;
 
-  Value(llvm::Value *llvalue, bool isSigned = false)
-      : ll(llvalue), isSigned(isSigned) {
+  Value(llvm::Value *llvalue, bool isSigned = false, bool isImm = false)
+      : ll(llvalue), isSigned(isSigned), isImm(isImm) {
     assert(!llvm::isa<llvm::PointerType>(llvalue->getType()));
     bitWidth = llvalue->getType()->getIntegerBitWidth();
     isLValue = false;
   }
 
-  Value(llvm::Value *llvalue, int bitWidth, bool isSigned = false)
-      : ll(llvalue), bitWidth(bitWidth), isSigned(isSigned) {
+  Value(llvm::Value *llvalue, int bitWidth, bool isSigned = false, bool isImm = false)
+      : ll(llvalue), bitWidth(bitWidth), isSigned(isSigned), isImm(isImm) {
     isLValue = true;
   }
 
@@ -182,9 +183,84 @@ static void fit_to_size(Value &v, llvm::IRBuilder<> &build) {
     v.ll = build.CreateTrunc(v.ll, newType);
 }
 
+bool isConstantLike(const Value &V) {
+  return llvm::isa<llvm::ConstantInt>(V.ll) || V.isImm;
+}
+
+bool isLiteralConstant(const Value &V) {
+  return llvm::isa<llvm::ConstantInt>(V.ll);
+}
+
+bool isImmediateConstant(const Value &V) {
+  return V.isImm && !isLiteralConstant(V);
+}
+
+
+// static bool extractBaseAndWidth(
+//     const Value &lo,
+//     const Value &hi,
+//     Value &base,
+//     Value &width) {
+//   llvm::outs() << "extractBaseAndWidth" << "\n";
+//   llvm::outs() << "lo.ll=" << *lo.ll << "\n";
+//   llvm::outs() << "hi.ll=" << *hi.ll << "\n";
+//
+//   // lo == hi -> single bit
+//   if (lo.ll == hi.ll) {
+//     llvm::outs() << "single bit" << "\n";
+//     base = lo;
+//     width = Value{llvm::ConstantInt::get(lo.ll->getType(), 1), false, true};
+//     return true;
+//   }
+//
+//   // Match: hi = base + width
+//   // Match: hi = width + base
+//   if (auto *Add = llvm::dyn_cast<llvm::BinaryOperator>(hi.ll)) {
+//     llvm::outs() << "hi binop" << "\n";
+//     if (Add->getOpcode() == llvm::Instruction::Add) {
+//       llvm::outs() << "hi add" << "\n";
+//       if (Add->getOperand(0) == lo.ll && isConstantLike(hi)) {
+//         base = lo.ll;
+//         width = Value{Add->getOperand(1), false, /*isImmediate=*/true};
+//         return true;
+//       } else if (Add->getOperand(1) == lo.ll && isConstantLike(hi)) {
+//         base = lo.ll;
+//         width = Value{Add->getOperand(0), false, /*isImmediate=*/true};
+//         return true;
+//       }
+//     }
+//   }
+//
+//   // Match: lo = base + width
+//   // Match: lo = width + base
+//   if (auto *Add = llvm::dyn_cast<llvm::BinaryOperator>(lo.ll)) {
+//     llvm::outs() << "lo binop" << "\n";
+//     if (Add->getOpcode() == llvm::Instruction::Add) {
+//       llvm::outs() << "lo add" << "\n";
+//       if (Add->getOperand(0) == hi.ll && isConstantLike(lo)) {
+//         llvm::outs() << "hi base, lo const" << "\n";
+//         base = hi.ll;
+//         width = Value{Add->getOperand(1), false, /*isImmediate=*/true};
+//         return true;
+//       } else if (Add->getOperand(1) == hi.ll && isConstantLike(lo)) {
+//         llvm::outs() << "hi base, lo const" << "\n";
+//         base = hi.ll;
+//         width = Value{Add->getOperand(0), false, /*isImmediate=*/true};
+//         return true;
+//       }
+//     }
+//   }
+//
+//   // Match: a = b - C
+//   // Match: b = a - C
+//
+//   return false;
+// }
+
 Value gen_subscript(TokenStream &ts, llvm::Function *func,
                     llvm::IRBuilder<> &build, TokenType op, Value left,
                     Value right) {
+  llvm::outs() << "gen_subscript" << "\n";
   auto &ctx = func->getContext();
   Value upper = ParseExpression(ts, func, build);
 
@@ -192,10 +268,21 @@ Value gen_subscript(TokenStream &ts, llvm::Function *func,
   Value lower;
 
   if (pop_cur_if(ts, Colon)) {
+    llvm::outs() << "colon" << "\n";
     lower = ParseExpression(ts, func, build);
     if (!llvm::isa<llvm::ConstantInt>(lower.ll) ||
-        !llvm::isa<llvm::ConstantInt>(upper.ll))
-      not_implemented(ts);
+        !llvm::isa<llvm::ConstantInt>(upper.ll)) {
+      // llvm::outs() << "normalize" << "\n";
+      // // --- Normalize slice ---
+      // Value base;
+      // Value width;
+
+      // if (!extractBaseAndWidth(lower, upper, base, width))
+      //   not_implemented(ts); // non-constant width
+
+      // llvm::outs() << "base=" << *base.ll << "\n";
+      // llvm::outs() << "width=" << *width.ll << "\n";
+    }
     len = llvm::cast<llvm::ConstantInt>(upper.ll)->getLimitedValue() -
           llvm::cast<llvm::ConstantInt>(lower.ll)->getLimitedValue() + 1;
   } else if (pop_cur_if(ts, PlusColon)) {
@@ -539,7 +626,7 @@ Value gen_binop(TokenStream &ts, llvm::Function *func, llvm::IRBuilder<> &build,
   right.bitWidth = resultWidth;
   fit_to_size(right, build);
 
-  auto v = Value(build.CreateBinOp(llop, left.ll, right.ll), outSigned);
+  auto v = Value(build.CreateBinOp(llop, left.ll, right.ll), outSigned, false);
 
   if (op >= AssignmentAdd)
     return gen_assign(ts, func, build, op, leftOriginal, v);
@@ -673,7 +760,7 @@ Value gen_logical(TokenStream &ts, llvm::Function *func,
   phi->addIncoming(valRightBool, blockEvalRHS);
   phi->addIncoming(llvm::ConstantInt::get(i1, (op == LogicalOR) ? 1 : 0),
                    blockPre);
-  return Value(phi, false);
+  return Value(phi, false, false);
 }
 
 Value gen_concat(TokenStream &ts, llvm::Function *func,
@@ -713,7 +800,7 @@ Value gen_inc(bool isPost, TokenStream &ts, llvm::Function *func,
   build.CreateAlignedStore(post, left.ll,
                            llvm::Align(ceil_to_pow2(left.bitWidth) / 8));
 
-  return Value(isPost ? post : pre, left.isSigned);
+  return Value(isPost ? post : pre, left.isSigned, false);
 }
 
 // this can be updated to std::bind_front once LLVM switches to a newer standard
@@ -807,6 +894,17 @@ Value ParseExpressionTerminal(TokenStream &ts, llvm::Function *func,
     if (t.ident.str == "X" || t.ident.str == "XW") {
       bool sizeIs32 = t.ident.str == "XW";
       pop_cur(ts, ABrOpen);
+      if (ts.Peek().type == IntLiteral) {  // Handle X[0]
+        auto idx = pop_cur(ts, IntLiteral);
+        pop_cur(ts, ABrClose);
+        if (idx.literal.value == 0)  // X[0] -> 0
+          return Value(
+              llvm::ConstantInt::get(llvm::Type::getIntNTy(ctx, sizeIs32 ? 32 : xlen),
+                                     0, true),
+              true, true);
+        else  // X[1],...
+          not_implemented(ts);
+      }
       auto ident = pop_cur(ts, Identifier).ident;
       pop_cur(ts, ABrClose);
 
@@ -851,7 +949,7 @@ Value ParseExpressionTerminal(TokenStream &ts, llvm::Function *func,
     return Value(
         llvm::ConstantInt::get(llvm::Type::getIntNTy(ctx, t.literal.bitLen),
                                t.literal.value, t.literal.isSigned),
-        t.literal.isSigned);
+        t.literal.isSigned, true);
   }
   case Minus: {
     ts.Pop();
@@ -1489,4 +1587,3 @@ std::vector<CDSLInstr> ParseCoreDSL2(TokenStream &ts, bool is64Bit,
   }
   return instrs;
 }
-
