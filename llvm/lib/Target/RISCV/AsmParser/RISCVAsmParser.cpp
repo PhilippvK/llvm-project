@@ -740,6 +740,8 @@ public:
   bool isUImm32() const { return isUImm<32>(); }
   bool isUImm48() const { return isUImm<48>(); }
   bool isUImm64() const { return isUImm<64>(); }
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_START
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_END
 
   bool isUImm5NonZero() const {
     return isUImmPred([](int64_t Imm) { return Imm != 0 && isUInt<5>(Imm); });
