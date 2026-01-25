@@ -341,6 +341,7 @@ LLVM_ABI void initializeWinEHPreparePass(PassRegistry &);
 LLVM_ABI void initializeWriteBitcodePassPass(PassRegistry &);
 LLVM_ABI void initializeXRayInstrumentationLegacyPass(PassRegistry &);
 // InitializePasses.h - initialize_passes_decl - INSERTION_START
+void initializePatternGenPass(PassRegistry&);
 // InitializePasses.h - initialize_passes_decl - INSERTION_END
 
 } // end namespace llvm
