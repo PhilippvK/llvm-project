@@ -1009,6 +1009,8 @@ def FeatureVendorXOpenASIPpaper : RISCVExtension<1, 0, "OpenASIP_paper Extension
 def HasVendorXOpenASIPpaper : Predicate<"Subtarget->hasVendorXOpenASIPpaper()">, AssemblerPredicate<(any_of FeatureVendorXOpenASIPpaper), "'XOpenASIPpaper' (OpenASIP_paper Extension)">;
 def FeatureStdExtXRVC : RISCVExtension<1, 0, "XRVC Extension", []>;
 def HasStdExtXRVC : Predicate<"Subtarget->hasStdExtXRVC()">, AssemblerPredicate<(any_of FeatureStdExtXRVC), "'XRVC' (XRVC Extension)">;
+def FeatureStdExtXExample : RISCVExtension<1, 0, "XExample Extension", []>;
+def HasStdExtXExample : Predicate<"Subtarget->hasStdExtXExample()">, AssemblerPredicate<(any_of FeatureStdExtXExample), "'XExample' (XExample Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
