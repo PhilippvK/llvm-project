@@ -741,6 +741,14 @@ public:
   bool isUImm48() const { return isUImm<48>(); }
   bool isUImm64() const { return isUImm<64>(); }
   // RISCVAsmParser.cpp - riscv_operands - INSERTION_START
+bool isSeal5UImm16() const { return isUImm<16>(); }
+bool isSeal5UImm1() const { return isUImm<1>(); }
+bool isSeal5UImm12() const { return isUImm<12>(); }
+bool isSeal5UImm5() const { return isUImm<5>(); }
+bool isSeal5SImm12() const { return isSImm<12>(); }
+bool isSeal5SImm3() const { return isSImm<3>(); }
+bool isSeal5UImm17() const { return isUImm<17>(); }
+bool isSeal5SImm6() const { return isSImm<6>(); }
   // RISCVAsmParser.cpp - riscv_operands - INSERTION_END
 
   bool isUImm5NonZero() const {
