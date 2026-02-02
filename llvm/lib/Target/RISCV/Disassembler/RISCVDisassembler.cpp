@@ -749,6 +749,9 @@ static constexpr FeatureBitset OpenASIP_baseFeatureGroup = {
 static constexpr FeatureBitset OpenASIP_paperFeatureGroup = {
     RISCV::FeatureVendorXOpenASIPpaper,
 };
+static constexpr FeatureBitset XRVCFeatureGroup = {
+    RISCV::FeatureStdExtXRVC,
+};
 // RISCVDisassembler.cpp - riscv_disass_feature_groups - INSERTION_END
 
 static constexpr FeatureBitset XRivosFeatureGroup = {
@@ -814,6 +817,7 @@ static constexpr DecoderListEntry DecoderList32[]{
 {DecoderTableScalarEfficiencyRV3232, ScalarEfficiencyRV32FeatureGroup, "ScalarEfficiencyRV32 opcode table"},
 {DecoderTableOpenASIP_base32, OpenASIP_baseFeatureGroup, "OpenASIP_base opcode table"},
 {DecoderTableOpenASIP_paper32, OpenASIP_paperFeatureGroup, "OpenASIP_paper opcode table"},
+{DecoderTableXRVC32, XRVCFeatureGroup, "XRVC opcode table"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_32 - INSERTION_END
     {DecoderTableXqci32, XqciFeatureGroup, "Qualcomm uC Extensions"},
     {DecoderTableXRivos32, XRivosFeatureGroup, "Rivos"},
@@ -860,6 +864,7 @@ static constexpr DecoderListEntry DecoderList16[]{
      {RISCV::FeatureVendorXqccmp},
      "Xqccmp (Qualcomm 16-bit Push/Pop & Double Move Instructions)"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_16 - INSERTION_START
+{DecoderTableXRVC16, XRVCFeatureGroup, "XRVC opcode table"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_16 - INSERTION_END
     {DecoderTableXwchc16, {RISCV::FeatureVendorXwchc}, "WCH QingKe XW"},
     // Standard Extensions
