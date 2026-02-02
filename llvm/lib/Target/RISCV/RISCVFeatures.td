@@ -1011,6 +1011,8 @@ def FeatureStdExtXRVC : RISCVExtension<1, 0, "XRVC Extension", []>;
 def HasStdExtXRVC : Predicate<"Subtarget->hasStdExtXRVC()">, AssemblerPredicate<(any_of FeatureStdExtXRVC), "'XRVC' (XRVC Extension)">;
 def FeatureStdExtXExample : RISCVExtension<1, 0, "XExample Extension", []>;
 def HasStdExtXExample : Predicate<"Subtarget->hasStdExtXExample()">, AssemblerPredicate<(any_of FeatureStdExtXExample), "'XExample' (XExample Extension)">;
+def FeatureStdExtXCoreVNand : RISCVExtension<1, 0, "XCoreVNand Extension", []>;
+def HasStdExtXCoreVNand : Predicate<"Subtarget->hasStdExtXCoreVNand()">, AssemblerPredicate<(any_of FeatureStdExtXCoreVNand), "'XCoreVNand' (XCoreVNand Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
