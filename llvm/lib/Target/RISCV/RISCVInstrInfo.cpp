@@ -2874,6 +2874,30 @@ bool RISCVInstrInfo::verifyInstruction(const MachineInstr &MI,
         CASE_OPERAND_SIMM(11)
         CASE_OPERAND_SIMM(12)
         CASE_OPERAND_SIMM(26)
+        case RISCVOp::SEAL5_OPERAND_UIMM16:
+          Ok = isUInt<6>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_UIMM1:
+          Ok = isUInt<1>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_UIMM12:
+          Ok = isUInt<12>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_UIMM5:
+          Ok = isUInt<5>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_SIMM12:
+          Ok = isInt<12>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_SIMM3:
+          Ok = isInt<3>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_UIMM17:
+          Ok = isUInt<17>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_SIMM6:
+          Ok = isInt<6>(Imm);
+          break;
         // clang-format on
         case RISCVOp::OPERAND_SIMM5_PLUS1:
           Ok = (isInt<5>(Imm) && Imm != -16) || Imm == 16;
