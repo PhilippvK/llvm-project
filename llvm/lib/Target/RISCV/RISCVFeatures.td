@@ -1003,6 +1003,8 @@ def HasStdExtSvinval : Predicate<"Subtarget->hasStdExtSvinval()">,
 // RISCVFeatures.td - riscv_features - INSERTION_START
 def FeatureStdExtXScalarEfficiencyRV32 : RISCVExtension<1, 0, "ScalarEfficiencyRV32 Extension", []>;
 def HasStdExtXScalarEfficiencyRV32 : Predicate<"Subtarget->hasStdExtXScalarEfficiencyRV32()">, AssemblerPredicate<(any_of FeatureStdExtXScalarEfficiencyRV32), "'XScalarEfficiencyRV32' (ScalarEfficiencyRV32 Extension)">;
+def FeatureVendorXOpenASIPbase : RISCVExperimentalExtension<1, 0, "OpenASIP_base Extension", []>;
+def HasVendorXOpenASIPbase : Predicate<"Subtarget->hasVendorXOpenASIPbase()">, AssemblerPredicate<(any_of FeatureVendorXOpenASIPbase), "'XOpenASIPbase' (OpenASIP_base Extension)">;
 // RISCVFeatures.td - riscv_features - INSERTION_END
 
 def FeatureStdExtSvnapot
