@@ -9,5 +9,7 @@ include "seal5/OpenASIP_base.td"
 include "seal5/OpenASIP_paper.td"
 // ExampleRV32C
 include "seal5/XRVC.td"
+// Example
+include "seal5/XExample.td"
 // seal5.td - seal5_td_includes - INSERTION_END
 
