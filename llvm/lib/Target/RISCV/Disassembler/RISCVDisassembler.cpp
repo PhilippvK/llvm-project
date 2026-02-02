@@ -755,6 +755,9 @@ static constexpr FeatureBitset XRVCFeatureGroup = {
 static constexpr FeatureBitset XExampleFeatureGroup = {
     RISCV::FeatureStdExtXExample,
 };
+static constexpr FeatureBitset XCoreVNandFeatureGroup = {
+    RISCV::FeatureStdExtXCoreVNand,
+};
 // RISCVDisassembler.cpp - riscv_disass_feature_groups - INSERTION_END
 
 static constexpr FeatureBitset XRivosFeatureGroup = {
@@ -822,6 +825,7 @@ static constexpr DecoderListEntry DecoderList32[]{
 {DecoderTableOpenASIP_paper32, OpenASIP_paperFeatureGroup, "OpenASIP_paper opcode table"},
 {DecoderTableXRVC32, XRVCFeatureGroup, "XRVC opcode table"},
 {DecoderTableXExample32, XExampleFeatureGroup, "XExample opcode table"},
+{DecoderTableXCoreVNand32, XCoreVNandFeatureGroup, "XCoreVNand opcode table"},
 // RISCVDisassembler.cpp - riscv_disass_decoder_list_32 - INSERTION_END
     {DecoderTableXqci32, XqciFeatureGroup, "Qualcomm uC Extensions"},
     {DecoderTableXRivos32, XRivosFeatureGroup, "Rivos"},
