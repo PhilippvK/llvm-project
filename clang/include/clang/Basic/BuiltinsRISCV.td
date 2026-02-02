@@ -170,4 +170,8 @@ let Attributes = [NoThrow, Const] in {
 let Attributes = [NoThrow, Const] in {
   def xexample_subincacc : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xexample,32bit">;
 } // Attributes = [NoThrow, Const]
+// xcorevnand
+let Attributes = [NoThrow, Const] in {
+  def xcorevnand_xcv_nand_bitwise : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "xcorevnand,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END
