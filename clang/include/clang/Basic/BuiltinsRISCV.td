@@ -166,4 +166,8 @@ let Attributes = [NoThrow, Const] in {
 let Attributes = [NoThrow, Const] in {
   def xopenasipbase_openasip_base_maxu : RISCVBuiltin<"uint32_t(uint32_t, uint32_t)", "experimental-xopenasipbase,32bit">;
 } // Attributes = [NoThrow, Const]
+// xexample
+let Attributes = [NoThrow, Const] in {
+  def xexample_subincacc : RISCVBuiltin<"uint32_t(uint32_t, uint32_t, uint32_t)", "xexample,32bit">;
+} // Attributes = [NoThrow, Const]
 // BuiltinsRISCV.td - builtins_riscv - INSERTION_END

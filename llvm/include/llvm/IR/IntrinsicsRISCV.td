@@ -1896,6 +1896,13 @@ let TargetPrefix = "riscv" in {
     [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
 
 }
+let TargetPrefix = "riscv" in {
+  def int_riscv_xexample_subincacc : Intrinsic<
+    [llvm_i32_ty],
+    [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]>;
+
+}
 // IntrinsicsRISCV.td - intrinsics_riscv - INSERTION_END
 } // TargetPrefix = "riscv"
 
