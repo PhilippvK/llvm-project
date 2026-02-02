@@ -1222,6 +1222,9 @@ case RISCV::BI__builtin_riscv_xopenasipbase_openasip_base_max:
   case RISCV::BI__builtin_riscv_xopenasipbase_openasip_base_maxu:
     ID = Intrinsic::riscv_xopenasipbase_openasip_base_maxu;
     break;
+case RISCV::BI__builtin_riscv_xexample_subincacc:
+    ID = Intrinsic::riscv_xexample_subincacc;
+    break;
 // RISCV.cpp - cg_builtin - INSERTION_END
 
   // Zksed
