@@ -706,6 +706,8 @@ public:
   bool isUImm16() const { return IsUImm<16>(); }
   bool isUImm20() const { return IsUImm<20>(); }
   bool isUImm32() const { return IsUImm<32>(); }
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_START
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_END
 
   bool isUImm8GE32() const {
     int64_t Imm;
