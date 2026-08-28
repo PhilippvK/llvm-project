@@ -2482,6 +2482,12 @@ bool RISCVInstrInfo::verifyInstruction(const MachineInstr &MI,
         CASE_OPERAND_UIMM(12)
         CASE_OPERAND_UIMM(20)
 // RISCVInstrInfo.cpp - riscv_verify_operands - INSERTION_START
+        case RISCVOp::SEAL5_OPERAND_UIMM12:
+          Ok = isUInt<12>(Imm);
+          break;
+        case RISCVOp::SEAL5_OPERAND_UIMM6:
+          Ok = isUInt<6>(Imm);
+          break;
 // RISCVInstrInfo.cpp - riscv_verify_operands - INSERTION_END
           // clang-format on
         case RISCVOp::OPERAND_UIMM2_LSB0:

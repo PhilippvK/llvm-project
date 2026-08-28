@@ -1650,6 +1650,10 @@ bool RISCVAsmParser::matchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
         "%pcrel_hi/%got_pcrel_hi/%tls_ie_pcrel_hi/%tls_gd_pcrel_hi modifier or "
         "an integer in the range");
 // RISCVAsmParser.cpp - riscv_match_invalid_operands - INSERTION_START
+  case Match_InvalidSeal5UImm6:
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 6) - 1);
+  case Match_InvalidSeal5UImm12:
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 12) - 1);
 // RISCVAsmParser.cpp - riscv_match_invalid_operands - INSERTION_END
   case Match_InvalidSImm21Lsb0JAL:
     return generateImmOutOfRangeError(
