@@ -702,6 +702,7 @@ DecodeStatus RISCVDisassembler::getInstruction32(MCInst &MI, uint64_t &Size,
   TRY_TO_DECODE_FEATURE(RISCV::FeatureVendorXCVbi, DecoderTableXCVbi32,
                         "CORE-V Immediate Branching custom opcode table");
 // RISCVDisassembler.cpp - riscv_disass_decode_feature_32 - INSERTION_START
+TRY_TO_DECODE_FEATURE(RISCV::FeatureStdExtXRVC, DecoderTableXRVC32,"XRVC Extension opcode table");
 // RISCVDisassembler.cpp - riscv_disass_decode_feature_32 - INSERTION_END
   TRY_TO_DECODE_FEATURE(RISCV::FeatureVendorXqcicsr, DecoderTableXqcicsr32,
                         "Qualcomm uC CSR custom opcode table");
@@ -763,6 +764,7 @@ DecodeStatus RISCVDisassembler::getInstruction16(MCInst &MI, uint64_t &Size,
                            DecoderTableXwchc16,
                            "WCH QingKe XW custom opcode table");
 // RISCVDisassembler.cpp - riscv_disass_decode_feature_16 - INSERTION_START
+TRY_TO_DECODE_FEATURE(RISCV::FeatureStdExtXRVC, DecoderTableXRVC16,"XRVC Extension opcode table");
 // RISCVDisassembler.cpp - riscv_disass_decode_feature_16 - INSERTION_END
   TRY_TO_DECODE_AND_ADD_SP(true, DecoderTable16,
                            "RISCV_C table (16-bit Instruction)");
