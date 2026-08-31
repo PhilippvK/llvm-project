@@ -2481,6 +2481,8 @@ bool RISCVInstrInfo::verifyInstruction(const MachineInstr &MI,
         CASE_OPERAND_UIMM(10)
         CASE_OPERAND_UIMM(12)
         CASE_OPERAND_UIMM(20)
+// RISCVInstrInfo.cpp - riscv_verify_operands - INSERTION_START
+// RISCVInstrInfo.cpp - riscv_verify_operands - INSERTION_END
           // clang-format on
         case RISCVOp::OPERAND_UIMM2_LSB0:
           Ok = isShiftedUInt<1, 1>(Imm);

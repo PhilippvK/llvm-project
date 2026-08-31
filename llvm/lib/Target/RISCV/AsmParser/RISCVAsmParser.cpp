@@ -724,6 +724,8 @@ public:
   bool isUImm32() const { return IsUImm<32>(); }
   bool isUImm48() const { return IsUImm<48>(); }
   bool isUImm64() const { return IsUImm<64>(); }
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_START
+  // RISCVAsmParser.cpp - riscv_operands - INSERTION_END
 
   bool isUImm5NonZero() const {
     if (!isImm())
@@ -1645,6 +1647,8 @@ bool RISCVAsmParser::matchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
         "operand must be a symbol with a "
         "%pcrel_hi/%got_pcrel_hi/%tls_ie_pcrel_hi/%tls_gd_pcrel_hi modifier or "
         "an integer in the range");
+// RISCVAsmParser.cpp - riscv_match_invalid_operands - INSERTION_START
+// RISCVAsmParser.cpp - riscv_match_invalid_operands - INSERTION_END
   case Match_InvalidSImm21Lsb0JAL:
     return generateImmOutOfRangeError(
         Operands, ErrorInfo, -(1 << 20), (1 << 20) - 2,

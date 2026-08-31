@@ -808,3 +808,6 @@ def : RISCVRegisterClass<[XLenVT], 32, (add SF_VCIX_STATE)> {
   let RegInfos = XLenRI;
   let isAllocatable = 0;
 }
+
+// RISCVRegisterInfo.td - riscv_register_info - INSERTION_START
+// RISCVRegisterInfo.td - riscv_register_info - INSERTION_END
