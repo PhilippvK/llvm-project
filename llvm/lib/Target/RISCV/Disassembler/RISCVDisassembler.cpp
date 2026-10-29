@@ -620,6 +620,8 @@ DecodeStatus RISCVDisassembler::getInstruction32(MCInst &MI, uint64_t &Size,
                         "CORE-V SIMD extensions custom opcode table");
   TRY_TO_DECODE_FEATURE(RISCV::FeatureVendorXCVbi, DecoderTableXCVbi32,
                         "CORE-V Immediate Branching custom opcode table");
+// RISCVDisassembler.cpp - riscv_disass_decode_feature_32 - INSERTION_START
+// RISCVDisassembler.cpp - riscv_disass_decode_feature_32 - INSERTION_END
   TRY_TO_DECODE(true, DecoderTable32, "RISCV32 table");
 
   return MCDisassembler::Fail;
@@ -646,6 +648,11 @@ DecodeStatus RISCVDisassembler::getInstruction16(MCInst &MI, uint64_t &Size,
   TRY_TO_DECODE_FEATURE(
       RISCV::FeatureStdExtZcmp, DecoderTableRVZcmp16,
       "Zcmp table (16-bit Push/Pop & Double Move Instructions)");
+  TRY_TO_DECODE_AND_ADD_SP(STI.hasFeature(RISCV::FeatureVendorXwchc),
+                           DecoderTableXwchc16,
+                           "WCH QingKe XW custom opcode table");
+// RISCVDisassembler.cpp - riscv_disass_decode_feature_16 - INSERTION_START
+// RISCVDisassembler.cpp - riscv_disass_decode_feature_16 - INSERTION_END
   TRY_TO_DECODE_AND_ADD_SP(true, DecoderTable16,
                            "RISCV_C table (16-bit Instruction)");
 
