@@ -9,6 +9,7 @@ else()
 endif()
 
 add_llvm_component_library(LLVMGlobalISel
+  ${EXTRA_GISEL_SRCS}
   CSEInfo.cpp
   GISelKnownBits.cpp
   CSEMIRBuilder.cpp
@@ -35,7 +36,6 @@ add_llvm_component_library(LLVMGlobalISel
   MachineIRBuilder.cpp
   RegBankSelect.cpp
   Utils.cpp
-  ${EXTRA_GISEL_SRCS}
 
   ADDITIONAL_HEADER_DIRS
   ${LLVM_MAIN_INCLUDE_DIR}/llvm/CodeGen/GlobalISel

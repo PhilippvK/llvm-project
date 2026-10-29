@@ -18,6 +18,10 @@ namespace llvm {
 
 class PassRegistry;
 
+#ifdef HAS_CDFG_PASS
+void initializeCDFGPassPass(PassRegistry&);
+#endif
+
 /// Initialize all passes linked into the Core library.
 void initializeCore(PassRegistry&);
 
@@ -314,9 +318,6 @@ void initializeWasmEHPreparePass(PassRegistry&);
 void initializeWinEHPreparePass(PassRegistry&);
 void initializeWriteBitcodePassPass(PassRegistry&);
 void initializeXRayInstrumentationPass(PassRegistry&);
-#ifdef HAS_CDFG_PASS
-void initializeCDFGPassPass(PassRegistry&);
-#endif
 
 } // end namespace llvm
 
